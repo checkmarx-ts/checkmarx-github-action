@@ -4,22 +4,22 @@
 
 ## Inputs available
 
-| Input Name  | Variable Value (Example) | Variable Type | Is Required* |
-| ------------- | ------------- | ------------- | ------------- |
-| cxServer | https://checkmarx.company.com  | String | Yes* |
-| cxUsername | admin@cx | String | Yes* |
-| cxPassword | ${{ secrets.CX_PASSWORD }} | Secure String | Yes* |
-| cxTeam | \CxServer\SP\Company\TeamA | String | Yes* |
-| cxPreset | Checkmarx Default | String | No |
-| cxHigh | 0 | Integer | No |
-| cxMedium | 0 | Integer | No |
-| cxMedium | 0 | Integer | No |
+| Variable  | Value (Example) | Description | Type | Is Required* |
+| ------------- | ------------- | ------------- |------------- | ------------- |
+| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
+| cxUsername | admin@cx | Checkmarx Username | String | Yes* |
+| cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
+| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
+| cxPreset | Checkmarx Default | Checkmarx Project Preset | String | No |
+| cxHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No |
+| cxMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No |
+| cxLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No |
 
 ## Secrets
 
 Configure the Password in Secrets section (Repo → Settings → Secrets → Add New Secret): 
 
-| Secret Name  | Variable Value (Example) | Variable Type | Is Required* |
+| Secret | Value (Example) | Type | Is Required* |
 | ------------- | ------------- |  ------------- | ------------- |
 | CX_PASSWORD | ******** | Secure String | Yes* |
 
