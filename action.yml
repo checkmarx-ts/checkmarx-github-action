@@ -1,0 +1,42 @@
+name: 'Checkmarx Scan'
+description: 'Find vulnerabilities in your code using Checkmarx SAST solution'
+author: 'Miguel Freitas'
+inputs:
+  cxServer:
+    description: 'Checkmarx Server URL'
+    required: true
+    default: 'https://company.checkmarx.com'
+  cxUsername:
+    description: 'Checkmarx Username'
+    required: true
+    default: 'first.last@company.com'
+  cxPassword:
+    description: 'Checkmarx Password'
+    required: true
+    default: '*********'
+  cxTeam:
+    description: 'Checkmarx Team'
+    required: true
+    default: '\CxServer\SP\Company'
+  cxPreset:
+    description: 'Checkmarx Project Preset'
+    required: false
+    default: 'Checkmarx Default'
+  cxHigh:
+    description: 'Threshold for High Severity Vulnerabilities'
+    required: false
+    default: 0
+  cxMedium:
+    description: 'Threshold for Medium Severity Vulnerabilities'
+    required: false
+    default: 0
+  cxLow:
+    description: 'Threshold for Low Severity Vulnerabilities'
+    required: false
+    default: 0
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+branding:
+  icon: 'check'
+  color: 'green'
