@@ -22,6 +22,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No |
 | cxMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No |
 | cxLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No |
+| cxComment | Test Scan Comment | Scan Comment | String | No |
 
 ## Secrets
 
@@ -46,6 +47,8 @@ in this case:
 {{ secrets.CX_PASSWORD }}
 
 ## Sample Github Action Workflow Config
+
+
 ```yml
 name: Checkmarx SAST Scan
 on: [push]
@@ -62,10 +65,6 @@ jobs:
         cxUsername: First.Last@company.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\Company\TeamA
-        cxPreset: Checkmarx Default
-        cxHigh: 0
-        cxMedium: 0
-        cxLow: 0
     - name: Upload PDF Artifact
       uses: actions/upload-artifact@master
       with:
@@ -81,6 +80,7 @@ jobs:
 ### Notes:
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
+- Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master"
 - PDF and XML produced will have always the name **"results.pdf"** or **"results.xml"**, respectively;
 
 # License
