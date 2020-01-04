@@ -30,11 +30,7 @@ jobs:
         cxMedium: 1
         cxLow: 1
         cxComment: Test Comment
-        cxForceScan: true
-        cxIncremental: true
         cxExcludeFolders: .github,workflows,node_modules
         cxExcludeFiles: index.js
         cxConfiguration: Default Configuration
-        cxPrivate: true
         cxLog: testlog
-        cxVerbose: true
