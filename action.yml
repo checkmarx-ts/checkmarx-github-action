@@ -25,18 +25,18 @@ inputs:
   cxHigh:
     description: 'Threshold for High Severity Vulnerabilities'
     required: false
-    default: 0
+    default: -1
   cxMedium:
     description: 'Threshold for Medium Severity Vulnerabilities'
     required: false
-    default: 0
+    default: -1
   cxLow:
     description: 'Threshold for Low Severity Vulnerabilities'
     required: false
-    default: 0
+    default: -1
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: 'node12'
+  image: 'index.js'
 branding:
   icon: 'check'
   color: 'green'

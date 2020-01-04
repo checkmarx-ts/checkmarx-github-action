@@ -1,0 +1,30 @@
+{
+  "name": "checkmarx-github-action",
+  "version": "1.0.0",
+  "description": "Checkmarx Github Action",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miguelfreitas93/checkmarx-github-action.git"
+  },
+  "keywords": [
+    "github",
+    "action",
+    "checkmarx",
+    "security"
+  ],
+  "author": "Miguel Freitas <miguel.freitas@checkmarx.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miguelfreitas93/checkmarx-github-action/issues"
+  },
+  "homepage": "https://github.com/miguelfreitas93/checkmarx-github-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/exec": "^1.0.2",
+    "@actions/github": "^2.0.0"
+  }
+}
