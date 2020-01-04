@@ -144,33 +144,33 @@ async function run() {
             core.warning('SAST Low Threshold not provided : ' + cxLow)
         }
 
-        if (typeof cxForceScan === "boolean") {
+        if (typeof Boolean(cxForceScan) === "boolean") {
             core.info('cxForceScan: ' + cxForceScan)
-            forceScan = cxForceScan;
+            forceScan = Boolean(cxForceScan);
         } else {
             core.warning('Force Scan flag not provided')
             forceScan = false
         }
 
-        if (typeof cxIncremental === "boolean") {
+        if (typeof Boolean(cxIncremental) === "boolean") {
             core.info('cxIncremental: ' + cxIncremental)
-            incremental = cxIncremental;
+            incremental = Boolean(cxIncremental);
         } else {
             core.warning('Incremental Scan flag not provided')
             incremental = false
         }
 
-        if (typeof cxPrivate === "boolean") {
+        if (typeof Boolean(cxPrivate) === "boolean") {
             core.info('cxPrivate: ' + cxPrivate)
-            _private = cxPrivate;
+            _private = Boolean(cxPrivate);
         } else {
             core.warning('Private Scan flag not provided')
             _private = false
         }
 
-        if (typeof cxVerbose === "boolean") {
+        if (typeof Boolean(cxVerbose) === "boolean") {
             core.info('cxVerbose: ' + cxVerbose)
-            verbose = cxVerbose;
+            verbose = Boolean(cxVerbose);
         } else {
             core.warning('Verbose flag not provided')
             verbose = true
