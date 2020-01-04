@@ -51,7 +51,7 @@ async function run() {
         let cxLog = core.getInput('cxLog');
         let cxVerbose = core.getInput('cxVerbose');
 
-        if (cxServer && cxServer instanceof String && cxServer.length > 0 && cxServer.startsWith("https://")) {
+        if (cxServer && typeof cxServer === "string" && cxServer.length > 0 && cxServer.startsWith("https://")) {
             core.info('cxServer: ' + cxServer)
             server = cxServer
         } else {
@@ -59,7 +59,7 @@ async function run() {
             return
         }
 
-        if (cxUsername && cxUsername instanceof String && cxUsername.length > 0) {
+        if (cxUsername && typeof cxUsername === "string" && cxUsername.length > 0) {
             core.info('cxUsername: ' + cxUsername)
             user = cxUsername
         } else {
@@ -67,14 +67,14 @@ async function run() {
             return
         }
 
-        if (cxPassword && cxPassword instanceof String && cxPassword.length > 0) {
+        if (cxPassword && typeof cxPassword === "string" && cxPassword.length > 0) {
             password = cxPassword
         } else {
             core.setFailed("Please provide 'cxPassword' input (string)")
             return
         }
 
-        if (cxTeam && cxTeam instanceof String && cxTeam.length > 0 && cxTeam.startsWith("\\")) {
+        if (cxTeam && typeof cxTeam === "string" && cxTeam.length > 0 && cxTeam.startsWith("\\")) {
             core.info('cxTeam: ' + cxTeam)
             team = cxTeam;
         } else {
@@ -82,21 +82,21 @@ async function run() {
             return
         }
 
-        if (cxPreset && cxPreset instanceof String && cxPreset.length > 0) {
+        if (cxPreset && typeof cxPreset === "string" && cxPreset.length > 0) {
             core.info('cxPreset: ' + cxPreset)
             preset = cxPreset
         } else {
             core.info('Default Preset will be used: ' + preset)
         }
 
-        if (cxConfiguration && cxConfiguration instanceof String && cxConfiguration.length > 0) {
+        if (cxConfiguration && typeof cxConfiguration === "string" && cxConfiguration.length > 0) {
             core.info('cxConfiguration: ' + cxConfiguration)
             config = cxConfiguration
         } else {
             core.info('Default Configuration will be used: ' + config)
         }
 
-        if (cxComment && cxComment instanceof String && cxComment.length > 0) {
+        if (cxComment && typeof cxComment === "string" && cxComment.length > 0) {
             core.info('cxComment: ' + cxComment)
             scanComment = cxComment
         } else {
@@ -139,14 +139,14 @@ async function run() {
             incremental = false
         }
 
-        if (cxExcludeFolders && cxExcludeFolders instanceof String && cxExcludeFolders.length > 0) {
+        if (cxExcludeFolders && typeof cxExcludeFolders === "string" && cxExcludeFolders.length > 0) {
             core.info('cxExcludeFolders: ' + cxExcludeFolders)
             excludeFolders = cxExcludeFolders
         } else {
             core.info("No 'cxExcludeFolders' input provided")
         }
 
-        if (cxExcludeFiles && cxExcludeFiles instanceof String && cxExcludeFiles.length > 0) {
+        if (cxExcludeFiles && typeof cxExcludeFiles === "string" && cxExcludeFiles.length > 0) {
             core.info('cxExcludeFiles: ' + cxExcludeFiles)
             excludeFiles = cxExcludeFiles
         } else {
@@ -167,7 +167,7 @@ async function run() {
             verbose = true
         }
 
-        if (cxLog && cxLog instanceof String && cxLog.length > 0) {
+        if (cxLog && typeof cxLog === "string" && cxLog.length > 0) {
             core.info('cxLog: ' + cxLog)
             logFile = cxLog
         } else {
