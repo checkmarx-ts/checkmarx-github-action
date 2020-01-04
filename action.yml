@@ -43,21 +43,21 @@ inputs:
     required: false
     default: false
   cxIncremental:
-    description: 'Run incremental scan instead of a full scan. Scans only new and modified files, relative to project's last scan. (-Incremental will disable any -ForceScan setting.)'
+    description: 'Run incremental scan instead of a full scan. Scans only new and modified files, relative to projects last scan. (-Incremental will disable any -ForceScan setting.)'
     required: false
     default: false
   cxExcludeFolders:
     description: 'Comma separated list of folder name patterns to exclude from scan. For example, exclude all test and log folders: -locationPathExclude test*,log_*'
     required: false
-    default: ""
+    default: ''
   cxExcludeFiles:
     description: 'Comma separated list of file name patterns to exclude from scan. For example, exclude all files with .class extension: -locationFilesExclude *.class'
     required: false
-    default: ""
+    default: ''
   cxConfiguration:
     description: 'Code language configuration. Possible values are : Default Configuration, Japanese (Shift-JIS). If configuration is not set, Default Configuration is used.'
     required: false
-    default: "Default Configuration"
+    default: 'Default Configuration'
   cxPrivate:
     description: 'Scan will not be visible to other users.'
     required: false
@@ -65,9 +65,9 @@ inputs:
   cxLog:
     description: 'Log file to be created.'
     required: false
-    default: ""
+    default: ''
   cxVerbose:
-    description: 'Turns on verbose mode. All messages and events will be sent to the console or log file. '
+    description: 'Turns on verbose mode. All messages and events will be sent to the console or log file.'
     required: false
     default: true
 runs:
