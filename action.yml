@@ -38,38 +38,6 @@ inputs:
     description: 'Saves a comment with the scan results. For example -comment important scan1.'
     required: false
     default: '_'
-  cxForceScan:
-    description: 'Force scan on source code, which has not been changed since the last scan of the same project. (Not compatible with -Incremental option.)'
-    required: false
-    default: false
-  cxIncremental:
-    description: 'Run incremental scan instead of a full scan.'
-    required: false
-    default: false
-  cxExcludeFolders:
-    description: 'Comma separated list of folder name patterns to exclude from scan. For example, exclude all test and log folders: -locationPathExclude test*,log_*'
-    required: false
-    default: '_'
-  cxExcludeFiles:
-    description: 'Comma separated list of file name patterns to exclude from scan. For example, exclude all files with .class extension: -locationFilesExclude *.class'
-    required: false
-    default: '_'
-  cxConfiguration:
-    description: 'Code language configuration. Possible values are : Default Configuration, Japanese (Shift-JIS). If configuration is not set, Default Configuration is used.'
-    required: false
-    default: 'Default Configuration'
-  cxPrivate:
-    description: 'Scan will not be visible to other users.'
-    required: false
-    default: false
-  cxLog:
-    description: 'Log file to be created.'
-    required: false
-    default: '_'
-  cxVerbose:
-    description: 'Turns on verbose mode. All messages and events will be sent to the console or log file.'
-    required: false
-    default: true
 runs:
   using: 'node12'
   image: 'index.js'
