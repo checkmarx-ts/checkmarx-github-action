@@ -43,7 +43,7 @@ inputs:
     required: false
     default: false
   cxIncremental:
-    description: 'Run incremental scan instead of a full scan. Scans only new and modified files, relative to projects last scan. (-Incremental will disable any -ForceScan setting.)'
+    description: 'Run incremental scan instead of a full scan.'
     required: false
     default: false
   cxExcludeFolders:
