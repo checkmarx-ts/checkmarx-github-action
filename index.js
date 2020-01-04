@@ -11,6 +11,7 @@ const GITHUB_SHA = envs.GITHUB_SHA
 let server
 let user
 let password
+let project
 let team
 let preset = "Checkmarx Default"
 let config = "Default Configuration"
@@ -80,6 +81,7 @@ async function run() {
         if (cxTeam && typeof cxTeam === "string" && cxTeam.length > 0 && cxTeam.startsWith("\\")) {
             core.info('cxTeam: ' + cxTeam)
             team = cxTeam;
+            project = cxTeam + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF
         } else {
             core.setFailed("Please provide 'cxTeam' input (string): " + cxTeam)
             return
@@ -186,7 +188,7 @@ async function run() {
 
         core.info("[END] Read Inputs...\n")
         core.info("[START] Download Checkmarx CLI...")
-        
+
         await exec.exec("curl https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip -L -o cxcli.zip")
         await exec.exec("unzip cxcli.zip -d cxcli")
         await exec.exec("rm -rf cxcli.zip")
@@ -194,6 +196,15 @@ async function run() {
 
         core.info("[END] Download Checkmarx CLI...\n")
 
+        await exec.exec("./cxcli/runCxConsole.sh Scan" +
+            " -CxServer " + server + 
+            " -CxUser " + user + 
+            " -CxPassword " + password + 
+            " -ProjectName \"" + project + "\"" +
+            " -preset \"" + preset + "\"" +
+            " -LocationType folder" + 
+            " -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
+            " -v")
     } catch (error) {
         core.setFailed(error.message);
     }
