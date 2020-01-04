@@ -1,14 +1,13 @@
-name: 'Checkmarx Scan'
-description: 'Find vulnerabilities in your code using Checkmarx SAST solution'
-author: 'Miguel Freitas'
+name: 'Hello World'
+description: 'Greet someone and record the time'
 inputs:
-  cxServer:
-    description: 'IP address or resolvable name of CxSAST web server.'
+  cxServer:  # id of input
+    description: 'Who to greet'
     required: true
-    default: 'https://company.checkmarx.com'
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
 runs:
   using: 'node12'
-  image: 'index.js'
-branding:
-  icon: 'check'
-  color: 'green'
+  main: 'index.js'
