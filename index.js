@@ -88,53 +88,53 @@ async function run() {
             core.info('cxPreset: ' + cxPreset)
             preset = cxPreset
         } else {
-            core.info('Preset not provided')
-            core.info('Default Preset will be used: ' + preset)
+            core.warning('Preset not provided')
+            core.warning('Default Preset will be used: ' + preset)
         }
 
         if (cxConfiguration && typeof cxConfiguration === "string" && cxConfiguration.length > 0) {
             core.info('cxConfiguration: ' + cxConfiguration)
             config = cxConfiguration
         } else {
-            core.info('Scan Configuration not provided')
-            core.info('Default Configuration will be used: ' + config)
+            core.warning('Scan Configuration not provided')
+            core.warning('Default Configuration will be used: ' + config)
         }
 
         if (cxComment && typeof cxComment === "string" && cxComment.length > 0) {
             core.info('cxComment: ' + cxComment)
             scanComment = cxComment
         } else {
-            core.info('Scan comment not provided')
+            core.warning('Scan comment not provided')
             scanComment = "git " + GITHUB_REF + "@" + GITHUB_SHA
-            core.info('Default Comment will be used: ' + scanComment)
+            core.warning('Default Comment will be used: ' + scanComment)
         }
 
         if (cxHigh && Number.isInteger(cxHigh) && cxHigh >= 0) {
             core.info('cxHigh: ' + cxHigh)
             high = cxHigh
         } else {
-            core.info('SAST High Threshold not provided')
+            core.warning('SAST High Threshold not provided')
         }
 
         if (cxMedium && Number.isInteger(cxMedium) && cxMedium >= 0) {
             core.info('cxMedium: ' + cxMedium)
             medium = cxMedium
         } else {
-            core.info('SAST Medium Threshold not provided')
+            core.warning('SAST Medium Threshold not provided')
         }
 
         if (cxLow && Number.isInteger(cxLow) && cxLow >= 0) {
             core.info('cxLow: ' + cxLow)
             low = cxLow
         } else {
-            core.info('SAST Low Threshold not provided')
+            core.warning('SAST Low Threshold not provided')
         }
 
         if (typeof cxForceScan === "boolean") {
             core.info('cxForceScan: ' + cxForceScan)
             forceScan = cxForceScan;
         } else {
-            core.info('Force Scan flag not provided')
+            core.warning('Force Scan flag not provided')
             forceScan = false
         }
 
@@ -142,7 +142,7 @@ async function run() {
             core.info('cxIncremental: ' + cxIncremental)
             incremental = cxIncremental;
         } else {
-            core.info('Incremental Scan flag not provided')
+            core.warning('Incremental Scan flag not provided')
             incremental = false
         }
 
@@ -150,21 +150,21 @@ async function run() {
             core.info('cxExcludeFolders: ' + cxExcludeFolders)
             excludeFolders = cxExcludeFolders
         } else {
-            core.info("No 'cxExcludeFolders' input provided")
+            core.warning("No 'cxExcludeFolders' input provided")
         }
 
         if (cxExcludeFiles && typeof cxExcludeFiles === "string" && cxExcludeFiles.length > 0) {
             core.info('cxExcludeFiles: ' + cxExcludeFiles)
             excludeFiles = cxExcludeFiles
         } else {
-            core.info("No 'cxExcludeFiles' input provided")
+            core.warning("No 'cxExcludeFiles' input provided")
         }
 
         if (typeof cxPrivate === "boolean") {
             core.info('cxPrivate: ' + cxPrivate)
             _private = cxPrivate;
         } else {
-            core.info('Private Scan flag not provided')
+            core.warning('Private Scan flag not provided')
             _private = false
         }
 
@@ -172,7 +172,7 @@ async function run() {
             core.info('cxVerbose: ' + cxVerbose)
             verbose = cxVerbose;
         } else {
-            core.info('Verbose flag not provided')
+            core.warning('Verbose flag not provided')
             verbose = true
         }
 
@@ -180,7 +180,7 @@ async function run() {
             core.info('cxLog: ' + cxLog)
             logFile = cxLog
         } else {
-            core.info("No 'cxLog' input provided")
+            core.warning("No 'cxLog' input provided")
         }
 
         core.info("READY TO PROCESS...");
