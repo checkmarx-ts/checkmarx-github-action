@@ -24,7 +24,7 @@ async function run() {
         let cxPrivate = core.getInput('cxPrivate');
         let cxLog = core.getInput('cxLog');
         let cxVerbose = core.getInput('cxVerbose');
-        
+
         core.info('cxServer: ' + cxServer);
         core.info('cxUsername: ' + cxUsername);
         core.info('cxTeam: ' + cxTeam);
@@ -41,6 +41,7 @@ async function run() {
         core.info('cxPrivate: ' + cxPrivate);
         core.info('cxLog: ' + cxLog);
         core.info('cxVerbose: ' + cxVerbose);
+        
 
     } catch (error) {
 		core.setFailed(error.message);
