@@ -16,14 +16,15 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    
-    - name: Upload PDF Artifact
-      uses: actions/upload-artifact@master
+  
+    - name: Checkmarx SAST Scan
+      uses: miguelfreitas93/checkmarx-github-action@master
       with:
-        name: results.pdf
-        path: results.pdf
-    - name: Upload XML Artifact
-      uses: actions/upload-artifact@master
-      with:
-        name: results.xml
-        path: results.xml
+        cxServer: https://cxprivatecloud.checkmarx.net
+        cxUsername: Miguel.Freitas@checkmarx.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\EMEA\__psteam
+        cxPreset: All
+        cxHigh: 1
+        cxMedium: 1
+        cxLow: 1
