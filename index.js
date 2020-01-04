@@ -109,25 +109,25 @@ async function run() {
             core.warning('Default Comment will be used: ' + scanComment)
         }
 
-        if (cxHigh && Number.isInteger(cxHigh) && cxHigh >= 0) {
+        if (cxHigh && cxHigh === parseInt(cxHigh) && cxHigh >= 0) {
             core.info('cxHigh: ' + cxHigh)
             high = cxHigh
         } else {
-            core.warning('SAST High Threshold not provided')
+            core.warning('SAST High Threshold not provided : ' + cxHigh)
         }
 
-        if (cxMedium && Number.isInteger(cxMedium) && cxMedium >= 0) {
+        if (cxMedium && cxMedium === parseInt(cxMedium) && cxMedium >= 0) {
             core.info('cxMedium: ' + cxMedium)
             medium = cxMedium
         } else {
-            core.warning('SAST Medium Threshold not provided')
+            core.warning('SAST Medium Threshold not provided : ' + cxMedium)
         }
 
-        if (cxLow && Number.isInteger(cxLow) && cxLow >= 0) {
+        if (cxLow && cxLow === parseInt(cxLow) && cxLow >= 0) {
             core.info('cxLow: ' + cxLow)
             low = cxLow
         } else {
-            core.warning('SAST Low Threshold not provided')
+            core.warning('SAST Low Threshold not provided : ' + cxLow)
         }
 
         if (typeof cxForceScan === "boolean") {
