@@ -2,8 +2,10 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const exec = require('@actions/exec')
 const envs = process.env
-const GITHUB_REPOSITORY = envs.GITHUB_REPOSITORY
-const GITHUB_REF = envs.GITHUB_REF
+let tempGRepo = envs.GITHUB_REPOSITORY.split("/")
+const GITHUB_REPOSITORY = tempGRepo[tempGRepo.length - 1]
+let tempGRef = envs.GITHUB_REF.split("/")
+const GITHUB_REF = tempGRef[tempGRef.length - 1]
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
 const GITHUB_SHA = envs.GITHUB_SHA
 let server
@@ -18,7 +20,7 @@ let medium = -1
 let low = -1
 let forceScan = false
 let incremental = false
-let excludeFolders 
+let excludeFolders
 let excludeFiles
 let verbose
 let _private
@@ -86,6 +88,7 @@ async function run() {
             core.info('cxPreset: ' + cxPreset)
             preset = cxPreset
         } else {
+            core.info('Preset not provided')
             core.info('Default Preset will be used: ' + preset)
         }
 
@@ -93,6 +96,7 @@ async function run() {
             core.info('cxConfiguration: ' + cxConfiguration)
             config = cxConfiguration
         } else {
+            core.info('Scan Configuration not provided')
             core.info('Default Configuration will be used: ' + config)
         }
 
@@ -100,6 +104,7 @@ async function run() {
             core.info('cxComment: ' + cxComment)
             scanComment = cxComment
         } else {
+            core.info('Scan comment not provided')
             scanComment = "git " + GITHUB_REF + "@" + GITHUB_SHA
             core.info('Default Comment will be used: ' + scanComment)
         }
@@ -125,17 +130,19 @@ async function run() {
             core.info('SAST Low Threshold not provided')
         }
 
-        if(typeof cxForceScan === "boolean"){
+        if (typeof cxForceScan === "boolean") {
             core.info('cxForceScan: ' + cxForceScan)
             forceScan = cxForceScan;
         } else {
+            core.info('Force Scan flag not provided')
             forceScan = false
         }
 
-        if(typeof cxIncremental === "boolean"){
+        if (typeof cxIncremental === "boolean") {
             core.info('cxIncremental: ' + cxIncremental)
             incremental = cxIncremental;
         } else {
+            core.info('Incremental Scan flag not provided')
             incremental = false
         }
 
@@ -153,17 +160,19 @@ async function run() {
             core.info("No 'cxExcludeFiles' input provided")
         }
 
-        if(typeof cxPrivate === "boolean"){
+        if (typeof cxPrivate === "boolean") {
             core.info('cxPrivate: ' + cxPrivate)
             _private = cxPrivate;
         } else {
+            core.info('Private Scan flag not provided')
             _private = false
         }
 
-        if(typeof cxVerbose === "boolean"){
+        if (typeof cxVerbose === "boolean") {
             core.info('cxVerbose: ' + cxVerbose)
             verbose = cxVerbose;
         } else {
+            core.info('Verbose flag not provided')
             verbose = true
         }
 
