@@ -34,7 +34,8 @@ async function run() {
         core.info('Workspace : ' + GITHUB_WORKSPACE);
         core.info('Commit SHA : ' + GITHUB_SHA);
 
-        //GET Inputs
+        core.info("\n[START] Read Inputs...");
+
         let cxServer = core.getInput('cxServer');
         let cxUsername = core.getInput('cxUsername');
         let cxPassword = core.getInput('cxPassword');
@@ -183,7 +184,13 @@ async function run() {
             core.warning("No 'cxLog' input provided")
         }
 
-        core.info("READY TO PROCESS...");
+        core.info("[END] Read Inputs...\n")
+        core.info("[START] Download Checkmarx CLI...")
+        await exec.exec("wget -O ~/cxcli.zip https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip")
+        await exec.exec("unzip ~/cxcli.zip -d ~/cxcli")
+        await exec.exec("rm -rf ~/cxcli.zip")
+        await exec.exec("chmod +x ~/cxcli/runCxConsole.sh")
+        core.info("[END] Download Checkmarx CLI...\n")
 
     } catch (error) {
         core.setFailed(error.message);
