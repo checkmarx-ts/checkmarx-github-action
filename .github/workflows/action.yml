@@ -18,22 +18,22 @@ jobs:
         java-version: 1.8
   
     - name: Checkmarx SAST Scan
-      uses: miguelfreitas93/checkmarx-github-action@master
+      uses: miguelfreitas93/checkmarx-github-action@0.0.1
       with:
         cxServer: https://cxprivatecloud.checkmarx.net
         cxUsername: Miguel.Freitas@checkmarx.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\EMEA\__psteam
-        cxPreset: All
+        cxPreset: "All"
         cxHigh: 1
         cxMedium: 1
         cxLow: 1
-        cxComment: Test Comment
+        cxComment: "Test Comment"
         cxForceScan: true
         cxIncremental: true
-        cxExcludeFolders: .github,workflows,node_modules
-        cxExcludeFiles: index.js
-        cxConfiguration: Default Configuration
+        cxExcludeFolders: ".github,workflows,node_modules"
+        cxExcludeFiles: "index.js"
+        cxConfiguration: "Default Configuration"
         cxPrivate: true
-        cxLog: testlog
+        cxLog: "testlog"
         cxVerbose: true
