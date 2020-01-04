@@ -100,6 +100,20 @@ async function run() {
             core.warning('Default Configuration will be used: ' + config)
         }
 
+        if (cxExcludeFolders && typeof cxExcludeFolders === "string" && cxExcludeFolders.length > 0) {
+            core.info('cxExcludeFolders: ' + cxExcludeFolders)
+            excludeFolders = cxExcludeFolders
+        } else {
+            core.warning("No 'cxExcludeFolders' input provided")
+        }
+
+        if (cxExcludeFiles && typeof cxExcludeFiles === "string" && cxExcludeFiles.length > 0) {
+            core.info('cxExcludeFiles: ' + cxExcludeFiles)
+            excludeFiles = cxExcludeFiles
+        } else {
+            core.warning("No 'cxExcludeFiles' input provided")
+        }
+
         if (cxComment && typeof cxComment === "string" && cxComment.length > 0) {
             core.info('cxComment: ' + cxComment)
             scanComment = cxComment
@@ -109,23 +123,23 @@ async function run() {
             core.warning('Default Comment will be used: ' + scanComment)
         }
 
-        if (cxHigh && cxHigh === parseInt(cxHigh) && cxHigh >= 0) {
+        if (parseInt(cxHigh) >= 0) {
             core.info('cxHigh: ' + cxHigh)
-            high = cxHigh
+            high = parseInt(cxHigh)
         } else {
             core.warning('SAST High Threshold not provided : ' + cxHigh)
         }
 
-        if (cxMedium && cxMedium === parseInt(cxMedium) && cxMedium >= 0) {
+        if (parseInt(cxMedium) >= 0) {
             core.info('cxMedium: ' + cxMedium)
-            medium = cxMedium
+            medium = parseInt(cxMedium)
         } else {
             core.warning('SAST Medium Threshold not provided : ' + cxMedium)
         }
 
-        if (cxLow && cxLow === parseInt(cxLow) && cxLow >= 0) {
+        if (parseInt(cxLow) >= 0) {
             core.info('cxLow: ' + cxLow)
-            low = cxLow
+            low = parseInt(cxLow)
         } else {
             core.warning('SAST Low Threshold not provided : ' + cxLow)
         }
@@ -144,20 +158,6 @@ async function run() {
         } else {
             core.warning('Incremental Scan flag not provided')
             incremental = false
-        }
-
-        if (cxExcludeFolders && typeof cxExcludeFolders === "string" && cxExcludeFolders.length > 0) {
-            core.info('cxExcludeFolders: ' + cxExcludeFolders)
-            excludeFolders = cxExcludeFolders
-        } else {
-            core.warning("No 'cxExcludeFolders' input provided")
-        }
-
-        if (cxExcludeFiles && typeof cxExcludeFiles === "string" && cxExcludeFiles.length > 0) {
-            core.info('cxExcludeFiles: ' + cxExcludeFiles)
-            excludeFiles = cxExcludeFiles
-        } else {
-            core.warning("No 'cxExcludeFiles' input provided")
         }
 
         if (typeof cxPrivate === "boolean") {
