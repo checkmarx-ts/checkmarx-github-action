@@ -51,15 +51,18 @@ function getCliDownloadUrl(cxVersion) {
 async function downloadCli(cxVersion) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
+        let versionFileName = "CxConsolePlugin-" + utils.getLastString(cliDownloadUrl).replace(".zip", "")
         core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
 
         await exec.exec("curl " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
-        await exec.exec("unzip " + CLI_FOLDER_NAME + ".zip -d " + CLI_FOLDER_NAME)
+        await exec.exec("unzip " + CLI_FOLDER_NAME + ".zip")
         await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
+        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
         await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
-        await exec.exec("ls")
         await exec.exec("ls " + CLI_FOLDER_NAME + "/")
-        await exec.exec("chmod +x " + CLI_FOLDER_NAME + "/runCxConsole.sh")
+        await exec.exec("mv ./" + CLI_FOLDER_NAME + "/CxConsolePlugin-CLI-" + versionFileName + ".jar " + " ./" + CLI_FOLDER_NAME + "/" + CLI_FOLDER_NAME + ".jar")
+        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
+        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
 
         core.info("[END] Download Checkmarx CLI...\n")
         return true
@@ -73,7 +76,7 @@ function getFolderName() {
     return CLI_FOLDER_NAME
 }
 
-function getCliDownloadUrls(){
+function getCliDownloadUrls() {
     return CLI_DOWNLOAD_URLS
 }
 
