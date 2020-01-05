@@ -2,9 +2,12 @@
   "name": "checkmarx-github-action",
   "version": "1.0.0",
   "description": "Checkmarx Github Action",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "test": "mocha tests/* --recursive",
+    "cov": "nyc -x tests -r html --report-dir=coverage npm test",
+    "cov:check": "nyc check-coverage --functions 70 --lines 0 --per-file"
   },
   "repository": {
     "type": "git",
@@ -26,5 +29,9 @@
     "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.2",
     "@actions/github": "^2.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0"
   }
 }
