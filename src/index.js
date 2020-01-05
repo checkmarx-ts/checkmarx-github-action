@@ -93,7 +93,7 @@ async function run() {
             preset = cxPreset.trim()
         } else {
             core.warning('Preset not provided')
-            core.warning('Default Preset will be used: ' + preset)
+            core.info('Default Preset will be used: ' + preset)
         }
 
         if (utils.isValidString(cxConfiguration)) {
@@ -101,7 +101,7 @@ async function run() {
             config = cxConfiguration.trim()
         } else {
             core.warning('Scan Configuration not provided')
-            core.warning('Default Configuration will be used: ' + config)
+            core.info('Default Configuration will be used: ' + config)
         }
 
         if (utils.isValidString(cxExcludeFolders)) {
@@ -123,7 +123,7 @@ async function run() {
             scanComment = cxComment.trim()
         } else {
             core.warning('Scan comment not provided')
-            core.warning('Default Comment will be used: ' + scanComment)
+            core.info('Default Comment will be used: ' + scanComment)
         }
 
         if (utils.isValidInt(cxHigh)) {
