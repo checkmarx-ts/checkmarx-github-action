@@ -6,8 +6,7 @@ function getLastString(s) {
         let auxArray = s.split("/")
         return auxArray[auxArray.length - 1]
     } else {
-        var errorMessage = "[" + method + "] variable is not defined"
-        core.setFailed(errorMessage)
+        core.setFailed("[" + method + "] variable is not defined")
         return
     }
 }
@@ -41,7 +40,11 @@ function isValidVersion(version) {
         version == "8.9" || version == "8.9.0" ||
         version == "8.8" || version == "8.8.0" ||
         version == "8.7" || version == "8.7.0" ||
-        version == "8.6" || version == "8.6.0"
+        version == "8.6" || version == "8.6.0" ||
+        version.startsWith("8.9") ||
+        version.startsWith("8.8") ||
+        version.startsWith("8.7") ||
+        version.startsWith("8.6")
     )
 }
 
