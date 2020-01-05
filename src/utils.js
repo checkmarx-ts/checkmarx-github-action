@@ -1,7 +1,8 @@
 const core = require('@actions/core')
+const VALID_ACTIONS = ["Scan", "AsyncScan", "OsaScan", "AsyncOsaScan", "GenerateToken", "RevokeToken"]
 
 function getLastString(s) {
-    const method = arguments.callee.name;
+    const method = arguments.callee.name
     if (s && s.length > 0 && typeof s === "string" && s.indexOf("/") != -1) {
         let auxArray = s.split("/")
         return auxArray[auxArray.length - 1]
@@ -12,7 +13,7 @@ function getLastString(s) {
 }
 
 function isValidUrl(url) {
-    return url && typeof url === "string" && url.length > 0 && url.startsWith("https://")
+    return url && typeof url === "string" && url.length > 0 && url.toLowerCase().startsWith("https://")
 }
 
 function isValidString(s) {
@@ -48,6 +49,14 @@ function isValidVersion(version) {
     )
 }
 
+function isValidAction(action){
+    return isValidString(action) && VALID_ACTIONS.includes(action)
+}
+
+function getValidAction(){
+    return VALID_ACTIONS
+}
+
 module.exports = {
     getLastString: getLastString,
     isValidUrl: isValidUrl,
@@ -56,5 +65,7 @@ module.exports = {
     isBoolean: isBoolean,
     isValidTeam: isValidTeam,
     isValidFilename: isValidFilename,
-    isValidVersion: isValidVersion
+    isValidVersion: isValidVersion,
+    isValidAction: isValidAction,
+    getValidAction: getValidAction
 }
