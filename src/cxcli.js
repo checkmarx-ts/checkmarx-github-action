@@ -59,9 +59,10 @@ async function downloadCli(cxVersion) {
         await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
         await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
         await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
-        await exec.exec("ls " + CLI_FOLDER_NAME + "/")
+        await exec.exec("mv ./" + CLI_FOLDER_NAME + "/" + versionFileName.replace("CxConsolePlugin-","CxConsolePlugin-CLI-") + ".jar " + " ./" + CLI_FOLDER_NAME + "/" + CLI_FOLDER_NAME + ".jar")
         await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
         await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
+        await exec.exec("ls -la " + CLI_FOLDER_NAME + "/")
 
         core.info("[END] Download Checkmarx CLI...\n")
         return true
