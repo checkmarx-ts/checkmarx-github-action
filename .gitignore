@@ -1,3 +1,4 @@
 results.*
 .nyc_output
 *.zip
+CxConsolePlugin-*
