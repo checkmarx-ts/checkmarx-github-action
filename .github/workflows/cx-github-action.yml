@@ -11,7 +11,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+    - name: Install Mocha
+      run: npm i -g mocha
+    - name: Install NYC
+      run: npm i -g nyc
     - name: Install packages
-      run: npm install
+      run: npm i
     - name: Run tests
       run: npm test
+    - name: Check test coverage
+      run: npm run cov:check
+      
