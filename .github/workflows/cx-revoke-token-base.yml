@@ -1,0 +1,14 @@
+name: Checkmarx Revoke Token
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@v1.0.0
+      with:
+        cxServer: https://cxprivatecloud.checkmarx.net
+        cxAction: RevokeToken
+        cxToken: ${{ secrets.CX_TOKEN }}
