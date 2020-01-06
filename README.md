@@ -14,17 +14,61 @@ Please find more info in the official website: <a href="www.checkmarx.com">Check
 
 For using this action, there is a set of options that can be used, such as:
 
-| Variable  | Value (Example) | Description | Type | Is Required* |
-| ------------- | ------------- | ------------- |------------- | ------------- |
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxAction | Scan | Checkmarx CLI Action - One of the following: Scan, AsyncScan, OsaScan, AsyncOsaScan, GenerateToken, RevokeToken | String | No | Scan |
+
+#### Inputs - Scan, AsyncScan 
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
+| cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) |
+| cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
+| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
+| cxPreset | Checkmarx Default | Checkmarx Project Preset | String | No | Checkmarx Default |
+| cxConfiguration | Default Configuration | Project Configuration | String | No | Default Configuration |
+| cxExcludeFolders | node_modules,test* | Exclude Folders | String | No | |
+| cxExcludeFiles | *.spec.js, *.sql | Exclude Files | String | No | |
+| cxHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
+| cxMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No | -1 |
+| cxLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No | -1 |
+| cxForceScan | false | Force Scan | Boolean | No | false |
+| cxIncremental | false | Incremental Scan | Boolean | No | false |
+| cxPrivate | false | Private Scan | Boolean | No | false |
+| cxLog | log.log | Log File CLI output | String | No | | 
+| cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+
+#### Inputs - OsaScan, AsyncOsaScan 
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
+| cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) |
+| cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
+| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+
+#### Inputs - GenerateToken
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
-| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
-| cxPreset | Checkmarx Default | Checkmarx Project Preset | String | No |
-| cxHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No |
-| cxMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No |
-| cxLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No |
-| cxComment | Test Scan Comment | Scan Comment | String | No |
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+
+#### Inputs - RevokeToken
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
+| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+
 
 ## Secrets
 
