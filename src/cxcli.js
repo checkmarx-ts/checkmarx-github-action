@@ -50,18 +50,19 @@ async function downloadCli(cxVersion) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
         if (cliDownloadUrl) {
+            core.setOutput("cliDownloadUrl", cliDownloadUrl)
             let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
             if (versionFileName) {
+                core.setOutput("cliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
 
                 await exec.exec("curl " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
-                await exec.exec("unzip " + CLI_FOLDER_NAME + ".zip")
+                await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
                 await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
-                await exec.exec("ls -la " + CLI_FOLDER_NAME + "/")
 
                 core.info("[END] Download Checkmarx CLI...\n")
                 return true
@@ -87,7 +88,7 @@ function getCliDownloadUrls() {
 
 async function executeCommand(command) {
     if (utils.isValidString(command)) {
-        core.info("\nCommand executed : " + command + "\n\n");
+        core.setOutput("cmdExecuted", command)
         try {
             await exec.exec(command)
             return true

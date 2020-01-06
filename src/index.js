@@ -20,6 +20,12 @@ async function run() {
         core.info('Workspace : ' + envs.GITHUB_WORKSPACE)
         core.info('Commit SHA : ' + envs.GITHUB_SHA)
 
+        core.setOutput("cxEvent", github.context.eventName)
+        core.setOutput("cxRepository", envs.GITHUB_REPOSITORY)
+        core.setOutput("cxBranch", envs.GITHUB_REF)
+        core.setOutput("cxWorkspace", envs.GITHUB_WORKSPACE)
+        core.setOutput("cxCommitSHA", envs.GITHUB_SHA)
+
         core.info("\n[START] Read Inputs...")
 
         let cxAction = core.getInput('cxAction', { required: false })
@@ -39,6 +45,9 @@ async function run() {
             core.setFailed("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
             return
         }
+
+        core.setOutput("cxServer", server)
+        core.setOutput("cxAction", action)
 
         let command = "./" + cxcli.getFolderName() + "/runCxConsole.sh "
         let auxCommand = ""
@@ -85,6 +94,7 @@ async function run() {
         
         if (logFile) {
             command += " -Log \"" + logFile + "\""
+            core.setOutput("cxLogFile", logFile)
         }
 
         let cxVerbose = core.getInput('cxVerbose', { required: false })
@@ -100,6 +110,8 @@ async function run() {
         if (verbose) {
             command += " -v"
         }
+        
+        core.setOutput("cxVerbose", verbose)
 
         let cxVersion = core.getInput('cxVersion', { required: false })
 
@@ -109,6 +121,7 @@ async function run() {
         } else {
             core.warning("No 'cxVersion' valid input provided : " + version + " version will be used")
         }
+        core.setOutput("cxVersion", version)
 
         core.info("[END] Read Inputs...\n")
 
@@ -119,7 +132,8 @@ async function run() {
             return
         }
         try {
-            await cxcli.executeCommand(command)
+            let output = await cxcli.executeCommand(command)
+            console.log(output)
         } catch (e) {
             core.setFailed(e.message)
             return
