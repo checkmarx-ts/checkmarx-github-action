@@ -1,4 +1,3 @@
-setenv.*
 results.*
 .nyc_output
 *.zip
