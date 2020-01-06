@@ -7,7 +7,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@v1.0.0
+      uses: ./
       with:
         cxServer: https://cxprivatecloud.checkmarx.net
         cxAction: RevokeToken
