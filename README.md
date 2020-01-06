@@ -1,5 +1,7 @@
 # Checkmarx Github Action ![Checkmarx](images/checkmarx.png) <img src="images/github.png" alt="Github" width="40" height="40">
 
+[![Tests](https://github.com/miguelfreitas93/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/miguelfreitas93/checkmarx-github-action/actions)
+
 Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration.
 
 ![Checkmarx](images/checkmarx-big.png)
