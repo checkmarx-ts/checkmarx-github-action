@@ -33,6 +33,10 @@ For using this action, there is a set of options that can be used, such as:
 | cxHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
 | cxMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No | -1 |
 | cxLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No | -1 |
+| cxReportXML | reports/sast.xml  | Generate CxSAST XML report. | String | No | |
+| cxReportPDF | reports/sast.pdf  | Generate CxSAST PDF report. | String | No | |
+| cxReportRTF | reports/sast.rtf  | Generate CxSAST RTF report. | String | No | |
+| cxReportCSV | reports/sast.csv  | Generate CxSAST CSV report. | String | No | |
 | cxForceScan | false | Force Scan | Boolean | No | false |
 | cxIncremental | false | Incremental Scan | Boolean | No | false |
 | cxPrivate | false | Private Scan | Boolean | No | false |

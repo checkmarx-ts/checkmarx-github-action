@@ -21,6 +21,10 @@ let incremental = false
 let excludeFolders
 let excludeFiles
 let _private = false
+let reportXml
+let reportPdf
+let reportRtf
+let reportCsv
 
 async function getSastCmd(server, action) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
@@ -39,6 +43,10 @@ async function getSastCmd(server, action) {
         let cxExcludeFiles = core.getInput('cxExcludeFiles', { required: false })
         let cxConfiguration = core.getInput('cxConfiguration', { required: false })
         let cxPrivate = core.getInput('cxPrivate', { required: false })
+        let cxReportXML = core.getInput('cxReportXML', { required: false })
+        let cxReportPDF = core.getInput('cxReportPDF', { required: false })
+        let cxReportRTF = core.getInput('cxReportRTF', { required: false })
+        let cxReportCSV = core.getInput('cxReportCSV', { required: false })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken
@@ -150,6 +158,34 @@ async function getSastCmd(server, action) {
             core.warning('Private Scan valid flag not provided')
             _private = false
         }
+        
+        if (utils.isValidString(cxReportXML)) {
+            core.info('cxReportXML: ' + cxReportXML)
+            reportXml = cxReportXML.trim()
+        } else {
+            core.warning("No 'cxReportXML' input provided")
+        }
+
+        if (utils.isValidString(cxReportPDF)) {
+            core.info('cxReportPDF: ' + cxReportPDF)
+            reportPdf = cxReportPDF.trim()
+        } else {
+            core.warning("No 'cxReportPDF' input provided")
+        }
+
+        if (utils.isValidString(cxReportRTF)) {
+            core.info('cxReportRTF: ' + cxReportRTF)
+            reportRtf = cxReportRTF.trim()
+        } else {
+            core.warning("No 'cxReportRTF' input provided")
+        }
+
+        if (utils.isValidString(cxReportCSV)) {
+            core.info('cxReportCSV: ' + cxReportCSV)
+            reportCsv = cxReportCSV.trim()
+        } else {
+            core.warning("No 'cxReportCSV' input provided")
+        }
 
         let credentials = ""
 
@@ -211,6 +247,22 @@ async function getSastCmd(server, action) {
 
         if (scanComment) {
             command += " -Comment \"" + scanComment + "\""
+        }
+
+        if (reportXml) {
+            command += " -ReportXML \"" + reportXml + "\""
+        }
+
+        if (reportPdf) {
+            command += " -ReportPDF \"" + reportPdf + "\""
+        }
+
+        if (reportRtf) {
+            command += " -ReportRTF \"" + reportRtf + "\""
+        }
+
+        if (reportCsv) {
+            command += " -ReportCSV \"" + reportCsv + "\""
         }
 
         return command
