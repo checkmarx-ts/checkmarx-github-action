@@ -31,9 +31,7 @@ function getCliDownloadUrl(cxVersion) {
             case "8.6.0":
                 return CLI_DOWNLOAD_URLS[0]
             default:
-                if (cxVersion.startsWith("8.9")) {
-                    return CLI_DOWNLOAD_URLS[3]
-                } else if (cxVersion.startsWith("8.8")) {
+                if (cxVersion.startsWith("8.8")) {
                     return CLI_DOWNLOAD_URLS[2]
                 } else if (cxVersion.startsWith("8.7")) {
                     return CLI_DOWNLOAD_URLS[1]
@@ -51,20 +49,28 @@ function getCliDownloadUrl(cxVersion) {
 async function downloadCli(cxVersion) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
-        let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
-        core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
+        if (cliDownloadUrl) {
+            let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
+            if (versionFileName) {
+                core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
 
-        await exec.exec("curl " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
-        await exec.exec("unzip " + CLI_FOLDER_NAME + ".zip")
-        await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
-        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
-        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
-        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
-        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
-        await exec.exec("ls -la " + CLI_FOLDER_NAME + "/")
+                await exec.exec("curl " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
+                await exec.exec("unzip " + CLI_FOLDER_NAME + ".zip")
+                await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
+                await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
+                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
+                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
+                await exec.exec("ls -la " + CLI_FOLDER_NAME + "/")
 
-        core.info("[END] Download Checkmarx CLI...\n")
-        return true
+                core.info("[END] Download Checkmarx CLI...\n")
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
     } else {
         core.setFailed("Invalid version : " + cxVersion)
         return false
@@ -82,8 +88,13 @@ function getCliDownloadUrls() {
 async function executeCommand(command) {
     if (utils.isValidString(command)) {
         core.info("\nCommand executed : " + command + "\n\n");
-        await exec.exec(command)
-        return true
+        try {
+            await exec.exec(command)
+            return true
+        } catch (e) {
+            core.setFailed("Failed to execute command : " + e.message)
+            return false
+        }
     } else {
         core.info("Invalid command string : " + command)
         return false

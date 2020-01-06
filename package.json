@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node src/index.js",
     "test": "mocha tests/* --recursive",
+    "test:index": "mocha tests/index.spec.js",
     "test:utils": "mocha tests/utils.spec.js",
     "test:cxcli": "mocha tests/cxcli.spec.js",
+    "test:cxosa": "mocha tests/cxosa.spec.js",
     "test:cxtoken": "mocha tests/cxtoken.spec.js",
     "test:cxsast": "mocha tests/cxsast.spec.js",
     "cov": "nyc -x tests -r html --report-dir=coverage npm test",

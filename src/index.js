@@ -98,11 +98,20 @@ async function run() {
 
         core.info("[END] Read Inputs...\n")
 
-        await cxcli.downloadCli(version)
-
-        await cxcli.executeCommand(command)
-    } catch (error) {
-        core.setFailed(error.message)
+        try {
+            await cxcli.downloadCli(version)
+        } catch (e) {
+            core.setFailed(e.message)
+            return
+        }
+        try {
+            await cxcli.executeCommand(command)
+        } catch (e) {
+            core.setFailed(e.message)
+            return
+        }
+    } catch (e) {
+        core.setFailed(e.message)
     }
 }
 

@@ -6,32 +6,32 @@ describe('cxcli', function () {
         it('Null - Success', function () {
             let url = cxcli.getCliDownloadUrl()
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('Empty - Success', function () {
             let url = cxcli.getCliDownloadUrl("")
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('Integer - Success', function () {
             let url = cxcli.getCliDownloadUrl(1)
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('Array - Success', function () {
             let url = cxcli.getCliDownloadUrl([])
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('Object - Success', function () {
             let url = cxcli.getCliDownloadUrl({})
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('Random String - Success', function () {
             let url = cxcli.getCliDownloadUrl("test")
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length -1])
+            assert(url == array[array.length - 1])
         })
         it('8.9 String - Success', function () {
             let url = cxcli.getCliDownloadUrl("8.9")
@@ -150,9 +150,13 @@ describe('cxcli', function () {
             let cmdExecuted = await cxcli.executeCommand({})
             assert(!cmdExecuted)
         })
+        it('String - Fail', async function () {
+            let cmdExecuted = await cxcli.executeCommand("ls")
+            assert(!cmdExecuted)
+        })
         it('String - Success', async function () {
-            //let cmdExecuted = await cxcli.executeCommand("") - Command fails because it expects a file
-            assert(true)
+            let cmdExecuted = await cxcli.executeCommand("node -v")
+            assert(cmdExecuted)
         })
     })
 })
