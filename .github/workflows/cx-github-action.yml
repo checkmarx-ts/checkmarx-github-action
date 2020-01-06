@@ -11,8 +11,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Install packages
-      run: npm i
     - name: Add Mocha Execute Permissions
       run: chmod 0777 ./node_modules/.bin/mocha
     - name: Add NYC Execute Permissions
@@ -23,4 +21,10 @@ jobs:
       run: npm run cov
     - name: Check test coverage 70%
       run: npm run cov:check
+    - name: Create a Release
+      uses: elgohr/Github-Release-Action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+      with:
+        args: master
       
