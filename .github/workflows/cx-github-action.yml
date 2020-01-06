@@ -19,6 +19,8 @@ jobs:
       run: chmod 0777 ./node_modules/.bin/nyc
     - name: Run tests
       run: npm test
-    - name: Check test coverage
+    - name: Run Coverage
+      run: npm run cov
+    - name: Check test coverage 70%
       run: npm run cov:check
       
