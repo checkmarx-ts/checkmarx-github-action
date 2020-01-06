@@ -21,9 +21,7 @@ jobs:
       run: npm run cov
     - name: Check test coverage 70%
       run: npm run cov:check
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: TG908/publish-github-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       
