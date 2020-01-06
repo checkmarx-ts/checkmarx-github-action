@@ -1,0 +1,17 @@
+name: Checkmarx Github Action
+
+on:
+  push:
+    branches: 
+      - master
+jobs:
+  cx-github-actions:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Install packages
+      run: npm install
+    - name: Run tests
+      run: npm test
