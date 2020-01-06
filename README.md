@@ -18,7 +18,7 @@ For using this action, there is a set of options that can be used, such as:
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxAction | Scan | Checkmarx CLI Action - One of the following: Scan, AsyncScan, OsaScan, AsyncOsaScan, GenerateToken, RevokeToken | String | No | Scan |
 
-#### Inputs - Scan, AsyncScan 
+#### Inputs for Actions: Scan, AsyncScan 
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
@@ -37,37 +37,54 @@ For using this action, there is a set of options that can be used, such as:
 | cxIncremental | false | Incremental Scan | Boolean | No | false |
 | cxPrivate | false | Private Scan | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
-| cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA
-| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+| cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA |
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 
-#### Inputs - OsaScan, AsyncOsaScan 
+#### Inputs for Actions: OsaScan, AsyncOsaScan 
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
-| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
-| cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) |
-| cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
-| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
-| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
-| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+| cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* | |
+| cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) | |
+| cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) | |
+| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
+| cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
+| cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | |
+| cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
+| cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
+| cxOsaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the OSA scan.  | String | No | |
+| cxOsaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the OSA scan.   | String | No | |
+| cxOsaDepth | 2 | Extraction depth of files to include in the OSA scan. | Integer | No | -1 |
+| cxOsaHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
+| cxOsaMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No | -1 |
+| cxOsaLow | 0 | Threshold for Low Severity Vulnerabilities| Integer | No | -1 |
+| cxOsaReportHtml | reports/osa.html  | Generate CxOSA HTML report. | String | No | |
+| cxOsaReportPDF | reports/osa.pdf  | Generate CxOSA PDF report. | String | No | |
+| cxOsaJson | reports/osa.json  | Generate CxOSA JSON report. | String | No | |
+| cxExecutePackageDependency | true | Retrieve all supported package dependencies before performing OSA scan | Boolean | No | false |
+| cxCheckPolicy | true | This parameter will break the build if the CxOSA policy is violated. | Boolean | No | false |
+| cxLog | log.log | Log File CLI output | String | No | | 
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 
-#### Inputs - GenerateToken
+#### Inputs for Actions: GenerateToken
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
-| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+| cxLog | log.log | Log File CLI output | String | No | | 
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 
-#### Inputs - RevokeToken
+#### Inputs for Actions: RevokeToken
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
-| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9
+| cxLog | log.log | Log File CLI output | String | No | | 
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
+| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 
 
 ## Secrets

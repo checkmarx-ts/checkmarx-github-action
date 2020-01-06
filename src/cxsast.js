@@ -21,7 +21,6 @@ let incremental = false
 let excludeFolders
 let excludeFiles
 let _private = false
-let logFile
 
 async function getSastCmd(server, action) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
@@ -40,7 +39,6 @@ async function getSastCmd(server, action) {
         let cxExcludeFiles = core.getInput('cxExcludeFiles', { required: false })
         let cxConfiguration = core.getInput('cxConfiguration', { required: false })
         let cxPrivate = core.getInput('cxPrivate', { required: false })
-        let cxLog = core.getInput('cxLog', { required: false })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken
@@ -153,13 +151,6 @@ async function getSastCmd(server, action) {
             _private = false
         }
 
-        if (utils.isValidFilename(cxLog)) {
-            core.info('cxLog: ' + cxLog)
-            logFile = cxLog.trim()
-        } else {
-            core.warning("No 'cxLog' valid input provided")
-        }
-
         let credentials = ""
 
         if (token) {
@@ -216,10 +207,6 @@ async function getSastCmd(server, action) {
 
         if (_private) {
             command += " -Private"
-        }
-
-        if (logFile) {
-            command += " -Log \"" + logFile + "\""
         }
 
         if (scanComment) {

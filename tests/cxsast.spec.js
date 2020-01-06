@@ -309,43 +309,5 @@ describe('cxsast', function () {
             )
             )
         })
-        it('Valid String Scan Action Log - Success', async function () {
-            process.env["INPUT_CXTEAM"] = team
-            process.env["INPUT_CXTOKEN"] = token
-            process.env["INPUT_CXPRESET"] = preset
-            process.env["INPUT_CXCONFIGURATION"] = config
-            process.env["INPUT_CXHIGH"] = high
-            process.env["INPUT_CXMEDIUM"] = medium
-            process.env["INPUT_CXLOW"] = low
-            process.env["INPUT_CXEXCLUDEFOLDERS"] = excludeFolders
-            process.env["INPUT_CXEXCLUDEFILES"] = excludeFiles
-            process.env["INPUT_CXCOMMENT"] = comment
-            process.env["INPUT_CXLOG"] = log
-
-            let cmd = await cxsast.getSastCmd(server, "Scan")
-            console.log(cmd)
-            assert(cmd && (cmd == ("Scan -CxServer " + server +
-                " -CxToken " + token +
-                " -ProjectName \"" + team +
-                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
-                config + "\" -LocationPathExclude \"" + excludeFolders +
-                "\" -LocationFilesExclude \"" + excludeFiles +
-                "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                " -Log \"" + log + "\"" +
-                " -Comment \"" + comment + "\"") ||
-                cmd == ("Scan -CxServer " + server +
-                    " -CxToken " + token +
-                    " -ProjectName \"" + team +
-                    "\\undefined-undefined\" -preset \"" + preset +
-                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
-                    config + "\" -LocationPathExclude \"" + excludeFolders +
-                    "\" -LocationFilesExclude \"" + excludeFiles +
-                    "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                    " -Log \"" + log + "\"" +
-                    " -Comment \"" + comment + "\"")
-            )
-            )
-        })
     })
 })

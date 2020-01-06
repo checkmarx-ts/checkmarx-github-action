@@ -10,6 +10,7 @@ let action = "Scan"
 let version = "8.9"
 let server
 let verbose = true
+let logFile
 
 async function run() {
     try {
@@ -71,6 +72,19 @@ async function run() {
         } else {
             core.setFailed("Invalid auxCommand : " + auxCommand)
             return
+        }
+
+        let cxLog = core.getInput('cxLog', { required: false })
+        
+        if (utils.isValidFilename(cxLog)) {
+            core.info('cxLog: ' + cxLog)
+            logFile = cxLog.trim()
+        } else {
+            core.warning("No 'cxLog' valid input provided")
+        }
+        
+        if (logFile) {
+            command += " -Log \"" + logFile + "\""
         }
 
         let cxVerbose = core.getInput('cxVerbose', { required: false })
