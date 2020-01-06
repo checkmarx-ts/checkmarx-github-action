@@ -1,4 +1,5 @@
 const assert = require('assert')
+const utils = require('./../src/utils.js')
 const cxsast = require('./../src/cxsast.js')
 const server = "https://test.company.com"
 const token = "12345"
@@ -14,6 +15,11 @@ const excludeFolders = "node_modules,test"
 const excludeFiles = "*.spec.js,*.unit.js"
 const comment = "test comment"
 const log = "log"
+const envs = process.env
+const GITHUB_REPOSITORY = utils.getLastString(envs.GITHUB_REPOSITORY)
+const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
+const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
+const GITHUB_SHA = envs.GITHUB_SHA ? envs.GITHUB_SHA : "Unknown Commit SHA"
 
 describe('cxsast', function () {
     describe('#getSastCmd()', function () {
@@ -57,20 +63,30 @@ describe('cxsast', function () {
             process.env["INPUT_CXTEAM"] = team
             process.env["INPUT_CXTOKEN"] = token
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
-                " -ProjectName \"" + team + "\\undefined-undefined\" -LocationType folder -LocationPath \"undefined\"" +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -ProjectName \"" + team + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team + "\\undefined-undefined\" -LocationType folder -LocationPath \"undefined\"" +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String AsyncScan Action - Success', async function () {
             process.env["INPUT_CXTEAM"] = team
             process.env["INPUT_CXTOKEN"] = token
             let cmd = await cxsast.getSastCmd(server, "AsyncScan")
-            assert(cmd && cmd == ("AsyncScan -CxServer " + server +
+            assert(cmd && (cmd == ("AsyncScan -CxServer " + server +
                 " -CxToken " + token +
-                " -ProjectName \"" + team + "\\undefined-undefined\" -LocationType folder -LocationPath \"undefined\"" +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -ProjectName \"" + team + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("AsyncScan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team + "\\undefined-undefined\" -LocationType folder -LocationPath \"undefined\"" +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Preset - Success', async function () {
@@ -79,12 +95,19 @@ describe('cxsast', function () {
             process.env["INPUT_CXPRESET"] = preset
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\"" +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\"" +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Configuration - Success', async function () {
@@ -94,13 +117,21 @@ describe('cxsast', function () {
             process.env["INPUT_CXCONFIGURATION"] = config
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\"" +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\"" +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action High - Success', async function () {
@@ -111,13 +142,21 @@ describe('cxsast', function () {
             process.env["INPUT_CXHIGH"] = high
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -SASTHigh " + high +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -SASTHigh " + high +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Medium - Success', async function () {
@@ -129,13 +168,21 @@ describe('cxsast', function () {
             process.env["INPUT_CXMEDIUM"] = medium
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -SASTHigh " + high + " -SASTMedium " + medium +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -SASTHigh " + high + " -SASTMedium " + medium +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Low - Success', async function () {
@@ -148,13 +195,21 @@ describe('cxsast', function () {
             process.env["INPUT_CXLOW"] = low
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Exclude Folders - Success', async function () {
@@ -168,14 +223,23 @@ describe('cxsast', function () {
             process.env["INPUT_CXEXCLUDEFOLDERS"] = excludeFolders
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -LocationPathExclude \"" + excludeFolders +
                 "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -LocationPathExclude \"" + excludeFolders +
+                    "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Exclude Files - Success', async function () {
@@ -190,15 +254,25 @@ describe('cxsast', function () {
             process.env["INPUT_CXEXCLUDEFILES"] = excludeFiles
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -LocationPathExclude \"" + excludeFolders +
                 "\" -LocationFilesExclude \"" + excludeFiles +
                 "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                " -Comment \"git undefined@Unknown Commit SHA\"")
+                " -Comment \"git " + GITHUB_REF + "@" + GITHUB_SHA + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -LocationPathExclude \"" + excludeFolders +
+                    "\" -LocationFilesExclude \"" + excludeFiles +
+                    "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
+                    " -Comment \"git undefined@Unknown Commit SHA\"")
+            )
             )
         })
         it('Valid String Scan Action Scan Comment - Success', async function () {
@@ -214,15 +288,25 @@ describe('cxsast', function () {
             process.env["INPUT_CXCOMMENT"] = comment
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -LocationPathExclude \"" + excludeFolders +
                 "\" -LocationFilesExclude \"" + excludeFiles +
                 "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
-                " -Comment \"" + comment + "\"")
+                " -Comment \"" + comment + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -LocationPathExclude \"" + excludeFolders +
+                    "\" -LocationFilesExclude \"" + excludeFiles +
+                    "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
+                    " -Comment \"" + comment + "\"")
+            )
             )
         })
         it('Valid String Scan Action Log - Success', async function () {
@@ -240,16 +324,27 @@ describe('cxsast', function () {
 
             let cmd = await cxsast.getSastCmd(server, "Scan")
             console.log(cmd)
-            assert(cmd && cmd == ("Scan -CxServer " + server +
+            assert(cmd && (cmd == ("Scan -CxServer " + server +
                 " -CxToken " + token +
                 " -ProjectName \"" + team +
-                "\\undefined-undefined\" -preset \"" + preset +
-                "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF + "\" -preset \"" + preset +
+                "\" -LocationType folder -LocationPath \"" + GITHUB_WORKSPACE + "\" -Configuration \"" +
                 config + "\" -LocationPathExclude \"" + excludeFolders +
                 "\" -LocationFilesExclude \"" + excludeFiles +
                 "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
                 " -Log \"" + log + "\"" +
-                " -Comment \"" + comment + "\"")
+                " -Comment \"" + comment + "\"") ||
+                cmd == ("Scan -CxServer " + server +
+                    " -CxToken " + token +
+                    " -ProjectName \"" + team +
+                    "\\undefined-undefined\" -preset \"" + preset +
+                    "\" -LocationType folder -LocationPath \"undefined\" -Configuration \"" +
+                    config + "\" -LocationPathExclude \"" + excludeFolders +
+                    "\" -LocationFilesExclude \"" + excludeFiles +
+                    "\" -SASTHigh " + high + " -SASTMedium " + medium + " -SASTLow " + low +
+                    " -Log \"" + log + "\"" +
+                    " -Comment \"" + comment + "\"")
+            )
             )
         })
     })

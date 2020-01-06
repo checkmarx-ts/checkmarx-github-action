@@ -151,7 +151,7 @@ describe('cxcli', function () {
             assert(!cmdExecuted)
         })
         it('String - Fail', async function () {
-            let cmdExecuted = await cxcli.executeCommand("ls")
+            let cmdExecuted = await cxcli.executeCommand("test123")
             assert(!cmdExecuted)
         })
         it('String - Success', async function () {
