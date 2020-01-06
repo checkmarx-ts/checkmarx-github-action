@@ -21,10 +21,8 @@ jobs:
       run: npm run cov
     - name: Check test coverage 70%
       run: npm run cov:check
-    - name: Create a Release
-      uses: elgohr/Github-Release-Action@master
+    - name: Release
+      uses: softprops/action-gh-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-      with:
-        args: master
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
