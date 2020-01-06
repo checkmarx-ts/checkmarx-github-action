@@ -113,8 +113,7 @@ in this case:
 
 {{ secrets.CX_PASSWORD }}
 
-## Sample Github Action Workflow Config
-
+## Workflow - Sample SAST Scan
 
 ```yml
 name: Checkmarx SAST Scan
@@ -125,30 +124,80 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Checkmarx SAST Scan
+    - name: Checkmarx Action
       uses: miguelfreitas93/checkmarx-github-action@master
       with:
         cxServer: https://checkmarx.company.com
         cxUsername: First.Last@company.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\Company\TeamA
-    - name: Upload PDF Artifact
-      uses: actions/upload-artifact@master
+```
+
+## Workflow - Sample OSA Scan
+
+```yml
+name: Checkmarx OSA Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@master
       with:
-        name: results.pdf
-        path: results.pdf
-    - name: Upload XML Artifact
-      uses: actions/upload-artifact@master
+        cxServer: https://checkmarx.company.com
+        cxAction: OsaScan
+        cxUsername: First.Last@company.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\Company\TeamA
+        cxOsaLocationPath: $GITHUB_WORKSPACE
+```
+
+## Workflow - Sample Revoke Token
+
+```yml
+name: Checkmarx Revoke Token
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@master
       with:
-        name: results.xml
-        path: results.xml
+        cxServer: https://checkmarx.company.com
+        cxAction: RevokeToken
+        cxToken: ${{ secrets.CX_TOKEN }}
+```
+
+## Workflow - Sample Generate Token
+
+```yml
+name: Checkmarx Generate Token
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@master
+      with:
+        cxServer: https://checkmarx.company.com
+        cxAction: GenerateToken
+        cxUsername: First.Last@company.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
 ```
 
 ### Notes:
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
 - Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master"
-- PDF and XML produced will have always the name **"results.pdf"** or **"results.xml"**, respectively;
 
 # License
 
