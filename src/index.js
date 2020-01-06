@@ -21,8 +21,8 @@ async function run() {
 
         core.info("\n[START] Read Inputs...")
 
-        let cxAction = core.getInput('cxAction')
-        let cxServer = core.getInput('cxServer')
+        let cxAction = core.getInput('cxAction', { required: false })
+        let cxServer = core.getInput('cxServer', { required: true })
 
         if (utils.isValidAction(cxAction)) {
             action = cxAction
@@ -73,7 +73,7 @@ async function run() {
             return
         }
 
-        let cxVerbose = core.getInput('cxVerbose')
+        let cxVerbose = core.getInput('cxVerbose', { required: false })
 
         if (utils.isBoolean(cxVerbose)) {
             core.info('cxVerbose: ' + cxVerbose)
@@ -87,7 +87,7 @@ async function run() {
             command += " -v"
         }
 
-        let cxVersion = core.getInput('cxVersion')
+        let cxVersion = core.getInput('cxVersion', { required: false })
 
         if (utils.isValidVersion(cxVersion)) {
             core.info('cxVersion: ' + cxVersion)

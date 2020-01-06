@@ -6,7 +6,7 @@ let token
 
 async function revokeTokenGetCmd(server) {
     if (utils.isValidUrl(server)) {
-        let cxToken = core.getInput('cxToken')
+        let cxToken = core.getInput('cxToken', { required: true })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken
@@ -28,8 +28,8 @@ async function revokeTokenGetCmd(server) {
 
 async function generateTokenGetCmd(server) {
     if (utils.isValidUrl(server)) {
-        let cxUsername = core.getInput('cxUsername')
-        let cxPassword = core.getInput('cxPassword')
+        let cxUsername = core.getInput('cxUsername', { required: true })
+        let cxPassword = core.getInput('cxPassword', { required: true })
 
         if (utils.isValidString(cxUsername)) {
             core.info('cxUsername: ' + cxUsername)

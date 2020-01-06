@@ -10,8 +10,8 @@ let password
 let token
 let project
 let team
-let preset = "Checkmarx Default"
-let config = "Default Configuration"
+let preset
+let config
 let scanComment = "git " + GITHUB_REF + "@" + GITHUB_SHA
 let high = -1
 let medium = -1
@@ -25,22 +25,22 @@ let logFile
 
 async function getSastCmd(server, action) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
-        let cxUsername = core.getInput('cxUsername')
-        let cxPassword = core.getInput('cxPassword')
-        let cxToken = core.getInput('cxToken')
-        let cxTeam = core.getInput('cxTeam')
-        let cxPreset = core.getInput('cxPreset')
-        let cxHigh = core.getInput('cxHigh')
-        let cxMedium = core.getInput('cxMedium')
-        let cxLow = core.getInput('cxLow')
-        let cxComment = core.getInput('cxComment')
-        let cxForceScan = core.getInput('cxForceScan')
-        let cxIncremental = core.getInput('cxIncremental')
-        let cxExcludeFolders = core.getInput('cxExcludeFolders')
-        let cxExcludeFiles = core.getInput('cxExcludeFiles')
-        let cxConfiguration = core.getInput('cxConfiguration')
-        let cxPrivate = core.getInput('cxPrivate')
-        let cxLog = core.getInput('cxLog')
+        let cxUsername = core.getInput('cxUsername', { required: false })
+        let cxPassword = core.getInput('cxPassword', { required: false })
+        let cxToken = core.getInput('cxToken', { required: false })
+        let cxTeam = core.getInput('cxTeam', { required: true })
+        let cxPreset = core.getInput('cxPreset', { required: false })
+        let cxHigh = core.getInput('cxHigh', { required: false })
+        let cxMedium = core.getInput('cxMedium', { required: false })
+        let cxLow = core.getInput('cxLow', { required: false })
+        let cxComment = core.getInput('cxComment', { required: false })
+        let cxForceScan = core.getInput('cxForceScan', { required: false })
+        let cxIncremental = core.getInput('cxIncremental', { required: false })
+        let cxExcludeFolders = core.getInput('cxExcludeFolders', { required: false })
+        let cxExcludeFiles = core.getInput('cxExcludeFiles', { required: false })
+        let cxConfiguration = core.getInput('cxConfiguration', { required: false })
+        let cxPrivate = core.getInput('cxPrivate', { required: false })
+        let cxLog = core.getInput('cxLog', { required: false })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken
@@ -75,7 +75,7 @@ async function getSastCmd(server, action) {
             preset = cxPreset.trim()
         } else {
             core.warning('"cxPreset" not provided')
-            core.info('Default Preset will be used: ' + preset)
+            core.info('Default Preset will be used: Checkmarx Default')
         }
 
         if (utils.isValidString(cxConfiguration)) {
@@ -83,7 +83,7 @@ async function getSastCmd(server, action) {
             config = cxConfiguration.trim()
         } else {
             core.warning('"cxConfiguration" not provided')
-            core.info('Default Configuration will be used: ' + config)
+            core.info('Default Configuration will be used: Default Configuration')
         }
 
         if (utils.isValidString(cxExcludeFolders)) {
@@ -168,11 +168,17 @@ async function getSastCmd(server, action) {
             credentials = " -CxUser " + user + " -CxPassword " + password
         }
 
+        if(preset){
+            preset = " -preset \"" + preset + "\""
+        } else {
+            preset = ""
+        }
+
         let command = action +
             " -CxServer " + server +
             credentials +
             " -ProjectName \"" + project + "\"" +
-            " -preset \"" + preset + "\"" +
+            preset +
             " -LocationType folder" +
             " -LocationPath \"" + GITHUB_WORKSPACE + "\""
 
@@ -213,7 +219,11 @@ async function getSastCmd(server, action) {
         }
 
         if (logFile) {
-            command += " -Log " + logFile
+            command += " -Log \"" + logFile + "\""
+        }
+
+        if (scanComment) {
+            command += " -Comment \"" + scanComment + "\""
         }
 
         return command
