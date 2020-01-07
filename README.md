@@ -1,11 +1,11 @@
 # Checkmarx Github Action ![Checkmarx](images/checkmarx.png) <img src="images/github.png" alt="Github" width="40" height="40">
 
 [![Tests](https://github.com/miguelfreitas93/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/miguelfreitas93/checkmarx-github-action/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration.
 
 ![Checkmarx](images/checkmarx-big.png)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Checkmarx SAST (CxSAST) is an enterprise-grade flexible and accurate static analysis solution used to identify hundreds of security vulnerabilities in custom code. It is used by development, DevOps, and security teams to scan source code early in the SDLC, identify vulnerabilities and provide actionable insights to remediate them. Supporting over 22 coding and scripting languages and their frameworks with zero configuration to scan any language.
 
