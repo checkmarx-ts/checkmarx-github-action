@@ -233,15 +233,15 @@ async function getSastCmd(server, action) {
             command += " -SASTLow " + low
         }
 
-        if (forceScan) {
+        if (forceScan && forceScan != "false") {
             command += " -ForceScan"
         }
 
-        if (incremental) {
+        if (incremental && incremental != "false") {
             command += " -Incremental"
         }
 
-        if (_private) {
+        if (_private && _private != "false") {
             command += " -Private"
         }
 
