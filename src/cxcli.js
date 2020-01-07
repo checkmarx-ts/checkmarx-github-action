@@ -56,7 +56,7 @@ async function downloadCli(cxVersion) {
                 core.setOutput("cliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
 
-                await exec.exec("curl " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
+                await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
