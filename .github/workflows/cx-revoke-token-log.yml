@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token False Verbose
+name: Checkmarx Revoke Token Log
 on: [push]
 jobs:
   build:
