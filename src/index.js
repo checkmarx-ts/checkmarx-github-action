@@ -110,7 +110,7 @@ async function run() {
         if (verbose) {
             command += " -v"
         }
-        
+
         core.setOutput("cxVerbose", verbose)
 
         let cxVersion = core.getInput('cxVersion', { required: false })
@@ -133,7 +133,6 @@ async function run() {
         }
         try {
             let output = await cxcli.executeCommand(command)
-            console.log(output)
         } catch (e) {
             core.setFailed(e.message)
             return
