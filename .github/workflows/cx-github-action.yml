@@ -1,4 +1,4 @@
-name: Checkmarx Github Action
+name: Github Action Deploy
 
 on:
   push:
