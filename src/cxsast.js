@@ -137,7 +137,7 @@ async function getSastCmd(server, action) {
 
         if (utils.isBoolean(cxForceScan)) {
             core.info('cxForceScan: ' + cxForceScan)
-            forceScan = Boolean(cxForceScan)
+            forceScan = cxForceScan
         } else {
             core.warning('Force Scan valid flag not provided')
             forceScan = false
@@ -145,7 +145,7 @@ async function getSastCmd(server, action) {
 
         if (utils.isBoolean(cxIncremental)) {
             core.info('cxIncremental: ' + cxIncremental)
-            incremental = Boolean(cxIncremental)
+            incremental = cxIncremental
         } else {
             core.warning('Incremental Scan valid flag not provided')
             incremental = false
@@ -153,7 +153,7 @@ async function getSastCmd(server, action) {
 
         if (utils.isBoolean(cxPrivate)) {
             core.info('cxPrivate: ' + cxPrivate)
-            _private = Boolean(cxPrivate)
+            _private = cxPrivate
         } else {
             core.warning('Private Scan valid flag not provided')
             _private = false
