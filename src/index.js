@@ -93,7 +93,7 @@ async function run() {
         }
         
         if (logFile) {
-            command += " -Log \"" + logFile + "\""
+            command += " -Log \"" + envs.GITHUB_WORKSPACE + "\\" + logFile + "\""
             core.setOutput("cxLogFile", logFile)
         }
 
@@ -101,13 +101,14 @@ async function run() {
 
         if (utils.isBoolean(cxVerbose)) {
             core.info('cxVerbose: ' + cxVerbose)
-            verbose = Boolean(cxVerbose)
+            verbose = cxVerbose
         } else {
             core.warning('Verbose valid flag not provided')
             verbose = true
         }
 
         if (verbose) {
+            core.warning("verbose : " + verbose)
             command += " -v"
         }
 
