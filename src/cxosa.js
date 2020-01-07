@@ -87,7 +87,7 @@ async function getOsaCmd(server, action) {
 
         if (utils.isBoolean(cxEnableOsa)) {
             core.info('cxEnableOsa: ' + cxEnableOsa)
-            enableOsa = Boolean(cxEnableOsa)
+            enableOsa = cxEnableOsa
         } else {
             core.warning('Enable Osa Scan valid flag not provided')
             enableOsa = false
