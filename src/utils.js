@@ -25,7 +25,12 @@ function isValidInt(int) {
 }
 
 function isBoolean(bool) {
-    return bool === true || bool === false
+    if (bool != null && bool != undefined) {
+        let b = bool.toString();
+        return b == "true" || b == "false"
+    } else {
+        return false
+    }
 }
 
 function isValidTeam(team) {
@@ -49,11 +54,11 @@ function isValidVersion(version) {
     )
 }
 
-function isValidAction(action){
+function isValidAction(action) {
     return isValidString(action) && VALID_ACTIONS.includes(action)
 }
 
-function getValidAction(){
+function getValidAction() {
     return VALID_ACTIONS
 }
 

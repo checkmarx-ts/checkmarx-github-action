@@ -127,6 +127,12 @@ describe('utils', function () {
     it('Object - Fail', function () {
       assert(!utils.isBoolean({}))
     })
+    it('String Boolean true - Success', function () {
+      assert(utils.isBoolean("true"))
+    })
+    it('String Boolean false - Success', function () {
+      assert(utils.isBoolean("false"))
+    })
     it('Boolean true - Success', function () {
       assert(utils.isBoolean(true))
     })

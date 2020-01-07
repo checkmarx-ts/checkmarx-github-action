@@ -46,6 +46,8 @@ async function generateTokenGetCmd(server) {
             return
         }
 
+        core.setOutput("cxUsername", user)
+
         let command = "GenerateToken" +
             " -CxServer " + server +
             " -CxUser " + user +
