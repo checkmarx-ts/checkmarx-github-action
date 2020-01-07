@@ -93,7 +93,7 @@ async function run() {
         }
         
         if (logFile) {
-            command += " -Log \"" + envs.GITHUB_WORKSPACE + "\\" + logFile + "\""
+            command += " -Log \"" + envs.GITHUB_WORKSPACE + "/" + logFile + "\""
             core.setOutput("cxLogFile", logFile)
         }
 
@@ -107,8 +107,7 @@ async function run() {
             verbose = true
         }
 
-        if (verbose) {
-            core.warning("verbose : " + verbose)
+        if (verbose && verbose != "false") {
             command += " -v"
         }
 
