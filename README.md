@@ -204,4 +204,4 @@ jobs:
 
 MIT License
 
-Copyright (c) 2019 Miguel Freitas
+Copyright (c) 2020 Miguel Freitas
