@@ -126,7 +126,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@master
+      uses: miguelfreitas93/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxUsername: First.Last@company.com
@@ -146,7 +146,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@master
+      uses: miguelfreitas93/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: OsaScan
@@ -168,7 +168,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@master
+      uses: miguelfreitas93/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: RevokeToken
@@ -187,7 +187,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@master
+      uses: miguelfreitas93/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: GenerateToken
@@ -195,10 +195,18 @@ jobs:
         cxPassword: ${{ secrets.CX_PASSWORD }}
 ```
 
-### Notes:
+# Notes:
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
 - Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master"
+- A proper Checkmarx queue, engine management and sizing should be performed, in order to guarantee pipeline gets feedback from Checkmarx ASAP, so a build could be break or an application could be released faster
+- If a build is break due to "cxHigh", "cxMedium", "cxLow" or "cxOsaHigh", "cxOSAMedium", "cxOSALow", is recommended to use Checkmarx Portal to revise results and mark them properly using "Confirmed" or "Not Exploitable" states. These thresholds only take into consideration results that are not marked as "Not Exploitable".
+- For example purposes, cxServer, cxUsername, cxTeam are presented in plaintext. Beside this, to assure confidentiality for production use, please place them under Secrets, as CX_PASSWORD and CX_TOKEN.
+
+# Challenges:
+
+- If Checkmarx Server is not open to Internet, this action will not be able to reach the server and will fail.
+- Network Rules/Firewalls/Proxies to access Checkmarx Server to block some sort of requests from outside based on IP, number of attempted connections, etc... 
 
 # License
 
