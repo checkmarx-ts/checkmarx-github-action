@@ -21,6 +21,8 @@ jobs:
       run: npm run cov
     - name: Check test coverage 70%
       run: npm run cov:check
+    - name: List files in workspace
+      run: ls -la
     - name: Checkmarx SAST Scan
       uses: miguelfreitas93/checkmarx-github-action@v1.0.0
       with:
