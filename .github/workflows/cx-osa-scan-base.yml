@@ -1,0 +1,16 @@
+name: Checkmarx OSA Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: ./
+      with:
+        cxServer: https://cxprivatecloud.checkmarx.net
+        cxAction: OsaScan
+        cxUsername: Miguel.Freitas@checkmarx.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxOsaPathExclude: ".github,coverage,images,.vscode,cxcli,tests"
