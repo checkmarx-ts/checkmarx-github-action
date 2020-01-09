@@ -78,6 +78,68 @@ inputs:
     description: 'Turns on verbose mode. All messages and events will be sent to the console or log file.'
     required: false
     default: true
+  cxOsaHigh:
+    description: 'OSA high severity vulnerability threshold. If the number of high vulnerabilities exceeds the threshold, scan will end with an error (see Error/Exit Codes).'
+    required: false
+    default: -1
+  cxOsaMedium:
+    description: 'OSA medium severity vulnerability threshold. If the number of medium vulnerabilities exceeds the threshold, scan will end with an error (see Error/Exit Codes).'
+    required: false
+    default: -1
+  cxOsaLow:
+    description: 'OSA low severity vulnerability threshold. If the number of high vulnerabilities exceeds the threshold, scan will end with an error (see Error/Exit Codes).'
+    required: false
+    default: -1
+  cxOsaLocationPath:
+    description: 'Local or network path to sources or source repository branch. May include multiple list of folders (local or shared) separated by comma.'
+    required: false
+    default: ''
+  cxOsaArchiveToExtract:
+    description: 'Comma separated list of file extensions to extract in the OSA scan.
+    For example: -OsaArchiveToExtract *.zip extracts only files with .zip extension.'
+    required: false
+    default: ''
+  cxOsaFilesInclude:
+    description: 'Comma separated list of file name patterns to exclude from the OSA scan. 
+    For example: *.dll will include only dll files.'
+    required: false
+    default: ''
+  cxOsaFilesExclude:
+    description: 'Comma separated list of file name patterns to exclude from the OSA scan. 
+    Exclude extensions by using *.<extension>, or exclude files by using */<file>.
+    Examples: -OsaFilesExclude *.class excludes all files which start with the .class.
+    Examples: -OsaFilesExclude */plexus-utils-1.5.6.jar excludes all files which start with plexus-utils-1.5.6.jar.'
+    required: false
+    default: ''
+  cxOsaPathExclude:
+    description: 'Comma separated list of folder path patterns to exclude from the OSA scan. 
+    For example: -OsaPathExclude test excludes all folders which start with test prefix.'
+    required: false
+    default: ''
+  cxOsaReportHtml:
+    description: 'Generate CxOSA HTML report.'
+    required: false
+    default: ''
+  cxOsaReportPDF:
+    description: 'Generate CxOSA PDF report.'
+    required: false
+    default: ''
+  cxOsaDepth:
+    description: 'Extraction depth of files to include in the OSA scan.'
+    required: false
+    default: ''
+  cxExecutePackageDependency:
+    description: 'Retrieve all supported package dependencies before performing OSA scan (see Remarks section).'
+    required: false
+    default: false
+  cxOsaJson:
+    description: 'Generate CxOSA JSON report.'
+    required: false
+    default: ''
+  cxCheckPolicy:
+    description: 'This parameter will break the build if the CxOSA policy is violated.'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'src/index.js'

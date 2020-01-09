@@ -12,7 +12,17 @@ let team
 let high = -1
 let medium = -1
 let low = -1
-let enableOsa = false
+let osaLocationPath
+let osaArchiveToExtract
+let osaFilesInclude
+let osaFilesExclude
+let osaPathExclude
+let osaReportHtml
+let osaReportPDF
+let osaDepth = -1
+let executePackageDependency = false
+let osaJson
+let checkPolicy = false
 
 async function getOsaCmd(server, action) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
@@ -23,7 +33,6 @@ async function getOsaCmd(server, action) {
         let cxOsaHigh = core.getInput('cxOsaHigh', { required: false })
         let cxOsaMedium = core.getInput('cxOsaMedium', { required: false })
         let cxOsaLow = core.getInput('cxOsaLow', { required: false })
-        let cxEnableOsa = core.getInput('cxEnableOsa', { required: false })
         let cxOsaLocationPath = core.getInput('cxOsaLocationPath', { required: false })
         let cxOsaArchiveToExtract = core.getInput('cxOsaArchiveToExtract', { required: false })
         let cxOsaFilesInclude = core.getInput('cxOsaFilesInclude', { required: false })
@@ -85,15 +94,143 @@ async function getOsaCmd(server, action) {
             core.warning('OSA Low Threshold valid not provided : ' + cxOsaLow)
         }
 
-        if (utils.isBoolean(cxEnableOsa)) {
-            core.info('cxEnableOsa: ' + cxEnableOsa)
-            enableOsa = cxEnableOsa
+        if (utils.isValidString(cxOsaLocationPath)) {
+            core.info('cxOsaLocationPath: ' + cxOsaLocationPath)
+            osaLocationPath = cxOsaLocationPath.trim()
         } else {
-            core.warning('Enable Osa Scan valid flag not provided')
-            enableOsa = false
+            core.warning('"cxOsaLocationPath" not provided')
         }
 
-        return
+        if (utils.isValidString(cxOsaArchiveToExtract)) {
+            core.info('cxOsaArchiveToExtract: ' + cxOsaArchiveToExtract)
+            osaArchiveToExtract = cxOsaArchiveToExtract.trim()
+        } else {
+            core.warning('"cxOsaArchiveToExtract" not provided')
+        }
+
+        if (utils.isValidString(cxOsaFilesInclude)) {
+            core.info('cxOsaFilesInclude: ' + cxOsaFilesInclude)
+            osaFilesInclude = cxOsaFilesInclude.trim()
+        } else {
+            core.warning('"cxOsaFilesInclude" not provided')
+        }
+
+        if (utils.isValidString(cxOsaFilesExclude)) {
+            core.info('cxOsaFilesExclude: ' + cxOsaFilesExclude)
+            osaFilesExclude = cxOsaFilesExclude.trim()
+        } else {
+            core.warning('"cxOsaFilesExclude" not provided')
+        }
+
+        if (utils.isValidString(cxOsaPathExclude)) {
+            core.info('cxOsaPathExclude: ' + cxOsaPathExclude)
+            osaPathExclude = cxOsaPathExclude.trim()
+        } else {
+            core.warning('"cxOsaPathExclude" not provided')
+        }
+
+        if (utils.isValidString(cxOsaReportHtml)) {
+            core.info('cxOsaReportHtml: ' + cxOsaReportHtml)
+            osaReportHtml = cxOsaReportHtml.trim()
+        } else {
+            core.warning('"osaReportHtml" not provided')
+        }
+
+        if (utils.isValidString(cxOsaReportPDF)) {
+            core.info('cxOsaReportPDF: ' + cxOsaReportPDF)
+            osaReportPDF = cxOsaReportPDF.trim()
+        } else {
+            core.warning('"cxOsaReportPDF" not provided')
+        }
+
+        if (utils.isValidInt(cxOsaDepth)) {
+            core.info('cxOsaDepth: ' + cxOsaDepth)
+            osaDepth = parseInt(cxOsaDepth)
+        } else {
+            core.warning('"cxOsaDepth" valid not provided : ' + cxOsaDepth)
+        }
+
+        if (utils.isBoolean(cxExecutePackageDependency)) {
+            core.info('cxExecutePackageDependency: ' + cxExecutePackageDependency)
+            executePackageDependency = cxExecutePackageDependency
+        } else {
+            core.warning('"cxExecutePackageDependency" valid flag not provided')
+        }
+
+        if (utils.isValidString(cxOsaJson)) {
+            core.info('cxOsaJson: ' + cxOsaJson)
+            osaJson = cxOsaJson.trim()
+        } else {
+            core.warning('"cxOsaJson" not provided')
+        }
+
+        if (utils.isBoolean(cxCheckPolicy)) {
+            core.info('cxCheckPolicy: ' + cxCheckPolicy)
+            checkPolicy = cxCheckPolicy
+        } else {
+            core.warning('"cxCheckPolicy" valid flag not provided')
+        }
+
+        let credentials = ""
+
+        if (token) {
+            credentials = " -CxToken " + token
+        } else {
+            credentials = " -CxUser " + user + " -CxPassword " + password
+        }
+
+        let command = action +
+            " -CxServer " + server +
+            credentials +
+            " -ProjectName \"" + project + "\"" +
+            " -LocationType folder" +
+            " -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
+            " -EnableOsa"
+
+        if (high >= 0) {
+            command += " -OSAHigh " + high
+        }
+        if (medium >= 0) {
+            command += " -OSAMedium " + medium
+        }
+        if (low >= 0) {
+            command += " -OSALow " + low
+        }
+        if (osaDepth >= 0) {
+            command += " -OsaScanDepth " + osaDepth
+        }
+        if (executePackageDependency && executePackageDependency != "false") {
+            command += " -executepackagedependency"
+        }
+        if (checkPolicy && checkPolicy != "false") {
+            command += " -CheckPolicy"
+        }
+        if (osaLocationPath) {
+            command += " -OsaLocationPath \"" + osaLocationPath + "\""
+        }
+        if (osaArchiveToExtract) {
+            command += " -OsaArchiveToExtract \"" + osaArchiveToExtract + "\""
+        }
+        if (osaFilesInclude) {
+            command += " -OsaFilesInclude \"" + osaFilesInclude + "\""
+        }
+        if (osaFilesExclude) {
+            command += " -OsaFilesExclude \"" + osaFilesExclude + "\""
+        }
+        if (osaPathExclude) {
+            command += " -OsaPathExclude \"" + osaPathExclude + "\""
+        }
+        if (osaReportHtml) {
+            command += " -OsaReportHtml \"" + osaReportHtml + "\""
+        }
+        if (osaReportPDF) {
+            command += " -OsaReportPDF \"" + osaReportPDF + "\""
+        }
+        if (osaJson) {
+            command += " -OsaJson \"" + osaJson + "\""
+        }
+        
+        return command
     } else {
         core.setFailed("Invalid Server or action : " + server + " " + action)
         return
