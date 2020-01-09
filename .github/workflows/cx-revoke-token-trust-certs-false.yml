@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token Trust Certs True
+name: Checkmarx Revoke Token Trust Certs False
 on: [push]
 jobs:
   build:
