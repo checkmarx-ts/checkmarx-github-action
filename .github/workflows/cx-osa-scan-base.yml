@@ -15,3 +15,11 @@ jobs:
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\EMEA\__psteam
         cxOsaPathExclude: ".github,coverage,images,.vscode,cxcli,tests"
+        cxOsaHigh: 0
+        cxOsaMedium: 0
+        cxLog: log.log
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: log.log
+        path: log.log
