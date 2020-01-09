@@ -111,6 +111,7 @@ async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
         core.setOutput("cmdExecuted", command)
         try {
+            core.info(command)
             await exec.exec(command)
             return true
         } catch (e) {

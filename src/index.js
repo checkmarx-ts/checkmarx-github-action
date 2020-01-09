@@ -60,7 +60,7 @@ async function run() {
                 return
             }
         }
-        
+
         let cxVersion = core.getInput('cxVersion', { required: false })
 
         if (utils.isValidVersion(cxVersion)) {
@@ -70,11 +70,17 @@ async function run() {
             core.warning("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
         }
         core.setOutput("cxVersion", version)
-
         core.setOutput("cxServer", server)
         core.setOutput("cxAction", action)
 
-        let command = "./" + cxcli.getFolderName() + "/runCxConsole.sh "
+        let command = "./" 
+
+        if(version.startsWith("9")){
+            command += "runCxConsole.sh "
+        } else {
+            command += cxcli.getFolderName() + "/runCxConsole.sh "
+        }
+
         let auxCommand = ""
 
         switch (action) {
