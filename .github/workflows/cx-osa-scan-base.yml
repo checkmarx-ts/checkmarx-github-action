@@ -14,7 +14,7 @@ jobs:
         cxUsername: Miguel.Freitas@checkmarx.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\EMEA\__psteam
-        cxOsaPathExclude: "cxcli;coverage;images;.vscode;tests;.git;.github"
+        cxOsaPathExclude: "cxcli/*;coverage;images;.vscode;tests;.git;.github"
         cxOsaFilesExclude: "action.yml;LICENSE;*.md;.gitignore"
         cxOsaHigh: 0
         cxOsaMedium: 0
