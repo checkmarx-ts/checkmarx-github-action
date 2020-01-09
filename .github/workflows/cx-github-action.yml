@@ -21,6 +21,25 @@ jobs:
       run: npm run cov
     - name: Check test coverage 70%
       run: npm run cov:check
+    - name: Checkmarx SAST Scan
+      uses: miguelfreitas93/checkmarx-github-action@v1.0.0
+      with:
+        cxAction: Scan
+        cxServer: https://cxprivatecloud.checkmarx.net/
+        cxUsername: Miguel.Freitas@checkmarx.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\EMEA\__psteam
+        cxPreset: All
+        cxExcludeFolders: "tests,.vscode,.github,images,cxcli,node_modules"
+        cxExcludeFiles: "*.md,*.json,*.yml,.gitignore,LICENSE"
+        cxHigh: 0
+        cxMedium: 0
+        cxLog: log.log
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: log.log
+        path: log.log
     - uses: TG908/publish-github-action@v1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
