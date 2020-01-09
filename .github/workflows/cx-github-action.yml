@@ -32,8 +32,8 @@ jobs:
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\EMEA\__psteam
         cxPreset: All
-        cxExcludeFolders: "tests,.vscode,.github,images,cxcli,node_modules"
-        cxExcludeFiles: "*.md,*.json,*.yml,.gitignore,LICENSE"
+        cxExcludeFolders: "tests,.vscode,.github,.git,coverage,images,cxcli,node_modules,.nyc_output"
+        cxExcludeFiles: "*.md,package-lock.json,*.yml,.gitignore,LICENSE"
         cxHigh: 0
         cxMedium: 0
         cxLog: log.log
