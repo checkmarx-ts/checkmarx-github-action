@@ -13,4 +13,4 @@ jobs:
         cxAction: GenerateToken
         cxUsername: Miguel.Freitas@checkmarx.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxVersion: 9.0
+        cxVersion: "9.0"

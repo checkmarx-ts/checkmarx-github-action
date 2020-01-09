@@ -12,4 +12,4 @@ jobs:
         cxServer: https://cxprivatecloud.checkmarx.net
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
-        cxVersion: 9.0
+        cxVersion: "9.0"
