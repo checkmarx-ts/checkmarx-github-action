@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token
+name: Checkmarx Revoke Token Wrong Token
 on: [push]
 jobs:
   build:
