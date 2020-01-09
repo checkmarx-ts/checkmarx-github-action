@@ -60,6 +60,16 @@ async function run() {
                 return
             }
         }
+        
+        let cxVersion = core.getInput('cxVersion', { required: false })
+
+        if (utils.isValidVersion(cxVersion)) {
+            core.info('cxVersion: ' + cxVersion)
+            version = cxVersion.trim()
+        } else {
+            core.warning("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
+        }
+        core.setOutput("cxVersion", version)
 
         core.setOutput("cxServer", server)
         core.setOutput("cxAction", action)
@@ -133,16 +143,6 @@ async function run() {
         }
 
         core.setOutput("cxVerbose", verbose)
-
-        let cxVersion = core.getInput('cxVersion', { required: false })
-
-        if (utils.isValidVersion(cxVersion)) {
-            core.info('cxVersion: ' + cxVersion)
-            version = cxVersion.trim()
-        } else {
-            core.warning("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
-        }
-        core.setOutput("cxVersion", version)
 
         core.info("[END] Read Inputs...\n")
 
