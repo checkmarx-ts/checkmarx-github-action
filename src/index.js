@@ -7,7 +7,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const envs = process.env
 let action = "Scan"
-let version = "8.9"
+let version = "8.9" //STABLE VERSION
 let server
 let verbose = true
 let logFile

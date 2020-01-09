@@ -8,12 +8,17 @@ const CLI_DOWNLOAD_URLS = [
     DOWNLOAD_DOMAIN + "/8.7.0/" + DOWNLOAD_COMMON_PATH + "8.70.4.zip",
     DOWNLOAD_DOMAIN + "/8.8.0/" + DOWNLOAD_COMMON_PATH + "8.80.2.zip",
     DOWNLOAD_DOMAIN + "/8.9.0/" + DOWNLOAD_COMMON_PATH + "8.90.2.zip",
+    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "9.00.2.zip"
 ]
 const CLI_FOLDER_NAME = "cxcli"
 
 function getCliDownloadUrl(cxVersion) {
-    if (utils.isValidVersion(cxVersion) && CLI_DOWNLOAD_URLS.length - 1 == 3) {
+    if (utils.isValidVersion(cxVersion) && CLI_DOWNLOAD_URLS.length - 1 == 4) {
         switch (cxVersion) {
+            case "9.0":
+                return CLI_DOWNLOAD_URLS[4]
+            case "9.0.0":
+                return CLI_DOWNLOAD_URLS[4]
             case "8.9":
                 return CLI_DOWNLOAD_URLS[3]
             case "8.9.0":
@@ -31,7 +36,9 @@ function getCliDownloadUrl(cxVersion) {
             case "8.6.0":
                 return CLI_DOWNLOAD_URLS[0]
             default:
-                if (cxVersion.startsWith("8.8")) {
+                if (cxVersion.startsWith("8.9")) {
+                    return CLI_DOWNLOAD_URLS[3]
+                } else if (cxVersion.startsWith("8.8")) {
                     return CLI_DOWNLOAD_URLS[2]
                 } else if (cxVersion.startsWith("8.7")) {
                     return CLI_DOWNLOAD_URLS[1]
@@ -42,7 +49,7 @@ function getCliDownloadUrl(cxVersion) {
                 }
         }
     } else {
-        return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1];
+        return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 2];
     }
 }
 
