@@ -36,7 +36,9 @@ function getCliDownloadUrl(cxVersion) {
             case "8.6.0":
                 return CLI_DOWNLOAD_URLS[0]
             default:
-                if (cxVersion.startsWith("8.9")) {
+                if (cxVersion.startsWith("9.0")) {
+                    return CLI_DOWNLOAD_URLS[4]
+                } else if (cxVersion.startsWith("8.9")) {
                     return CLI_DOWNLOAD_URLS[3]
                 } else if (cxVersion.startsWith("8.8")) {
                     return CLI_DOWNLOAD_URLS[2]
@@ -49,7 +51,7 @@ function getCliDownloadUrl(cxVersion) {
                 }
         }
     } else {
-        return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 2];
+        return CLI_DOWNLOAD_URLS[3]; // STABLE VERSION
     }
 }
 

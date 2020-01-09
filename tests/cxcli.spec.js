@@ -6,32 +6,32 @@ describe('cxcli', function () {
         it('Null - Success', function () {
             let url = cxcli.getCliDownloadUrl()
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('Empty - Success', function () {
             let url = cxcli.getCliDownloadUrl("")
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('Integer - Success', function () {
             let url = cxcli.getCliDownloadUrl(1)
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('Array - Success', function () {
             let url = cxcli.getCliDownloadUrl([])
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('Object - Success', function () {
             let url = cxcli.getCliDownloadUrl({})
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('Random String - Success', function () {
             let url = cxcli.getCliDownloadUrl("test")
             let array = cxcli.getCliDownloadUrls()
-            assert(url == array[array.length - 1])
+            assert(url == array[3])
         })
         it('8.9 String - Success', function () {
             let url = cxcli.getCliDownloadUrl("8.9")

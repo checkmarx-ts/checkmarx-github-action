@@ -9,27 +9,27 @@ describe('utils', function () {
     })
     it('Empty String - Fail', function () {
       var s = utils.getLastString("")
-      assert(s == null)
+      assert(s == "")
     })
     it('Integer - Fail', function () {
       var s = utils.getLastString(1)
-      assert(s == null)
+      assert(s == 1)
     })
     it('Boolean - Fail', function () {
       var s = utils.getLastString(true)
-      assert(s == null)
+      assert(s == true)
     })
     it('Array - Fail', function () {
       var s = utils.getLastString([])
-      assert(s == null)
+      assert(s instanceof Array && s.length == 0)
     })
     it('Object - Fail', function () {
       var s = utils.getLastString({})
-      assert(s == null)
+      assert(s instanceof Object)
     })
     it('String without / - Fail', function () {
       var s = utils.getLastString("1234")
-      assert(s == null)
+      assert(s == "1234")
     })
     it('Valid - Success', function () {
       var s = utils.getLastString("1234/test")
