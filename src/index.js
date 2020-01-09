@@ -12,6 +12,7 @@ let server
 let verbose = true
 let logFile
 let skipIfFail = false
+let trustedCertificates = false
 
 async function run() {
     try {
@@ -39,7 +40,8 @@ async function run() {
         }
         let cxAction = core.getInput('cxAction', { required: false })
         let cxServer = core.getInput('cxServer', { required: true })
-
+        let cxTrustedCertificates = core.getInput('cxTrustedCertificates', { required: false })
+        
         if (utils.isValidAction(cxAction)) {
             action = cxAction
         } else {
@@ -60,6 +62,13 @@ async function run() {
                 core.setFailed(message)
                 return
             }
+        }
+        if (utils.isBoolean(cxTrustedCertificates)) {
+            core.info('cxTrustedCertificates: ' + cxTrustedCertificates)
+            trustedCertificates = cxTrustedCertificates
+        } else {
+            core.warning('"cxTrustedCertificates" valid flag not provided')
+            trustedCertificates = false
         }
 
         let cxVersion = core.getInput('cxVersion', { required: false })
@@ -149,6 +158,11 @@ async function run() {
         if (verbose && verbose != "false") {
             command += " -v"
         }
+
+        if (trustedCertificates && trustedCertificates != "false") {
+            command += " -TrustedCertificates"
+        }
+        
 
         core.setOutput("cxVerbose", verbose)
 

@@ -38,6 +38,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxReportPDF | reports/sast.pdf  | Generate CxSAST PDF report. | String | No | |
 | cxReportRTF | reports/sast.rtf  | Generate CxSAST RTF report. | String | No | |
 | cxReportCSV | reports/sast.csv  | Generate CxSAST CSV report. | String | No | |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
 | cxForceScan | false | Force Scan | Boolean | No | false |
 | cxIncremental | false | Incremental Scan | Boolean | No | false |
 | cxPrivate | false | Private Scan | Boolean | No | false |
@@ -55,6 +56,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) | |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
 | cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | |
 | cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
 | cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
@@ -80,6 +82,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
@@ -90,6 +93,7 @@ For using this action, there is a set of options that can be used, such as:
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
