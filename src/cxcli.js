@@ -66,7 +66,9 @@ async function downloadCli(cxVersion, skipIfFail) {
                 await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
                 await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
-                await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                if (!cxVersion.startsWith("9.0")) {
+                    await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                }
                 await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
