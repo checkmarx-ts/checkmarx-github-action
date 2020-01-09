@@ -46,7 +46,7 @@ function getCliDownloadUrl(cxVersion) {
     }
 }
 
-async function downloadCli(cxVersion) {
+async function downloadCli(cxVersion, skipIfFail) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
         if (cliDownloadUrl) {
@@ -74,8 +74,14 @@ async function downloadCli(cxVersion) {
             return false
         }
     } else {
-        core.setFailed("Invalid version : " + cxVersion)
-        return false
+        if (skipIfFail && skipIfFail != "false") {
+            core.warning("Invalid version : " + cxVersion)
+            core.warning("Step was skipped")
+            return true
+        } else {
+            core.setFailed("Invalid version : " + cxVersion)
+            return false
+        }
     }
 }
 
@@ -87,15 +93,21 @@ function getCliDownloadUrls() {
     return CLI_DOWNLOAD_URLS
 }
 
-async function executeCommand(command) {
+async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
         core.setOutput("cmdExecuted", command)
         try {
             await exec.exec(command)
             return true
         } catch (e) {
-            core.setFailed("Failed to execute command : " + e.message)
-            return false
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning("Failed to execute command : " + e.message)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Failed to execute command : " + e.message)
+                return false
+            }
         }
     } else {
         core.info("Invalid command string : " + command)

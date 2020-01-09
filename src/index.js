@@ -11,6 +11,7 @@ let version = "8.9"
 let server
 let verbose = true
 let logFile
+let skipIfFail = false
 
 async function run() {
     try {
@@ -28,6 +29,14 @@ async function run() {
 
         core.info("\n[START] Read Inputs...")
 
+        let cxSkipIfFail = core.getInput('cxSkipIfFail', { required: false })
+        if (utils.isBoolean(cxSkipIfFail)) {
+            core.info('cxSkipIfFail: ' + cxSkipIfFail)
+            skipIfFail = cxSkipIfFail
+        } else {
+            core.warning('Skip If Fail valid flag not provided')
+            skipIfFail = false
+        }
         let cxAction = core.getInput('cxAction', { required: false })
         let cxServer = core.getInput('cxServer', { required: true })
 
@@ -42,8 +51,14 @@ async function run() {
             core.info('cxServer: ' + cxServer)
             server = cxServer.trim()
         } else {
-            core.setFailed("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
-            return
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
+                return
+            }
         }
 
         core.setOutput("cxServer", server)
@@ -54,44 +69,50 @@ async function run() {
 
         switch (action) {
             case "Scan":
-                auxCommand = await cxsast.getSastCmd(server, action)
+                auxCommand = await cxsast.getSastCmd(server, action, skipIfFail)
                 break
             case "AsyncScan":
-                auxCommand = await cxsast.getSastCmd(server, action)
+                auxCommand = await cxsast.getSastCmd(server, action, skipIfFail)
                 break
             case "OsaScan":
-                auxCommand = await cxosa.getOsaCmd(server, action)
+                auxCommand = await cxosa.getOsaCmd(server, action, skipIfFail)
                 break
             case "AsyncOsaScan":
-                auxCommand = await cxosa.getOsaCmd(server, action)
+                auxCommand = await cxosa.getOsaCmd(server, action, skipIfFail)
                 break
             case "RevokeToken":
-                auxCommand = await cxtoken.revokeTokenGetCmd(server)
+                auxCommand = await cxtoken.revokeTokenGetCmd(server, skipIfFail)
                 break
             case "GenerateToken":
-                auxCommand = await cxtoken.generateTokenGetCmd(server)
+                auxCommand = await cxtoken.generateTokenGetCmd(server, skipIfFail)
                 break
             default:
-                auxCommand = await cxsast.getSastCmd(server, "Scan")
+                auxCommand = await cxsast.getSastCmd(server, "Scan", skipIfFail)
                 break
         }
 
         if (utils.isValidString(auxCommand)) {
             command += auxCommand
         } else {
-            core.setFailed("Invalid auxCommand : " + auxCommand)
-            return
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning("Invalid auxCommand : " + auxCommand)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Invalid auxCommand : " + auxCommand)
+                return
+            }
         }
 
         let cxLog = core.getInput('cxLog', { required: false })
-        
+
         if (utils.isValidFilename(cxLog)) {
             core.info('cxLog: ' + cxLog)
             logFile = cxLog.trim()
         } else {
             core.warning("No 'cxLog' valid input provided")
         }
-        
+
         if (logFile) {
             command += " -Log \"" + envs.GITHUB_WORKSPACE + "/" + logFile + "\""
             core.setOutput("cxLogFile", logFile)
@@ -126,19 +147,38 @@ async function run() {
         core.info("[END] Read Inputs...\n")
 
         try {
-            await cxcli.downloadCli(version)
+            await cxcli.downloadCli(version, skipIfFail)
         } catch (e) {
-            core.setFailed(e.message)
-            return
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning(e.message)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed(e.message)
+                return
+            }
         }
         try {
-            let output = await cxcli.executeCommand(command)
+            let output = await cxcli.executeCommand(command, skipIfFail)
         } catch (e) {
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning(e.message)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed(e.message)
+                return
+            }
+        }
+    } catch (e) {
+        if (skipIfFail && skipIfFail != "false") {
+            core.warning(e.message)
+            core.warning("Step was skipped")
+            return true
+        } else {
             core.setFailed(e.message)
             return
         }
-    } catch (e) {
-        core.setFailed(e.message)
     }
 }
 

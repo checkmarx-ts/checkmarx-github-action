@@ -4,15 +4,21 @@ let user
 let password
 let token
 
-async function revokeTokenGetCmd(server) {
+async function revokeTokenGetCmd(server, skipIfFail) {
     if (utils.isValidUrl(server)) {
         let cxToken = core.getInput('cxToken', { required: true })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken
         } else {
-            core.setFailed("Please provide 'cxToken' input (string)")
-            return
+            if(skipIfFail && skipIfFail != "false"){
+                core.warning("Please provide 'cxToken' input (string)")
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Please provide 'cxToken' input (string)")
+                return
+            }
         }
 
         let command = "RevokeToken" +
@@ -21,12 +27,18 @@ async function revokeTokenGetCmd(server) {
 
         return command
     } else {
-        core.setFailed("Invalid Server : " + server)
-        return
+        if(skipIfFail && skipIfFail != "false"){
+            core.warning("Invalid Server : " + server)
+            core.warning("Step was skipped")
+            return true
+        } else {
+            core.setFailed("Invalid Server : " + server)
+            return
+        }
     }
 }
 
-async function generateTokenGetCmd(server) {
+async function generateTokenGetCmd(server, skipIfFail) {
     if (utils.isValidUrl(server)) {
         let cxUsername = core.getInput('cxUsername', { required: true })
         let cxPassword = core.getInput('cxPassword', { required: true })
@@ -35,15 +47,27 @@ async function generateTokenGetCmd(server) {
             core.info('cxUsername: ' + cxUsername)
             user = cxUsername.trim()
         } else {
-            core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
-            return
+            if(skipIfFail && skipIfFail != "false"){
+                core.warning("Please provide 'cxUsername' input (string) : " + cxUsername)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
+                return
+            }
         }
 
         if (utils.isValidString(cxPassword)) {
             password = cxPassword
         } else {
-            core.setFailed("Please provide 'cxPassword' input (string)")
-            return
+            if(skipIfFail && skipIfFail != "false"){
+                core.warning("Please provide 'cxPassword' input (string)")
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Please provide 'cxPassword' input (string)")
+                return
+            }
         }
 
         core.setOutput("cxUsername", user)
@@ -55,8 +79,14 @@ async function generateTokenGetCmd(server) {
 
         return command
     } else {
-        core.setFailed("Invalid Server : " + server)
-        return
+        if(skipIfFail && skipIfFail != "false"){
+            core.warning("Invalid Server : " + server)
+            core.warning("Step was skipped")
+            return true
+        } else {
+            core.setFailed("Invalid Server : " + server)
+            return
+        }
     }
 }
 

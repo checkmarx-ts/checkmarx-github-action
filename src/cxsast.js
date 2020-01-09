@@ -26,7 +26,7 @@ let reportPdf
 let reportRtf
 let reportCsv
 
-async function getSastCmd(server, action) {
+async function getSastCmd(server, action, skipIfFail) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
         let cxUsername = core.getInput('cxUsername', { required: false })
         let cxPassword = core.getInput('cxPassword', { required: false })
@@ -55,15 +55,27 @@ async function getSastCmd(server, action) {
                 core.info('cxUsername: ' + cxUsername)
                 user = cxUsername.trim()
             } else {
-                core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
-                return
+                if (skipIfFail && skipIfFail != "false") {
+                    core.warning("Please provide 'cxUsername' input (string) : " + cxUsername)
+                    core.warning("Step was skipped")
+                    return true
+                } else {
+                    core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
+                    return
+                }
             }
 
             if (utils.isValidString(cxPassword)) {
                 password = cxPassword
             } else {
-                core.setFailed("Please provide 'cxPassword' input (string)")
-                return
+                if (skipIfFail && skipIfFail != "false") {
+                    core.warning("Please provide 'cxPassword' input (string)")
+                    core.warning("Step was skipped")
+                    return true
+                } else {
+                    core.setFailed("Please provide 'cxPassword' input (string)")
+                    return
+                }
             }
         }
 
@@ -72,8 +84,14 @@ async function getSastCmd(server, action) {
             team = cxTeam.trim()
             project = team + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF
         } else {
-            core.setFailed("Please provide 'cxTeam' input (string): " + cxTeam)
-            return
+            if (skipIfFail && skipIfFail != "false") {
+                core.warning("Please provide 'cxTeam' input (string): " + cxTeam)
+                core.warning("Step was skipped")
+                return true
+            } else {
+                core.setFailed("Please provide 'cxTeam' input (string): " + cxTeam)
+                return
+            }
         }
 
         if (utils.isValidString(cxPreset)) {
@@ -158,7 +176,7 @@ async function getSastCmd(server, action) {
             core.warning('Private Scan valid flag not provided')
             _private = false
         }
-        
+
         if (utils.isValidString(cxReportXML)) {
             core.info('cxReportXML: ' + cxReportXML)
             reportXml = cxReportXML.trim()
@@ -195,7 +213,7 @@ async function getSastCmd(server, action) {
             credentials = " -CxUser " + user + " -CxPassword " + password
         }
 
-        if(preset){
+        if (preset) {
             preset = " -preset \"" + preset + "\""
         } else {
             preset = ""
@@ -267,8 +285,14 @@ async function getSastCmd(server, action) {
 
         return command
     } else {
-        core.setFailed("Invalid Server or action : " + server + " " + action)
-        return
+        if (skipIfFail && skipIfFail != "false") {
+            core.warning("Invalid Server or action : " + server + " " + action)
+            core.warning("Step was skipped")
+            return true
+        } else {
+            core.setFailed("Invalid Server or action : " + server + " " + action)
+            return
+        }
     }
 }
 

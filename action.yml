@@ -140,6 +140,10 @@ inputs:
     description: 'This parameter will break the build if the CxOSA policy is violated.'
     required: false
     default: false
+  cxSkipIfFail:
+    description: 'Skip Checkmarx Action Step if Fail'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'src/index.js'
