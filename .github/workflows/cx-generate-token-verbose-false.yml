@@ -1,0 +1,16 @@
+name: Checkmarx Generate Token Verbose False
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: ./
+      with:
+        cxServer: ${{ secrets.CX_SERVER }}
+        cxAction: GenerateToken
+        cxUsername: ${{ secrets.CX_EMAIL }}
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxVerbose: false

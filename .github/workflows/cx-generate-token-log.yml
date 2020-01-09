@@ -1,4 +1,4 @@
-name: Checkmarx Generate Token False Verbose
+name: Checkmarx Generate Token Log
 on: [push]
 jobs:
   build:
@@ -13,4 +13,5 @@ jobs:
         cxAction: GenerateToken
         cxUsername: ${{ secrets.CX_EMAIL }}
         cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxVerbose: false
+        cxLog: log.log
+        cxSkipIfFail: true

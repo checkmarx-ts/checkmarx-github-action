@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token False Verbose
+name: Checkmarx Revoke Token Trust Certs True
 on: [push]
 jobs:
   build:
@@ -12,4 +12,4 @@ jobs:
         cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
-        cxVerbose: false
+        cxTrustedCertificates: true
