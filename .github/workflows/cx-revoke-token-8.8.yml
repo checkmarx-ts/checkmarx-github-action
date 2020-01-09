@@ -9,7 +9,7 @@ jobs:
     - name: Checkmarx Action
       uses: ./
       with:
-        cxServer: https://cxprivatecloud.checkmarx.net
+        cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
         cxVersion: "8.8"

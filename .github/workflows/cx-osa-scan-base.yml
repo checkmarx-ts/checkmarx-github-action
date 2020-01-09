@@ -9,11 +9,11 @@ jobs:
     - name: Checkmarx Action
       uses: ./
       with:
-        cxServer: https://cxprivatecloud.checkmarx.net
+        cxServer: ${{ secrets.CX_SERVER }}
         cxAction: OsaScan
-        cxUsername: Miguel.Freitas@checkmarx.com
+        cxUsername: ${{ secrets.CX_EMAIL }}
         cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxTeam: \CxServer\SP\EMEA\__psteam
+        cxTeam: ${{ secrets.CX_TEAM }}
         cxOsaPathExclude: "**/cxcli/**,**/coverage/**,**/images/**,**/.vscode/**,**/tests/**,**/.git/**,**/.github/**"
         cxOsaFilesExclude: "**/action.yml;**/LICENSE;**/*.md;**/.gitignore"
         cxOsaHigh: 0
