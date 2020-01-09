@@ -43,11 +43,11 @@ function isValidFilename(filename) {
 
 function isValidVersion(version) {
     return isValidString(version) && (
-        version == "9.0" || version == "9.0.0" || version.startsWith("9.0") ||
-        version == "8.9" || version == "8.9.0" || version.startsWith("8.9") ||
-        version == "8.8" || version == "8.8.0" || version.startsWith("8.8") ||
-        version == "8.7" || version == "8.7.0" || version.startsWith("8.7") ||
-        version == "8.6" || version == "8.6.0" || version.startsWith("8.6")
+        version.startsWith("9.0") ||
+        version.startsWith("8.9") ||
+        version.startsWith("8.8") ||
+        version.startsWith("8.7") ||
+        version.startsWith("8.6")
     )
 }
 
