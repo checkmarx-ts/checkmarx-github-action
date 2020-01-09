@@ -2,6 +2,10 @@ name: 'Checkmarx Scan'
 description: 'Find vulnerabilities in your code using Checkmarx SAST solution'
 author: 'Miguel Freitas'
 inputs:
+  cxAction:
+    description: 'Checkmarx CLI Action'
+    required: false
+    default: 'Scan'
   cxVersion:
     description: 'Checkmarx Version'
     required: false
