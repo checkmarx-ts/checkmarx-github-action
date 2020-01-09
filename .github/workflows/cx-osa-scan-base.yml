@@ -13,4 +13,5 @@ jobs:
         cxAction: OsaScan
         cxUsername: Miguel.Freitas@checkmarx.com
         cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\EMEA\__psteam
         cxOsaPathExclude: ".github,coverage,images,.vscode,cxcli,tests"
