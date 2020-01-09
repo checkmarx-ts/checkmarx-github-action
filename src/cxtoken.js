@@ -11,12 +11,13 @@ async function revokeTokenGetCmd(server, skipIfFail) {
         if (utils.isValidString(cxToken)) {
             token = cxToken
         } else {
+            let message = "Please provide 'cxToken' input (string)"
             if(skipIfFail && skipIfFail != "false"){
-                core.warning("Please provide 'cxToken' input (string)")
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Please provide 'cxToken' input (string)")
+                core.setFailed(message)
                 return
             }
         }
@@ -27,12 +28,13 @@ async function revokeTokenGetCmd(server, skipIfFail) {
 
         return command
     } else {
+        let message = "Invalid Server : " + server
         if(skipIfFail && skipIfFail != "false"){
-            core.warning("Invalid Server : " + server)
+            core.warning(message)
             core.warning("Step was skipped")
             return true
         } else {
-            core.setFailed("Invalid Server : " + server)
+            core.setFailed(message)
             return
         }
     }
@@ -47,12 +49,13 @@ async function generateTokenGetCmd(server, skipIfFail) {
             core.info('cxUsername: ' + cxUsername)
             user = cxUsername.trim()
         } else {
+            let message = "Please provide 'cxUsername' input (string) : " + cxUsername
             if(skipIfFail && skipIfFail != "false"){
-                core.warning("Please provide 'cxUsername' input (string) : " + cxUsername)
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
+                core.setFailed(message)
                 return
             }
         }
@@ -60,12 +63,13 @@ async function generateTokenGetCmd(server, skipIfFail) {
         if (utils.isValidString(cxPassword)) {
             password = cxPassword
         } else {
+            let message = "Please provide 'cxPassword' input (string)"
             if(skipIfFail && skipIfFail != "false"){
-                core.warning("Please provide 'cxPassword' input (string)")
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Please provide 'cxPassword' input (string)")
+                core.setFailed(message)
                 return
             }
         }
@@ -79,12 +83,13 @@ async function generateTokenGetCmd(server, skipIfFail) {
 
         return command
     } else {
+        let message = "Invalid Server : " + server
         if(skipIfFail && skipIfFail != "false"){
-            core.warning("Invalid Server : " + server)
+            core.warning(message)
             core.warning("Step was skipped")
             return true
         } else {
-            core.setFailed("Invalid Server : " + server)
+            core.setFailed(message)
             return
         }
     }

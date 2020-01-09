@@ -90,12 +90,13 @@ async function downloadCli(cxVersion, skipIfFail) {
             return false
         }
     } else {
+        let message = "Invalid version : " + cxVersion
         if (skipIfFail && skipIfFail != "false") {
-            core.warning("Invalid version : " + cxVersion)
+            core.warning(message)
             core.warning("Step was skipped")
             return true
         } else {
-            core.setFailed("Invalid version : " + cxVersion)
+            core.setFailed(message)
             return false
         }
     }
@@ -117,12 +118,13 @@ async function executeCommand(command, skipIfFail) {
             await exec.exec(command)
             return true
         } catch (e) {
+            let message = "Failed to execute command : " + e.message
             if (skipIfFail && skipIfFail != "false") {
-                core.warning("Failed to execute command : " + e.message)
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Failed to execute command : " + e.message)
+                core.setFailed(message)
                 return false
             }
         }

@@ -51,12 +51,13 @@ async function run() {
             core.info('cxServer: ' + cxServer)
             server = cxServer.trim()
         } else {
+            let message = "Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer
             if (skipIfFail && skipIfFail != "false") {
-                core.warning("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer)
+                core.setFailed(message)
                 return
             }
         }
@@ -110,12 +111,13 @@ async function run() {
         if (utils.isValidString(auxCommand)) {
             command += auxCommand
         } else {
+            let message = "Invalid auxCommand : " + auxCommand
             if (skipIfFail && skipIfFail != "false") {
-                core.warning("Invalid auxCommand : " + auxCommand)
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Invalid auxCommand : " + auxCommand)
+                core.setFailed(message)
                 return
             }
         }

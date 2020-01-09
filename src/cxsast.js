@@ -55,12 +55,13 @@ async function getSastCmd(server, action, skipIfFail) {
                 core.info('cxUsername: ' + cxUsername)
                 user = cxUsername.trim()
             } else {
+                let message = "Please provide 'cxUsername' input (string) : " + cxUsername
                 if (skipIfFail && skipIfFail != "false") {
-                    core.warning("Please provide 'cxUsername' input (string) : " + cxUsername)
+                    core.warning(message)
                     core.warning("Step was skipped")
                     return true
                 } else {
-                    core.setFailed("Please provide 'cxUsername' input (string) : " + cxUsername)
+                    core.setFailed(message)
                     return
                 }
             }
@@ -68,12 +69,13 @@ async function getSastCmd(server, action, skipIfFail) {
             if (utils.isValidString(cxPassword)) {
                 password = cxPassword
             } else {
+                let message = "Please provide 'cxPassword' input (string)"
                 if (skipIfFail && skipIfFail != "false") {
-                    core.warning("Please provide 'cxPassword' input (string)")
+                    core.warning(message)
                     core.warning("Step was skipped")
                     return true
                 } else {
-                    core.setFailed("Please provide 'cxPassword' input (string)")
+                    core.setFailed(message)
                     return
                 }
             }
@@ -84,12 +86,13 @@ async function getSastCmd(server, action, skipIfFail) {
             team = cxTeam.trim()
             project = team + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF
         } else {
+            let message = "Please provide 'cxTeam' input (string): " + cxTeam
             if (skipIfFail && skipIfFail != "false") {
-                core.warning("Please provide 'cxTeam' input (string): " + cxTeam)
+                core.warning(message)
                 core.warning("Step was skipped")
                 return true
             } else {
-                core.setFailed("Please provide 'cxTeam' input (string): " + cxTeam)
+                core.setFailed(message)
                 return
             }
         }
@@ -285,12 +288,13 @@ async function getSastCmd(server, action, skipIfFail) {
 
         return command
     } else {
+        let message = "Invalid Server or action : " + server + " " + action
         if (skipIfFail && skipIfFail != "false") {
-            core.warning("Invalid Server or action : " + server + " " + action)
+            core.warning(message)
             core.warning("Step was skipped")
             return true
         } else {
-            core.setFailed("Invalid Server or action : " + server + " " + action)
+            core.setFailed(message)
             return
         }
     }
