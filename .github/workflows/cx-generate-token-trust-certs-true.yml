@@ -14,3 +14,4 @@ jobs:
         cxUsername: ${{ secrets.CX_EMAIL }}
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTrustedCertificates: true
+        cxVersion: "9.0"
