@@ -15,7 +15,7 @@ jobs:
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: ${{ secrets.CX_TEAM }}
         cxOsaPathExclude: "cxcli,coverage,images,.vscode,tests,.git,.github"
-        cxOsaFilesExclude: "action.yml,LICENSE,*.md;.gitignore"
+        cxOsaFilesExclude: "action.yml,LICENSE,*.md,.gitignore"
         cxOsaHigh: 0
         cxOsaMedium: 0
         cxLog: log.log
