@@ -13,3 +13,4 @@ jobs:
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
         cxTrustedCertificates: true
+        cxVersion: "9.0"
