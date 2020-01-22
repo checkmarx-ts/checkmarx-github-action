@@ -46,7 +46,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA |
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
+| cxVersion | 8.9 | Checkmarx CLI version : 9.0, 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: OsaScan, AsyncOsaScan 
@@ -75,7 +75,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxOSA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
+| cxVersion | 8.9 | Checkmarx CLI version : 9.0, 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
@@ -87,7 +87,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
+| cxVersion | 8.9 | Checkmarx CLI version : 9.0, 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: RevokeToken
@@ -98,7 +98,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
+| cxVersion | 8.9 | Checkmarx CLI version : 9.0, 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 

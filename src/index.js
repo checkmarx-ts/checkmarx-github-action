@@ -63,13 +63,6 @@ async function run() {
                 return
             }
         }
-        if (utils.isBoolean(cxTrustedCertificates)) {
-            core.info('cxTrustedCertificates: ' + cxTrustedCertificates)
-            trustedCertificates = cxTrustedCertificates
-        } else {
-            core.warning('"cxTrustedCertificates" valid flag not provided')
-            trustedCertificates = false
-        }
 
         let cxVersion = core.getInput('cxVersion', { required: false })
 
@@ -82,6 +75,18 @@ async function run() {
         core.setOutput("cxVersion", version)
         core.setOutput("cxServer", server)
         core.setOutput("cxAction", action)
+
+        if (!cxVersion.startsWith("9.0")) {
+            if (utils.isBoolean(cxTrustedCertificates)) {
+                core.info('cxTrustedCertificates: ' + cxTrustedCertificates)
+                trustedCertificates = cxTrustedCertificates
+            } else {
+                core.warning('"cxTrustedCertificates" valid flag not provided')
+                trustedCertificates = false
+            }
+        } else {
+            trustedCertificates = false
+        }
 
         let command = "./" 
 
