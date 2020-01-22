@@ -25,6 +25,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
 | cxPreset | Checkmarx Default | Checkmarx Project Preset | String | No | Checkmarx Default |
@@ -54,6 +55,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* | |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) | |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) | |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
@@ -82,7 +84,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
-| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
@@ -93,7 +95,7 @@ For using this action, there is a set of options that can be used, such as:
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
-| cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates | Boolean | No | false |
+| cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 8.9, 8.8, 8.7, 8.6 | String | No | 8.9 |
@@ -209,6 +211,9 @@ jobs:
 - Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master"
 - A proper Checkmarx queue, engine management and sizing should be performed, in order to guarantee pipeline gets feedback from Checkmarx ASAP, so a build could be break or an application could be released faster
 - If a build is break due to "cxHigh", "cxMedium", "cxLow" or "cxOsaHigh", "cxOSAMedium", "cxOSALow", is recommended to use Checkmarx Portal to revise results and mark them properly using "Confirmed" or "Not Exploitable" states. These thresholds only take into consideration results that are not marked as "Not Exploitable".
+
+# Security:
+
 - For example purposes, cxServer, cxUsername, cxTeam are presented in plaintext. Beside this, to assure confidentiality for production use, please place them under Secrets, as CX_PASSWORD and CX_TOKEN.
 
 # Challenges:
