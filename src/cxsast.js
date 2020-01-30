@@ -25,6 +25,82 @@ let reportXml
 let reportPdf
 let reportRtf
 let reportCsv
+let defaultFolderExclusions = [
+    "cxcli", //Folder created when downloading CLI
+    "test", // Tests
+    "tests", // Tests
+    "mock", // Tests
+    "mocks", // Tests
+    "spec", // Tests
+    "unit", // Tests
+    "e2e", //Tests
+    "androidTest", // Tests (Android)
+    "build", // Build Folders
+    "dist", // Build Folders
+    "deploy", // Build Folders
+    "venv", // Build Folders (Python)
+    "maven", // Build Folders
+    "gradle", // Build Folders (Android)
+    "target", // Build Folders
+    "example", // Dead Code
+    "examples", // Dead Code
+    "samples", // Dead Code
+    "docs", // Non-relevant folders
+    "images", // Non-relevant folders
+    "swagger", // Non-relevant folders (Swagger)
+    "coverage", // Non-relevant folders
+    ".idea", // Non-relevant folders (IntelliJ IDEA)
+    ".temp", // Non-relevant folders
+    ".tmp", // Non-relevant folders
+    ".grunt", // Non-relevant folders (Grunt)
+    ".github", // Non-relevant folders (Github)
+    ".vscode", // Non-relevant folders (VS Code)
+    ".nuget", // Non-relevant folders (CSharp)
+    ".mvn", // Non-relevant folders
+    ".m2", // Non-relevant folders
+    ".DS_Store", // Non-relevant folders
+    ".sass-cache", // Non-relevant folders
+    ".gradle", // Non-relevant folders (Android)
+    "__pycache__", // Non-relevant folders (Python)
+    ".pytest_cache", // Non-relevant folders (Python)
+    ".settings", // Non-relevant folders (CSharp)
+    "res/color*", // Non-relevant folders (Android)
+    "res/drawable*", // Non-relevant folders (Android)
+    "res/mipmap*", // Non-relevant folders (Android)
+    "res/anim*", // Non-relevant folders (Android)
+    "*imageset", // Non-relevant folders (IOS)
+    "xcuserdata", // Non-relevant folders (IOS)
+    "xcshareddata", // Non-relevant folders (IOS)
+    "*xcassets", // Non-relevant folders (IOS)
+    "*appiconset", // Non-relevant folders (IOS)
+    "*xcodeproj", // Non-relevant folders (IOS)
+    "*framework", // Non-relevant folders (IOS)
+    "*lproj", // Non-relevant folders (IOS)
+    "__MACOSX", // Non-relevant folders (IOS)
+    "css", // CSS not supported
+    "react", //3rd Party Libraries
+    "yui", //3rd Party Libraries
+    "node_modules", //3rd Party Libraries (Node JS)
+    "jquery*", //3rd Party Libraries
+    "angular*", //3rd Party Libraries
+    "bootstrap*", //3rd Party Libraries
+    "modernizr*", //3rd Party Libraries
+    "dojo", //3rd Party Libraries
+    "package", //3rd Party Libraries (CSharp)
+    "packages", //3rd Party Libraries (CSharp)
+    "vendor", //3rd Party Libraries (Golang)
+    "xjs", //3rd Party Libraries
+].join()
+let defaultFileExclusions = [
+    "*.min.js", //3rd Party Libraries (JS)
+    "*.spec", // Tests (JS/Typescript/Node JS)
+    "*.spec.*", // Tests (JS/Typescript/Node JS)
+    "*Test.*", // Tests
+    "Test*", // Tests
+    "test*", // Tests
+    "*Mock*", // Tests
+    "Mock*", // Tests
+].join()
 
 async function getSastCmd(server, action, skipIfFail) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
@@ -115,20 +191,25 @@ async function getSastCmd(server, action, skipIfFail) {
 
         if (utils.isValidString(cxExcludeFolders)) {
             core.info('cxExcludeFolders: ' + cxExcludeFolders)
-            excludeFolders = cxExcludeFolders.trim()
+            excludeFolders = defaultFolderExclusions + "," + cxExcludeFolders.trim()
+            core.info("Following folder exclusions will be applied:")
+            core.info(excludeFolders)
         } else {
+            excludeFolders = defaultFolderExclusions
             core.warning("No 'cxExcludeFolders' input provided")
+            core.info("Default Folder exclusions will be applied:")
+            core.info(defaultFolderExclusions)
         }
 
         if (utils.isValidString(cxExcludeFiles)) {
             core.info('cxExcludeFiles: ' + cxExcludeFiles)
-            excludeFiles = cxExcludeFiles.trim()
-            if(excludeFiles.indexOf("cxcli") == -1){
-                excludeFiles = "cxcli," + excludeFiles
-            }
+            excludeFiles = defaultFileExclusions + "," + cxExcludeFiles.trim()
+            core.info("Following file exclusions will be applied:")
+            core.info(excludeFiles)
         } else {
-            excludeFiles = "cxcli"
             core.warning("No 'cxExcludeFiles' input provided")
+            core.info("Default File exclusions will be applied:")
+            core.info(defaultFileExclusions)
         }
 
         if (utils.isValidString(cxComment)) {
