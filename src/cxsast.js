@@ -123,7 +123,11 @@ async function getSastCmd(server, action, skipIfFail) {
         if (utils.isValidString(cxExcludeFiles)) {
             core.info('cxExcludeFiles: ' + cxExcludeFiles)
             excludeFiles = cxExcludeFiles.trim()
+            if(excludeFiles.indexOf("cxcli") == -1){
+                excludeFiles = "cxcli," + excludeFiles
+            }
         } else {
+            excludeFiles = "cxcli"
             core.warning("No 'cxExcludeFiles' input provided")
         }
 
