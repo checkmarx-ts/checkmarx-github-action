@@ -1,4 +1,4 @@
-name: Checkmarx OSA Scan
+name: Checkmarx OSA Scan Token Based Authentication
 on: [push]
 jobs:
   build:
