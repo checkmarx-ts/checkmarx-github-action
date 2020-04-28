@@ -1,0 +1,27 @@
+name: Checkmarx OSA Scan Token Based Authentication - Override Project Name
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: ./
+      with:
+        cxServer: ${{ secrets.CX_SERVER }}
+        cxProject: TestProject
+        cxAction: OsaScan
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxTeam: ${{ secrets.CX_TEAM }}
+        cxOsaPathExclude: "**/*cxcli*,**/*coverage,**/*images,**/*.vscode,**/*tests,**/*.git,**/*.github"
+        cxOsaFilesExclude: "**/*action.yml,**/*LICENSE,**/*.md,**/*.gitignore"
+        cxOsaHigh: 0
+        cxOsaMedium: 0
+        cxLog: log.log
+        cxSkipIfFail: true
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: log.log
+        path: log.log
