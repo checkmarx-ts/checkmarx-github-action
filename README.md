@@ -11,6 +11,111 @@ Checkmarx SAST (CxSAST) is an enterprise-grade flexible and accurate static anal
 
 Please find more info in the official website: <a href="www.checkmarx.com">Checkmarx.com</a>
 
+
+## Workflow - Sample SAST Scan with Username and Password Authentication
+
+```yml
+name: Checkmarx SAST Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxUsername: First.Last@company.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\Company\TeamA
+```
+
+## Workflow - Sample SAST Scan with Token Authentication
+
+```yml
+name: Checkmarx SAST Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxTeam: \CxServer\SP\Company\TeamA
+```
+
+## Workflow - Sample OSA Scan
+
+```yml
+name: Checkmarx OSA Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxAction: OsaScan
+        cxUsername: First.Last@company.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: \CxServer\SP\Company\TeamA
+        cxOsaLocationPath: $GITHUB_WORKSPACE
+```
+
+## Workflow - Sample Revoke Token
+
+```yml
+name: Checkmarx Revoke Token
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxAction: RevokeToken
+        cxToken: ${{ secrets.CX_TOKEN }}
+```
+
+## Workflow - Sample Generate Token (NOT RECOMMENDED TO USE FOR SECURITY REASONS)
+```diff
+- Security Note: Be aware this can leak Checkmarx Access Token in the build logs
+```
+
+```yml
+name: Checkmarx Generate Token
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: miguelfreitas93/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxAction: GenerateToken
+        cxUsername: First.Last@company.com
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+```
+
+
 ## Inputs
 
 For using this action, there is a set of options that can be used, such as:
@@ -58,7 +163,6 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
-| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates | Boolean | No | false |
 | cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | |
 | cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
 | cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
@@ -124,87 +228,6 @@ in this case:
 
 {{ secrets.CX_PASSWORD }}
 
-## Workflow - Sample SAST Scan
-
-```yml
-name: Checkmarx SAST Scan
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
-      with:
-        cxServer: https://checkmarx.company.com
-        cxUsername: First.Last@company.com
-        cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxTeam: \CxServer\SP\Company\TeamA
-```
-
-## Workflow - Sample OSA Scan
-
-```yml
-name: Checkmarx OSA Scan
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
-      with:
-        cxServer: https://checkmarx.company.com
-        cxAction: OsaScan
-        cxUsername: First.Last@company.com
-        cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxTeam: \CxServer\SP\Company\TeamA
-        cxOsaLocationPath: $GITHUB_WORKSPACE
-```
-
-## Workflow - Sample Revoke Token
-
-```yml
-name: Checkmarx Revoke Token
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
-      with:
-        cxServer: https://checkmarx.company.com
-        cxAction: RevokeToken
-        cxToken: ${{ secrets.CX_TOKEN }}
-```
-
-## Workflow - Sample Generate Token
-
-```yml
-name: Checkmarx Generate Token
-on: [push]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
-      with:
-        cxServer: https://checkmarx.company.com
-        cxAction: GenerateToken
-        cxUsername: First.Last@company.com
-        cxPassword: ${{ secrets.CX_PASSWORD }}
-```
-
 # Notes:
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
@@ -214,8 +237,11 @@ jobs:
 
 # Security:
 
+```diff
 - For example purposes, cxServer, cxUsername, cxTeam are presented in plaintext. Beside this, to assure confidentiality for production use, please place them under Secrets, as CX_PASSWORD and CX_TOKEN.
 
+- Avoid to use cxAction: GenerateToken, since this can leak Checkmarx access token to the build logs.
+```
 # Challenges:
 
 - If Checkmarx Server is not open to Internet, this action will not be able to reach the server and will fail.
