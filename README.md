@@ -3,7 +3,9 @@
 [![Tests](https://github.com/miguelfreitas93/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/miguelfreitas93/checkmarx-github-action/actions)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](https://www.gnu.org/licenses)
 
-Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration.
+Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration. 
+
+This is a CLI Wrapper to trigger Checkmarx SAST or OSA Scans.
 
 ![Checkmarx](images/checkmarx-big.png)
 
@@ -132,6 +134,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
 | cxPreset | Checkmarx Default | Checkmarx Project Preset | String | No | Checkmarx Default |
 | cxConfiguration | Default Configuration | Project Configuration | String | No | Default Configuration |
@@ -163,6 +166,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
+| cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
 | cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | |
 | cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
 | cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
@@ -198,7 +202,7 @@ For using this action, there is a set of options that can be used, such as:
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
-| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
+| cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* |
 | cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
@@ -228,12 +232,26 @@ in this case:
 
 {{ secrets.CX_PASSWORD }}
 
-# Notes:
+### Recommended Secrets:
+To avoid maximum confidentiality of user and server details you should use the following as Secrets:
+- cxServer: {{ secrets.CX_SERVER }}
+- cxUsername: {{ secrets.CX_USER }}
+- cxTeam: {{ secrets.CX_TEAM }}
+- cxPreset: {{ secrets.CX_PRESET }}
+
+# Important Notes:
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
-- Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master"
+
+- Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master". This is considered as Best Practice for naming convention when scanning from any Build Server.
+
+- If there is no project with same name in Checkmarx Server, a new project will be created automatically.
+
 - A proper Checkmarx queue, engine management and sizing should be performed, in order to guarantee pipeline gets feedback from Checkmarx ASAP, so a build could be break or an application could be released faster
-- If a build is break due to "cxHigh", "cxMedium", "cxLow" or "cxOsaHigh", "cxOSAMedium", "cxOSALow", is recommended to use Checkmarx Portal to revise results and mark them properly using "Confirmed" or "Not Exploitable" states. These thresholds only take into consideration results that are not marked as "Not Exploitable".
+
+- If a build is failing due to "cxHigh", "cxMedium", "cxLow" or "cxOsaHigh", "cxOSAMedium", "cxOSALow" thresholds, it is recommended to use Checkmarx Portal to revise results and mark them properly using "Confirmed" or "Not Exploitable" states. These thresholds only will take into consideration results that are not marked as "Not Exploitable".
+
+- Make sure, your Github action agents can connect to your Checkmarx Server first, before using this action.
 
 # Security:
 
@@ -244,8 +262,9 @@ in this case:
 ```
 # Challenges:
 
-- If Checkmarx Server is not open to Internet, this action will not be able to reach the server and will fail.
-- Network Rules/Firewalls/Proxies to access Checkmarx Server to block some sort of requests from outside based on IP, number of attempted connections, etc... 
+- If Checkmarx Server is not open to Internet, this action will not be able to reach the server and it will fail.
+
+- Network Rules, Firewalls or Proxies to access Checkmarx Server might block some requests from this Github action, due to not allowing outside connections based on IP, proxy authentication requirements, etc... Please make sure, your Github action agents can connect to your Checkmarx Server first, before using this action.
 
 # License
 

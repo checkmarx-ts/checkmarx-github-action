@@ -143,6 +143,7 @@ async function getSastCmd(server, action, skipIfFail) {
         let cxUsername = core.getInput('cxUsername', { required: false })
         let cxPassword = core.getInput('cxPassword', { required: false })
         let cxToken = core.getInput('cxToken', { required: false })
+        let cxProject = core.getInput('cxProject', { required: false })
         let cxTeam = core.getInput('cxTeam', { required: true })
         let cxPreset = core.getInput('cxPreset', { required: false })
         let cxHigh = core.getInput('cxHigh', { required: false })
@@ -193,10 +194,18 @@ async function getSastCmd(server, action, skipIfFail) {
             }
         }
 
+        if (utils.isValidString(cxProject)) {
+            cxProject = cxProject.trim()
+            core.info('cxProject: ' + cxProject)
+        } else {
+            cxProject = GITHUB_REPOSITORY + "-" + GITHUB_REF
+            core.info('cxProject: ' + cxProject)
+        }
+
         if (utils.isValidTeam(cxTeam)) {
             core.info('cxTeam: ' + cxTeam)
             team = cxTeam.trim()
-            project = team + "\\" + GITHUB_REPOSITORY + "-" + GITHUB_REF
+            project = team + "\\" + cxProject
         } else {
             let message = "Please provide 'cxTeam' input (string): " + cxTeam
             if (skipIfFail && skipIfFail != "false") {
