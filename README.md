@@ -1,6 +1,6 @@
 # Checkmarx Github Action ![Checkmarx](images/checkmarx.png) <img src="images/github.png" alt="Github" width="40" height="40">
 
-[![Tests](https://github.com/miguelfreitas93/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/miguelfreitas93/checkmarx-github-action/actions)
+[![Tests](https://github.com/checkmarx-ts/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/checkmarx-ts/checkmarx-github-action/actions)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](https://www.gnu.org/licenses)
 
 Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration. 
@@ -26,7 +26,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
+      uses: checkmarx-ts/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxUsername: First.Last@company.com
@@ -46,7 +46,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
+      uses: checkmarx-ts/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxToken: ${{ secrets.CX_TOKEN }}
@@ -65,7 +65,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
+      uses: checkmarx-ts/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: OsaScan
@@ -87,7 +87,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
+      uses: checkmarx-ts/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: RevokeToken
@@ -109,7 +109,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Checkmarx Action
-      uses: miguelfreitas93/checkmarx-github-action@<version>
+      uses: checkmarx-ts/checkmarx-github-action@<version>
       with:
         cxServer: https://checkmarx.company.com
         cxAction: GenerateToken
@@ -243,6 +243,8 @@ To avoid maximum confidentiality of user and server details you should use the f
 
 - Make sure you do **Checkout** of the code, before Checkmarx Scan Step;
 
+- Make sure you run the step under an image contains Java version CxCLI supports (Java 8), for example: ubuntu-latest;
+
 - Project name will be always the name of the Repository concatenated with branch scanned. For example: "TestRepository-master". This is considered as Best Practice for naming convention when scanning from any Build Server.
 
 - If there is no project with same name in Checkmarx Server, a new project will be created automatically.
@@ -270,7 +272,7 @@ To avoid maximum confidentiality of user and server details you should use the f
 
 Checkmarx Github Action
 
-Copyright (C) 2020 Miguel Freitas
+Copyright (C) 2020 Checkmarx TS
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 

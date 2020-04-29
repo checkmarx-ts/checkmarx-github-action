@@ -24,7 +24,7 @@ jobs:
     - name: List files in workspace
       run: ls -la
     - name: Checkmarx SAST Scan
-      uses: miguelfreitas93/checkmarx-github-action@v1.0.0
+      uses: checkmarx-ts/checkmarx-github-action@v1.0.0
       with:
         cxAction: Scan
         cxServer: ${{ secrets.CX_SERVER }}
