@@ -84,23 +84,30 @@ async function downloadCli(cxVersion, skipIfFail) {
             if (versionFileName) {
                 core.setOutput("cliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
-                if (!fs.existsSync(CLI_FOLDER_NAME)) {
+
+                const cliExists = fs.existsSync(CLI_FOLDER_NAME)
+                if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
                     await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
                     await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
                     await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
-                    if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
-                        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
-                        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
-                        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
-                        await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
-                    } else {
-                        await exec.exec("rm -rf ./Examples")
-                        await exec.exec("chmod +x ./runCxConsole.sh")
-                        await exec.exec("chmod +x ./runCxConsole.cmd")
-                    }
                 } else {
                     core.info("No need to download Checkmarx CLI because it already exists in the path with name '" + CLI_FOLDER_NAME + "'\n")
+                }
+
+                if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
+                    if(!cliExists){
+                        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
+                    }
+                    await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
+                    await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
+                } else {
+                    if(!cliExists){
+                        await exec.exec("rm -rf ./Examples")
+                    }
+                    await exec.exec("chmod +x ./runCxConsole.sh")
+                    await exec.exec("chmod +x ./runCxConsole.cmd")
                 }
 
                 await exec.exec("ls -la")
