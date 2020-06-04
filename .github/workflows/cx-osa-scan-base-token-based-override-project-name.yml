@@ -1,5 +1,8 @@
 name: Checkmarx OSA Scan Token Based Authentication - Override Project Name
-on: [push]
+on:
+  push:
+    branches: 
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
