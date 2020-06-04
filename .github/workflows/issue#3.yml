@@ -10,9 +10,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Download CxCLI Zip
-      run: wget -O cxcli.zip https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip
+      run: wget -O ./cxcli.zip https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip
     - name: Unzip CxCLI Zip
-      run: unzip cxcli.zip -d cxcli
+      run: unzip ./cxcli.zip -d ./cxcli    
+    - name: Ls
+      run: ls
     - name: Checkmarx Action
       uses: ./
       with:
