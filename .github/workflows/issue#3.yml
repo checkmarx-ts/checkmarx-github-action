@@ -1,0 +1,23 @@
+name: Issue \#3
+on:
+  push:
+    branches:
+      - issues/#3
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Download CxCLI Zip
+      run: wget -O ~/cxcli.zip https://download.checkmarx.com/8.9.0/Plugins/CxConsolePlugin-8.90.0.zip
+    - name: Unzip CxCLI Zip
+      run: unzip ~/cxcli.zip -d ~/cxcli
+    - name: Checkmarx Action
+      uses: ./
+      with:
+        cxServer: ${{ secrets.CX_SERVER }}
+        cxAction: Scan
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxTeam: ${{ secrets.CX_TEAM }}
+        cxLog: log.log
