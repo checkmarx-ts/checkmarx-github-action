@@ -18,6 +18,10 @@ inputs:
     description: 'Checkmarx Username'
     required: true
     default: 'first.last@company.com'
+  cxToken:
+    description: 'Checkmarx Token'
+    required: false
+    default: '*********'
   cxPassword:
     description: 'Checkmarx Password'
     required: true
