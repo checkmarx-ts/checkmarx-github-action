@@ -107,98 +107,98 @@ async function getOsaCmd(server, action, skipIfFail) {
             core.info('cxOsaHigh: ' + cxOsaHigh)
             high = parseInt(cxOsaHigh)
         } else {
-            core.warning('OSA High Threshold valid not provided : ' + cxOsaHigh)
+            core.info('OSA High Threshold valid not provided : ' + cxOsaHigh)
         }
 
         if (utils.isValidInt(cxOsaMedium)) {
             core.info('cxOsaMedium: ' + cxOsaMedium)
             medium = parseInt(cxOsaMedium)
         } else {
-            core.warning('OSA Medium Threshold valid not provided : ' + cxOsaMedium)
+            core.info('OSA Medium Threshold valid not provided : ' + cxOsaMedium)
         }
 
         if (utils.isValidInt(cxOsaLow)) {
             core.info('cxOsaLow: ' + cxOsaLow)
             low = parseInt(cxOsaLow)
         } else {
-            core.warning('OSA Low Threshold valid not provided : ' + cxOsaLow)
+            core.info('OSA Low Threshold valid not provided : ' + cxOsaLow)
         }
 
         if (utils.isValidString(cxOsaLocationPath)) {
             core.info('cxOsaLocationPath: ' + cxOsaLocationPath)
             osaLocationPath = cxOsaLocationPath.trim()
         } else {
-            core.warning('"cxOsaLocationPath" not provided')
+            core.info('"cxOsaLocationPath" not provided')
         }
 
         if (utils.isValidString(cxOsaArchiveToExtract)) {
             core.info('cxOsaArchiveToExtract: ' + cxOsaArchiveToExtract)
             osaArchiveToExtract = cxOsaArchiveToExtract.trim()
         } else {
-            core.warning('"cxOsaArchiveToExtract" not provided')
+            core.info('"cxOsaArchiveToExtract" not provided')
         }
 
         if (utils.isValidString(cxOsaFilesInclude)) {
             core.info('cxOsaFilesInclude: ' + cxOsaFilesInclude)
             osaFilesInclude = cxOsaFilesInclude.trim()
         } else {
-            core.warning('"cxOsaFilesInclude" not provided')
+            core.info('"cxOsaFilesInclude" not provided')
         }
 
         if (utils.isValidString(cxOsaFilesExclude)) {
             core.info('cxOsaFilesExclude: ' + cxOsaFilesExclude)
             osaFilesExclude = cxOsaFilesExclude.trim()
         } else {
-            core.warning('"cxOsaFilesExclude" not provided')
+            core.info('"cxOsaFilesExclude" not provided')
         }
 
         if (utils.isValidString(cxOsaPathExclude)) {
             core.info('cxOsaPathExclude: ' + cxOsaPathExclude)
             osaPathExclude = cxOsaPathExclude.trim()
         } else {
-            core.warning('"cxOsaPathExclude" not provided')
+            core.info('"cxOsaPathExclude" not provided')
         }
 
         if (utils.isValidString(cxOsaReportHtml)) {
             core.info('cxOsaReportHtml: ' + cxOsaReportHtml)
             osaReportHtml = cxOsaReportHtml.trim()
         } else {
-            core.warning('"osaReportHtml" not provided')
+            core.info('"osaReportHtml" not provided')
         }
 
         if (utils.isValidString(cxOsaReportPDF)) {
             core.info('cxOsaReportPDF: ' + cxOsaReportPDF)
             osaReportPDF = cxOsaReportPDF.trim()
         } else {
-            core.warning('"cxOsaReportPDF" not provided')
+            core.info('"cxOsaReportPDF" not provided')
         }
 
         if (utils.isValidInt(cxOsaDepth)) {
             core.info('cxOsaDepth: ' + cxOsaDepth)
             osaDepth = parseInt(cxOsaDepth)
         } else {
-            core.warning('"cxOsaDepth" valid not provided : ' + cxOsaDepth)
+            core.info('"cxOsaDepth" valid not provided : ' + cxOsaDepth)
         }
 
         if (utils.isBoolean(cxExecutePackageDependency)) {
             core.info('cxExecutePackageDependency: ' + cxExecutePackageDependency)
             executePackageDependency = cxExecutePackageDependency
         } else {
-            core.warning('"cxExecutePackageDependency" valid flag not provided')
+            core.info('"cxExecutePackageDependency" valid flag not provided')
         }
 
         if (utils.isValidString(cxOsaJson)) {
             core.info('cxOsaJson: ' + cxOsaJson)
             osaJson = cxOsaJson.trim()
         } else {
-            core.warning('"cxOsaJson" not provided')
+            core.info('"cxOsaJson" not provided')
         }
 
         if (utils.isBoolean(cxCheckPolicy)) {
             core.info('cxCheckPolicy: ' + cxCheckPolicy)
             checkPolicy = cxCheckPolicy
         } else {
-            core.warning('"cxCheckPolicy" valid flag not provided')
+            core.info('"cxCheckPolicy" valid flag not provided')
         }
 
         let credentials = ""

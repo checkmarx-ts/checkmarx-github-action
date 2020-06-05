@@ -47,7 +47,7 @@ async function run() {
             core.info('cxSkipIfFail: ' + cxSkipIfFail)
             skipIfFail = cxSkipIfFail
         } else {
-            core.warning('Skip If Fail valid flag not provided')
+            core.info('Skip If Fail valid flag not provided')
             skipIfFail = false
         }
         let cxAction = core.getInput('cxAction', { required: false })
@@ -57,7 +57,7 @@ async function run() {
         if (utils.isValidAction(cxAction)) {
             action = cxAction
         } else {
-            core.warning('"cxAction" not provided')
+            core.info('"cxAction" not provided')
             core.info('Default Action will be used: ' + action)
         }
 
@@ -82,7 +82,7 @@ async function run() {
             core.info('cxVersion: ' + cxVersion)
             version = cxVersion.trim()
         } else {
-            core.warning("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
+            core.info("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
         }
         core.setOutput("cxVersion", version)
         core.setOutput("cxServer", server)
@@ -93,7 +93,7 @@ async function run() {
                 core.info('cxTrustedCertificates: ' + cxTrustedCertificates)
                 trustedCertificates = cxTrustedCertificates
             } else {
-                core.warning('"cxTrustedCertificates" valid flag not provided')
+                core.info('"cxTrustedCertificates" valid flag not provided')
                 trustedCertificates = false
             }
         } else {
@@ -154,7 +154,7 @@ async function run() {
             core.info('cxLog: ' + cxLog)
             logFile = cxLog.trim()
         } else {
-            core.warning("No 'cxLog' valid input provided")
+            core.info("No 'cxLog' valid input provided")
         }
 
         if (logFile) {
@@ -168,7 +168,7 @@ async function run() {
             core.info('cxVerbose: ' + cxVerbose)
             verbose = cxVerbose
         } else {
-            core.warning('Verbose valid flag not provided')
+            core.info('Verbose valid flag not provided')
             verbose = true
         }
 
