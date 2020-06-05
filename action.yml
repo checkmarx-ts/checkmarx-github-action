@@ -30,6 +30,10 @@ inputs:
     description: 'Checkmarx Team'
     required: true
     default: ''
+  cxProject:
+    description: 'Checkmarx Project Name'
+    required: false
+    default: ''
   cxPreset:
     description: 'If not provided, will use preset defined in existing project or, for a new project, the default preset.'
     required: false
@@ -146,6 +150,10 @@ inputs:
     default: false
   cxSkipIfFail:
     description: 'Skip Checkmarx Action Step if Fail'
+    required: false
+    default: false
+  cxTrustedCertificates:
+    description: 'Trust Self-signed Certificates'
     required: false
     default: false
 runs:
