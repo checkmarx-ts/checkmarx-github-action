@@ -222,7 +222,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxPreset: ' + cxPreset)
             preset = cxPreset.trim()
         } else {
-            core.warning('"cxPreset" not provided')
+            core.info('"cxPreset" not provided')
             core.info('Default Preset will be used: Checkmarx Default')
         }
 
@@ -230,7 +230,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxConfiguration: ' + cxConfiguration)
             config = cxConfiguration.trim()
         } else {
-            core.warning('"cxConfiguration" not provided')
+            core.info('"cxConfiguration" not provided')
             core.info('Default Configuration will be used: Default Configuration')
         }
 
@@ -241,7 +241,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info(excludeFolders)
         } else {
             excludeFolders = defaultFolderExclusions
-            core.warning("No 'cxExcludeFolders' input provided")
+            core.info("No 'cxExcludeFolders' input provided")
             core.info("Default Folder exclusions will be applied:")
             core.info(defaultFolderExclusions)
         }
@@ -252,7 +252,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info("Following file exclusions will be applied:")
             core.info(excludeFiles)
         } else {
-            core.warning("No 'cxExcludeFiles' input provided")
+            core.info("No 'cxExcludeFiles' input provided")
             core.info("Default File exclusions will be applied:")
             core.info(defaultFileExclusions)
         }
@@ -261,7 +261,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxComment: ' + cxComment)
             scanComment = cxComment.trim()
         } else {
-            core.warning('"cxComment" not provided')
+            core.info('"cxComment" not provided')
             core.info('Default Comment will be used: ' + scanComment)
         }
 
@@ -269,28 +269,28 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxHigh: ' + cxHigh)
             high = parseInt(cxHigh)
         } else {
-            core.warning('SAST High Threshold valid not provided : ' + cxHigh)
+            core.info('SAST High Threshold valid not provided : ' + cxHigh)
         }
 
         if (utils.isValidInt(cxMedium)) {
             core.info('cxMedium: ' + cxMedium)
             medium = parseInt(cxMedium)
         } else {
-            core.warning('SAST Medium Threshold valid not provided : ' + cxMedium)
+            core.info('SAST Medium Threshold valid not provided : ' + cxMedium)
         }
 
         if (utils.isValidInt(cxLow)) {
             core.info('cxLow: ' + cxLow)
             low = parseInt(cxLow)
         } else {
-            core.warning('SAST Low Threshold valid not provided : ' + cxLow)
+            core.info('SAST Low Threshold valid not provided : ' + cxLow)
         }
 
         if (utils.isBoolean(cxForceScan)) {
             core.info('cxForceScan: ' + cxForceScan)
             forceScan = cxForceScan
         } else {
-            core.warning('Force Scan valid flag not provided')
+            core.info('Force Scan valid flag not provided')
             forceScan = false
         }
 
@@ -298,7 +298,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxIncremental: ' + cxIncremental)
             incremental = cxIncremental
         } else {
-            core.warning('Incremental Scan valid flag not provided')
+            core.info('Incremental Scan valid flag not provided')
             incremental = false
         }
 
@@ -306,7 +306,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxPrivate: ' + cxPrivate)
             _private = cxPrivate
         } else {
-            core.warning('Private Scan valid flag not provided')
+            core.info('Private Scan valid flag not provided')
             _private = false
         }
 
@@ -314,28 +314,28 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxReportXML: ' + cxReportXML)
             reportXml = cxReportXML.trim()
         } else {
-            core.warning("No 'cxReportXML' input provided")
+            core.info("No 'cxReportXML' input provided")
         }
 
         if (utils.isValidString(cxReportPDF)) {
             core.info('cxReportPDF: ' + cxReportPDF)
             reportPdf = cxReportPDF.trim()
         } else {
-            core.warning("No 'cxReportPDF' input provided")
+            core.info("No 'cxReportPDF' input provided")
         }
 
         if (utils.isValidString(cxReportRTF)) {
             core.info('cxReportRTF: ' + cxReportRTF)
             reportRtf = cxReportRTF.trim()
         } else {
-            core.warning("No 'cxReportRTF' input provided")
+            core.info("No 'cxReportRTF' input provided")
         }
 
         if (utils.isValidString(cxReportCSV)) {
             core.info('cxReportCSV: ' + cxReportCSV)
             reportCsv = cxReportCSV.trim()
         } else {
-            core.warning("No 'cxReportCSV' input provided")
+            core.info("No 'cxReportCSV' input provided")
         }
 
         let credentials = ""
