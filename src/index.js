@@ -16,15 +16,28 @@ let trustedCertificates = false
 
 async function run() {
     try {
+        core.info('Action ID : ' + envs.GITHUB_ACTION)
+        core.info('Run ID : ' + envs.GITHUB_RUN_ID)
+        core.info('Workflow Name : ' + envs.GITHUB_WORKFLOW)
         core.info('Event name: ' + github.context.eventName)
+        core.info('Event : ' + envs.GITHUB_EVENT_NAME)
+        core.info('Workflow User : ' + envs.GITHUB_ACTOR)
         core.info('Repository : ' + envs.GITHUB_REPOSITORY)
         core.info('Branch : ' + envs.GITHUB_REF)
+        core.info('Head Branch : ' + envs.GITHUB_HEAD_REF)
+        core.info('Base Branch : ' + envs.GITHUB_BASE_REF)
         core.info('Workspace : ' + envs.GITHUB_WORKSPACE)
         core.info('Commit SHA : ' + envs.GITHUB_SHA)
 
+        core.setOutput("cxActionId", envs.GITHUB_ACTION)
+        core.setOutput("cxRunId", envs.GITHUB_RUN_ID)
+        core.setOutput("cxWorkflow", envs.GITHUB_WORKFLOW)
+        core.setOutput("cxWorkflowUser", envs.GITHUB_ACTOR)
         core.setOutput("cxEvent", github.context.eventName)
         core.setOutput("cxRepository", envs.GITHUB_REPOSITORY)
         core.setOutput("cxBranch", envs.GITHUB_REF)
+        core.setOutput("cxHeadBranch", envs.GITHUB_HEAD_REF)
+        core.setOutput("cxBaseBranch", envs.GITHUB_BASE_REF)
         core.setOutput("cxWorkspace", envs.GITHUB_WORKSPACE)
         core.setOutput("cxCommitSHA", envs.GITHUB_SHA)
 
