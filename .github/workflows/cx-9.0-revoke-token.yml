@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token Trust Certs True
+name: 9.0 Revoke Token 
 on:
   push:
     branches: 
@@ -15,5 +15,4 @@ jobs:
         cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
-        cxTrustedCertificates: true
         cxVersion: "9.0"

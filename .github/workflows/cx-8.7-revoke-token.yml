@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token Verbose True 
+name: 8.7 Revoke Token 
 on:
   push:
     branches: 
@@ -15,4 +15,4 @@ jobs:
         cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
-        cxVerbose: true
+        cxVersion: "8.7"

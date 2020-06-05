@@ -1,30 +1,31 @@
-name: Checkmarx SAST Scan - Test cxProject field
-
+name: 9.0.1 OSA Scan
 on:
   push:
     branches: 
       - master
 jobs:
-  cx-github-actions:
-    name: Test cxProject field
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Checkmarx SAST Scan
-      uses: checkmarx-ts/checkmarx-github-action@v1.0.0
+    - name: Checkmarx Action
+      uses: ./
       with:
-        cxAction: Scan
-        cxProject: checkmarx-github-action
         cxServer: ${{ secrets.CX_SERVER }}
+        cxAction: OsaScan
         cxUsername: ${{ secrets.CX_EMAIL }}
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: ${{ secrets.CX_TEAM }}
-        cxPreset: All
+        cxOsaPathExclude: "**/*cxcli*,**/*coverage,**/*images,**/*.vscode,**/*tests,**/*.git,**/*.github"
+        cxOsaFilesExclude: "**/*action.yml,**/*LICENSE,**/*.md,**/*.gitignore"
+        cxOsaHigh: 0
+        cxOsaMedium: 0
         cxLog: log.log
+        cxSkipIfFail: true
+        cxVersion: "9.0.1"
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
         name: log.log
         path: log.log
-      

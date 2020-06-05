@@ -1,4 +1,4 @@
-name: Checkmarx OSA Scan Token Based Authentication
+name: 8.9 OSA Scan Token Based Authentication
 on:
   push:
     branches: 
@@ -22,6 +22,7 @@ jobs:
         cxOsaMedium: 0
         cxLog: log.log
         cxSkipIfFail: true
+        cxVersion: "8.9"
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:

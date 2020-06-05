@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token 8.9
+name: 8.9 Revoke Token Log
 on:
   push:
     branches: 
@@ -15,4 +15,6 @@ jobs:
         cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
+        cxLog: log.log
+        cxSkipIfFail: true
         cxVersion: "8.9"

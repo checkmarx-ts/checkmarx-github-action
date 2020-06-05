@@ -1,4 +1,4 @@
-name: Checkmarx Generate Token Wrong Credentials
+name: 2020.2.3 Revoke Token 
 on:
   push:
     branches: 
@@ -13,7 +13,6 @@ jobs:
       uses: ./
       with:
         cxServer: ${{ secrets.CX_SERVER }}
-        cxAction: GenerateToken
-        cxUsername: ${{ secrets.CX_EMAIL }}
-        cxPassword: "123456"
-        cxSkipIfFail: true
+        cxAction: RevokeToken
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxVersion: "2020.2.3"

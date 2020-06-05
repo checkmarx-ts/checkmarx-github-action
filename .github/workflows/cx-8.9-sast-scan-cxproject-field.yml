@@ -1,0 +1,31 @@
+name: 8.9 SAST Scan - Test cxProject field
+
+on:
+  push:
+    branches: 
+      - master
+jobs:
+  cx-github-actions:
+    name: Test cxProject field
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx SAST Scan
+      uses: ./
+      with:
+        cxAction: Scan
+        cxProject: checkmarx-github-action
+        cxServer: ${{ secrets.CX_SERVER }}
+        cxUsername: ${{ secrets.CX_EMAIL }}
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: ${{ secrets.CX_TEAM }}
+        cxPreset: All
+        cxLog: log.log
+        cxVersion: "8.9"
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: log.log
+        path: log.log
+      

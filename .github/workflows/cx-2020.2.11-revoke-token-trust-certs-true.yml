@@ -1,4 +1,4 @@
-name: Checkmarx Revoke Token Verbose False 
+name: 2020.2.11 Revoke Token Trust Certs True
 on:
   push:
     branches: 
@@ -15,4 +15,5 @@ jobs:
         cxServer: ${{ secrets.CX_SERVER }}
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
-        cxVerbose: false
+        cxTrustedCertificates: true
+        cxVersion: "2020.2.11"

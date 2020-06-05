@@ -23,3 +23,4 @@ jobs:
         cxToken: ${{ secrets.CX_TOKEN }}
         cxTeam: ${{ secrets.CX_TEAM }}
         cxLog: log.log
+        cxVersion: "8.9"

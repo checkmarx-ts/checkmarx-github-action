@@ -1,4 +1,4 @@
-name: Checkmarx OSA Scan
+name: 8.9 OSA Scan Token Based Authentication Override Project Name
 on:
   push:
     branches: 
@@ -13,9 +13,9 @@ jobs:
       uses: ./
       with:
         cxServer: ${{ secrets.CX_SERVER }}
+        cxProject: TestProject
         cxAction: OsaScan
-        cxUsername: ${{ secrets.CX_EMAIL }}
-        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxToken: ${{ secrets.CX_TOKEN }}
         cxTeam: ${{ secrets.CX_TEAM }}
         cxOsaPathExclude: "**/*cxcli*,**/*coverage,**/*images,**/*.vscode,**/*tests,**/*.git,**/*.github"
         cxOsaFilesExclude: "**/*action.yml,**/*LICENSE,**/*.md,**/*.gitignore"
@@ -23,6 +23,7 @@ jobs:
         cxOsaMedium: 0
         cxLog: log.log
         cxSkipIfFail: true
+        cxVersion: "8.9"
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:
