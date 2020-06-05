@@ -43,6 +43,7 @@ function isValidFilename(filename) {
 
 function isValidVersion(version) {
     return isValidString(version) && (
+        version.startsWith("2020") ||
         version.startsWith("9.0") ||
         version.startsWith("8.9") ||
         version.startsWith("8.8") ||
