@@ -12,20 +12,20 @@ const CLI_DOWNLOAD_URLS = [
     DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "9.00.1.zip",//4
     DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "9.00.2.zip",//5
     DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.1.12.zip",//6
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.11.zip",//7
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.3.zip",//8
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.7.zip"//9
+    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.3.zip",//7
+    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.7.zip",//8
+    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.11.zip",//9
 ]
 const CLI_FOLDER_NAME = "cxcli"
 
 function getCliDownloadUrl(cxVersion) {
     if (utils.isValidVersion(cxVersion)) {
         switch (cxVersion) {
-            case "2020.2.7":
-                return CLI_DOWNLOAD_URLS[9]
-            case "2020.2.3":
-                return CLI_DOWNLOAD_URLS[8]
             case "2020.2.11":
+                return CLI_DOWNLOAD_URLS[9]
+            case "2020.2.7":
+                return CLI_DOWNLOAD_URLS[8]
+            case "2020.2.3":
                 return CLI_DOWNLOAD_URLS[7]
             case "2020.1.12":
                 return CLI_DOWNLOAD_URLS[6]
@@ -55,9 +55,9 @@ function getCliDownloadUrl(cxVersion) {
                 return CLI_DOWNLOAD_URLS[0]
             default:
                 if (cxVersion.startsWith("2020")) {
-                    return CLI_DOWNLOAD_URLS[8]
+                    return CLI_DOWNLOAD_URLS[9]
                 } else if (cxVersion.startsWith("9.0")) {
-                    return CLI_DOWNLOAD_URLS[5]
+                    return CLI_DOWNLOAD_URLS[9]
                 } else if (cxVersion.startsWith("8.9")) {
                     return CLI_DOWNLOAD_URLS[3]
                 } else if (cxVersion.startsWith("8.8")) {
@@ -72,9 +72,9 @@ function getCliDownloadUrl(cxVersion) {
         }
     } else {
         if (cxVersion.startsWith("2020")) {
-            return CLI_DOWNLOAD_URLS[8]
+            return CLI_DOWNLOAD_URLS[9]
         } else if (cxVersion.startsWith("9.0")) {
-            return CLI_DOWNLOAD_URLS[5]
+            return CLI_DOWNLOAD_URLS[9]
         } else if (cxVersion.startsWith("8.9")) {
             return CLI_DOWNLOAD_URLS[3]
         } else if (cxVersion.startsWith("8.8")) {
