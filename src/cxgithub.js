@@ -662,8 +662,8 @@ async function createIssues(repository, commitSha) {
                 body += "Result Severity: " + issue.resultSeverity + "\n"
                 body += "Result Status: " + issue.resultStatus + "\n"
                 body += "Result Assignee: " + issue.resultAssignee + "\n"
-                
-                await cxgithub.createIssue(repository, token, title, body, ["bug"], [])
+
+                await createIssue(repository, token, title, body, ["bug"], [])
             }
         }
     }

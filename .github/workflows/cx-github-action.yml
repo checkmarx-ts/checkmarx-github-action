@@ -21,25 +21,4 @@ jobs:
     #  run: npm run cov
     #- name: Check test coverage 70%
     #  run: npm run cov:check
-    - name: List files in workspace
-      run: ls -la
-    - name: Checkmarx SAST Scan
-      uses: checkmarx-ts/checkmarx-github-action@v1.0.1
-      with:
-        cxAction: Scan
-        cxServer: ${{ secrets.CX_SERVER }}
-        cxUsername: ${{ secrets.CX_EMAIL }}
-        cxPassword: ${{ secrets.CX_PASSWORD }}
-        cxTeam: ${{ secrets.CX_TEAM }}
-        cxPreset: All
-        cxExcludeFolders: "tests,.vscode,.github,.git,coverage,images,cxcli,node_modules,.nyc_output"
-        cxExcludeFiles: "*.md,package-lock.json,*.yml,.gitignore,LICENSE"
-        cxHigh: 0
-        cxMedium: 0
-        cxLog: log.log
-    - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: log.log
-        path: log.log
       
