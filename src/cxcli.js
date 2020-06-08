@@ -21,12 +21,18 @@ const CLI_FOLDER_NAME = "cxcli"
 function getCliDownloadUrl(cxVersion) {
     if (utils.isValidVersion(cxVersion)) {
         switch (cxVersion) {
+            case "2020":
+                return CLI_DOWNLOAD_URLS[9]
+            case "2020.2":
+                return CLI_DOWNLOAD_URLS[9]
             case "2020.2.11":
                 return CLI_DOWNLOAD_URLS[9]
             case "2020.2.7":
                 return CLI_DOWNLOAD_URLS[8]
             case "2020.2.3":
                 return CLI_DOWNLOAD_URLS[7]
+            case "2020.1":
+                return CLI_DOWNLOAD_URLS[6]
             case "2020.1.12":
                 return CLI_DOWNLOAD_URLS[6]
             case "9.0":
@@ -103,7 +109,11 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
                     await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
-                    await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
+                    if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
+                        await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
+                    } else {
+                        await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip -d " + CLI_FOLDER_NAME)
+                    }
                     await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
                 } else {
                     core.info("No need to download Checkmarx CLI because it already exists in the path with name '" + CLI_FOLDER_NAME + "'\n")
