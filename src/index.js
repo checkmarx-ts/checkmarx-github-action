@@ -46,7 +46,7 @@ async function run() {
 
         if (utils.isValidString(cxGithubToken)) {
             core.info('cxGithubToken was provided')
-            await cxgithub.createIssue(envs.GITHUB_REPOSITORY, cxGithubToken, "TEST - [Checkmarx] Vulnerability found", ["bug"], [])
+            await cxgithub.createIssue(envs.GITHUB_REPOSITORY, cxGithubToken, "TEST - [Checkmarx] Vulnerability found", "Test vulnerability",["bug"], [])
         } else{
             core.info('cxGithubToken was not provided')
         }
