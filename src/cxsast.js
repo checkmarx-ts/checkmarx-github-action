@@ -162,7 +162,7 @@ async function getSastCmd(server, action, skipIfFail) {
         let cxReportCSV = core.getInput('cxReportCSV', { required: false })
 
         if (utils.isValidString(cxToken)) {
-            token = cxToken
+            token = cxToken.trim()
         } else {
             if (utils.isValidString(cxUsername)) {
                 core.info('cxUsername: ' + cxUsername)
@@ -180,7 +180,7 @@ async function getSastCmd(server, action, skipIfFail) {
             }
 
             if (utils.isValidString(cxPassword)) {
-                password = cxPassword
+                password = cxPassword.trim()
             } else {
                 let message = "Please provide 'cxPassword' input (string)"
                 if (skipIfFail && skipIfFail != "false") {

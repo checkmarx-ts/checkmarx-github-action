@@ -156,6 +156,10 @@ inputs:
     description: 'Trust Self-signed Certificates'
     required: false
     default: false
+  cxGithubToken:
+    description: 'Github Token Secret'
+    required: ''
+    default: ''
 runs:
   using: 'node12'
   main: 'src/index.js'

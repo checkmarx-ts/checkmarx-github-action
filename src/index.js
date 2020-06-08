@@ -1,10 +1,10 @@
+const core = require('@actions/core')
 const utils = require('./utils.js')
 const cxcli = require('./cxcli.js')
 const cxtoken = require('./cxtoken.js')
 const cxsast = require('./cxsast.js')
 const cxosa = require('./cxosa.js')
-const core = require('@actions/core')
-const github = require('@actions/github')
+const cxgithub = require('./cxgithub.js')
 const envs = process.env
 let action = "Scan"
 let version = "8.9" //STABLE VERSION
@@ -41,6 +41,14 @@ async function run() {
         core.setOutput("cxCommitSHA", envs.GITHUB_SHA)
 
         core.info("\n[START] Read Inputs...")
+
+        let cxGithubToken = core.getInput('cxGithubToken', { required: false })
+
+        if (utils.isValidString(cxGithubToken)) {
+            cxgithub.createIssue(envs.GITHUB_REPOSITORY, cxGithubToken, "TEST - [Checkmarx] Vulnerability found", ["bug"], [])
+        } else{
+            core.info('cxGithubToken was not provided')
+        }
 
         let cxSkipIfFail = core.getInput('cxSkipIfFail', { required: false })
         if (utils.isBoolean(cxSkipIfFail)) {

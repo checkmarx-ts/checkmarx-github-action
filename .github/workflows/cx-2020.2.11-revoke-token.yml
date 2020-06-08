@@ -16,3 +16,10 @@ jobs:
         cxAction: RevokeToken
         cxToken: ${{ secrets.CX_TOKEN }}
         cxVersion: "2020.2.11"
+        cxLog: log.log
+        cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: log.log
+        path: log.log

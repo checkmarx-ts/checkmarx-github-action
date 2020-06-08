@@ -47,7 +47,7 @@ async function getOsaCmd(server, action, skipIfFail) {
         let cxCheckPolicy = core.getInput('cxCheckPolicy', { required: false })
 
         if (utils.isValidString(cxToken)) {
-            token = cxToken
+            token = cxToken.trim()
         } else {
             if (utils.isValidString(cxUsername)) {
                 core.info('cxUsername: ' + cxUsername)
@@ -65,7 +65,7 @@ async function getOsaCmd(server, action, skipIfFail) {
             }
 
             if (utils.isValidString(cxPassword)) {
-                password = cxPassword
+                password = cxPassword.trim()
             } else {
                 let message = "Please provide 'cxPassword' input (string)"
                 if (skipIfFail && skipIfFail != "false") {
