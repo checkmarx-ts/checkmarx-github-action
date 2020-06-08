@@ -133,12 +133,27 @@ async function downloadCli(cxVersion, skipIfFail) {
 
                 if (!cliExists) {
                     if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
-                        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
-                        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
+                        if (fs.existsSync(versionFileName)) {
+                            await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                        } else{
+                            core.info("Checkmarx CLI Version Folder '" + versionFileName + "' does not exists")
+                        }
+                        const examplesFolder = "./" + CLI_FOLDER_NAME + "/Examples"
+                        if(fs.existsSync(examplesFolder)){
+                            await exec.exec("rm -rf " + examplesFolder)
+                        } else{
+                            core.info("Checkmarx CLI Examples Folder '" + examplesFolder + "' does not exists")
+                        }
                     }
                 }
-                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
-                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
+                const runLinux = "./" + CLI_FOLDER_NAME + "/runCxConsole.sh"
+                const runWindows = "./" + CLI_FOLDER_NAME + "/runCxConsole.cmd"
+                if(fs.existsSync(runLinux)){
+                    await exec.exec("chmod +x " + runLinux)
+                }
+                if(fs.existsSync(runWindows)){
+                    await exec.exec("chmod +x " + runWindows)
+                }
 
                 await exec.exec("ls -la")
 
@@ -171,6 +186,11 @@ function getCliDownloadUrls() {
     return CLI_DOWNLOAD_URLS
 }
 
+function getCliStartCommand() {
+    return cxcli.getFolderName() + "/runCxConsole.sh "
+}
+
+
 async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
         core.setOutput("cmdExecuted", command)
@@ -200,5 +220,6 @@ module.exports = {
     downloadCli: downloadCli,
     getFolderName: getFolderName,
     getCliDownloadUrls: getCliDownloadUrls,
+    getCliStartCommand: getCliStartCommand,
     executeCommand: executeCommand
 }

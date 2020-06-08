@@ -102,11 +102,7 @@ async function run() {
 
         let command = "./" 
 
-        if(version.startsWith("9")){
-            command +=  cxcli.getFolderName() + "/runCxConsole.sh "
-        } else {
-            command += cxcli.getFolderName() + "/runCxConsole.sh "
-        }
+        command +=  cxcli.getCliStartCommand()
 
         let auxCommand = ""
 
