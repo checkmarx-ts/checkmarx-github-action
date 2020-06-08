@@ -160,6 +160,7 @@ async function getSastCmd(server, action, skipIfFail) {
         let cxReportPDF = core.getInput('cxReportPDF', { required: false })
         let cxReportRTF = core.getInput('cxReportRTF', { required: false })
         let cxReportCSV = core.getInput('cxReportCSV', { required: false })
+        let cxGithubIssues = core.getInput('cxGithubIssues', { required: false })
 
         if (utils.isValidString(cxToken)) {
             token = cxToken.trim()
@@ -336,6 +337,21 @@ async function getSastCmd(server, action, skipIfFail) {
             reportCsv = cxReportCSV.trim()
         } else {
             core.info("No 'cxReportCSV' input provided")
+        }
+
+
+        if (utils.isBoolean(cxGithubIssues)) {
+            core.info('cxGithubIssues: ' + cxGithubIssues)
+            if (cxGithubIssues && cxGithubIssues != "false") {
+                if (!utils.isValidString(reportXml)) {
+                    reportXml = "report.xml"
+                    core.info('cxReportXML: ' + cxReportXML)
+                } else {
+                    core.info('cxReportXML: ' + cxReportXML)
+                }
+            }
+        } else {
+            core.info('cxGithubIssues was not provided')
         }
 
         let credentials = ""

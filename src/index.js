@@ -42,15 +42,6 @@ async function run() {
 
         core.info("\n[START] Read Inputs...")
 
-        let cxGithubToken = core.getInput('cxGithubToken', { required: false })
-
-        if (utils.isValidString(cxGithubToken)) {
-            core.info('cxGithubToken was provided')
-            await cxgithub.createIssue(envs.GITHUB_REPOSITORY, cxGithubToken, "TEST - [Checkmarx] Vulnerability found", "Test vulnerability",["bug"], [])
-        } else{
-            core.info('cxGithubToken was not provided')
-        }
-
         let cxSkipIfFail = core.getInput('cxSkipIfFail', { required: false })
         if (utils.isBoolean(cxSkipIfFail)) {
             core.info('cxSkipIfFail: ' + cxSkipIfFail)
@@ -214,6 +205,9 @@ async function run() {
                 return
             }
         }
+
+        await cxgithub.createIssues();
+
     } catch (e) {
         if (skipIfFail && skipIfFail != "false") {
             core.warning(e.message)

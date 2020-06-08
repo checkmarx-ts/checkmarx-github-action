@@ -12,11 +12,15 @@ jobs:
     - name: Checkmarx Action
       uses: ./
       with:
+        cxAction: Scan
         cxServer: ${{ secrets.CX_SERVER }}
-        cxAction: RevokeToken
-        cxToken: ${{ secrets.CX_TOKEN }}
+        cxUsername: ${{ secrets.CX_EMAIL }}
+        cxPassword: ${{ secrets.CX_PASSWORD }}
+        cxTeam: ${{ secrets.CX_TEAM }}
         cxVersion: "2020.2.11"
         cxLog: log.log
+        cxGithubIssues: true
+        cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:

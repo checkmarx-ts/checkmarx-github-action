@@ -158,8 +158,12 @@ inputs:
     default: false
   cxGithubToken:
     description: 'Github Token Secret'
-    required: ''
+    required: false
     default: ''
+  cxGithubIssues:
+    description: 'Create Github Issues'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'src/index.js'
