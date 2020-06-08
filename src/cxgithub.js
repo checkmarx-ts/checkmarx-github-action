@@ -610,17 +610,17 @@ async function createIssues(repository, commitSha) {
                 let title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 body += "**Start Node**\n"
-                body += issue.resultStartNodeFileName
-                body += "-----------------------------------"
+                body += issue.resultStartNodeFileName + "\n"
+                body += "-----------------------------------\n"
                 body += "**End Node**\n"
-                body += issue.resultEndNodeFileName
-                body += "-----------------------------------"
+                body += issue.resultEndNodeFileName + "\n"
+                body += "-----------------------------------\n"
                 body += "**Comments**\n"
                 for (let j = 0; j < issue.resultRemark.length; j++) {
                     body += issue.resultRemark[j] + "\n"
                 }
                 body += "\n"
-                body += "-----------------------------------"
+                body += "-----------------------------------\n"
                 body += "**Project Details**\n"
                 body += "Checkmarx Version: " + issue.cxVersion + "\n"
                 body += "Project ID: " + issue.projectId + "\n"
@@ -629,7 +629,7 @@ async function createIssues(repository, commitSha) {
                 body += "Owner: " + issue.owner + "\n"
                 body += "Team: " + issue.teamFullPath + "\n"
                 body += "\n"
-                body += "-----------------------------------"
+                body += "-----------------------------------\n"
                 body += "**Scan Details**\n"
                 body += "Initiator Name: " + issue.initiatorName + "\n"
                 body += "Scan ID: " + issue.scanId + "\n"
@@ -644,6 +644,7 @@ async function createIssues(repository, commitSha) {
                 body += "Source Origin: " + issue.sourceOrigin + "\n"
                 body += "Visibility: " + issue.visibility + "\n"
                 body += "\n"
+                body += "-----------------------------------\n"
                 body += "**Result Details**\n"
                 body += "Query ID: " + issue.queryId + "\n"
                 body += "Query Path: " + issue.queryPath + "\n"
