@@ -34,7 +34,7 @@ function isBoolean(bool) {
 }
 
 function isValidTeam(team) {
-    return isValidString(team) && team.startsWith("\\") && !team.endsWith("\\")
+    return isValidString(team) && (team.startsWith("\\") || team.startsWith("/")) && !team.endsWith("\\")
 }
 
 function isValidFilename(filename) {
