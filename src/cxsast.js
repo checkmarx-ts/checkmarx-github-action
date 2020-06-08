@@ -163,8 +163,10 @@ async function getSastCmd(server, action, skipIfFail) {
         let cxGithubIssues = core.getInput('cxGithubIssues', { required: false })
 
         if (utils.isValidString(cxToken)) {
+            core.info('cxToken was provided')
             token = cxToken.trim()
         } else {
+            core.info('cxToken was not provided')
             if (utils.isValidString(cxUsername)) {
                 core.info('cxUsername: ' + cxUsername)
                 user = cxUsername.trim()
@@ -206,7 +208,11 @@ async function getSastCmd(server, action, skipIfFail) {
         if (utils.isValidTeam(cxTeam)) {
             core.info('cxTeam: ' + cxTeam)
             team = cxTeam.trim()
-            project = team + "\\" + cxProject
+            if(team.indexOf("/") != -1){
+                project = team + "/" + cxProject
+            } else{
+                project = team + "\\" + cxProject
+            }
         } else {
             let message = "Please provide 'cxTeam' input (string): " + cxTeam
             if (skipIfFail && skipIfFail != "false") {
@@ -345,7 +351,7 @@ async function getSastCmd(server, action, skipIfFail) {
             if (cxGithubIssues && cxGithubIssues != "false") {
                 if (!utils.isValidString(reportXml)) {
                     reportXml = "report.xml"
-                    core.info('cxReportXML: ' + cxReportXML)
+                    core.info('cxReportXML will be the default: ' + reportXml)
                 } else {
                     core.info('cxReportXML: ' + cxReportXML)
                 }
@@ -356,7 +362,7 @@ async function getSastCmd(server, action, skipIfFail) {
 
         let credentials = ""
 
-        if (token) {
+        if (token && token.length > 0) {
             credentials = " -CxToken " + token
         } else {
             credentials = " -CxUser " + user + " -CxPassword " + password

@@ -1,5 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
+const utils = require('./utils.js')
 
 async function createIssues(){
     

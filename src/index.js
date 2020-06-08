@@ -56,6 +56,7 @@ async function run() {
         
         if (utils.isValidAction(cxAction)) {
             action = cxAction
+            core.info('cxAction: ' + action)
         } else {
             core.info('"cxAction" not provided')
             core.info('Default Action will be used: ' + action)
