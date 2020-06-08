@@ -104,28 +104,42 @@ async function downloadCli(cxVersion, skipIfFail) {
             if (versionFileName) {
                 core.setOutput("cliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
-
+                const zipFileName = CLI_FOLDER_NAME + ".zip";
                 const cliExists = fs.existsSync(CLI_FOLDER_NAME)
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
-                    await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + CLI_FOLDER_NAME + ".zip")
+                    await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + zipFileName)
                     if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
-                        await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip")
+                        if (fs.existsSync(zipFileName)) {
+                            await exec.exec("unzip -q " + zipFileName)
+                        } else {
+                            core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                        }
                     } else {
-                        await exec.exec("unzip -q " + CLI_FOLDER_NAME + ".zip -d " + CLI_FOLDER_NAME)
+                        if (fs.existsSync(zipFileName)) {
+                            await exec.exec("unzip -q " + zipFileName + " -d " + CLI_FOLDER_NAME)
+                        } else {
+                            core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                        }
                     }
-                    await exec.exec("rm -rf " + CLI_FOLDER_NAME + ".zip")
+                    if (fs.existsSync(zipFileName)) {
+                        await exec.exec("rm -rf " + zipFileName)
+                    } else {
+                        core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                    }
                 } else {
                     core.info("No need to download Checkmarx CLI because it already exists in the path with name '" + CLI_FOLDER_NAME + "'\n")
                 }
 
-                if(!cliExists){
-                    await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
-                    await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
+                if (!cliExists) {
+                    if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
+                        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
+                    }
                 }
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
                 await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
-               
+
                 await exec.exec("ls -la")
 
                 core.info("[END] Download Checkmarx CLI...\n")
