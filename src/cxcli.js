@@ -119,21 +119,13 @@ async function downloadCli(cxVersion, skipIfFail) {
                     core.info("No need to download Checkmarx CLI because it already exists in the path with name '" + CLI_FOLDER_NAME + "'\n")
                 }
 
-                if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
-                    if(!cliExists){
-                        await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
-                        await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
-                    }
-                    await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
-                    await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
-                } else {
-                    if(!cliExists){
-                        await exec.exec("rm -rf ./Examples")
-                    }
-                    await exec.exec("chmod +x ./runCxConsole.sh")
-                    await exec.exec("chmod +x ./runCxConsole.cmd")
+                if(!cliExists){
+                    await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                    await exec.exec("rm -rf ./" + CLI_FOLDER_NAME + "/Examples")
                 }
-
+                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.sh")
+                await exec.exec("chmod +x ./" + CLI_FOLDER_NAME + "/runCxConsole.cmd")
+               
                 await exec.exec("ls -la")
 
                 core.info("[END] Download Checkmarx CLI...\n")
