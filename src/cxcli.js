@@ -187,7 +187,7 @@ function getCliDownloadUrls() {
 }
 
 function getCliStartCommand() {
-    return cxcli.getFolderName() + "/runCxConsole.sh "
+    return getFolderName() + "/runCxConsole.sh "
 }
 
 
