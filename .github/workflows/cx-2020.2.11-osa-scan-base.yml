@@ -23,7 +23,7 @@ jobs:
         cxOsaMedium: 0
         cxLog: log.log
         cxSkipIfFail: true
-        cxVersion: "2020.2.3"
+        cxVersion: "2020.2.11"
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:

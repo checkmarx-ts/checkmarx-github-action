@@ -207,7 +207,7 @@ async function run() {
             }
         }
 
-        await cxgithub.createIssues();
+        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA);
 
     } catch (e) {
         if (skipIfFail && skipIfFail != "false") {

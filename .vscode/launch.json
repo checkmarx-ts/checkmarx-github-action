@@ -4,6 +4,20 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Test: CxGithub",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "test:cxgithub"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Mocha Tests",
             "program": "${workspaceFolder}/node_modules/mocha/bin/mocha",
             "args": [
@@ -12,7 +26,7 @@
                 "--timeout",
                 "999999",
                 "--colors",
-                "${workspaceFolder}/tests/**/*.spec.js"
+                "${workspaceFolder}/tests/**/cxgithub.spec.js"
             ],
             "internalConsoleOptions": "openOnSessionStart",
             "skipFiles": [
