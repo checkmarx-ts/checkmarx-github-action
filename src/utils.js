@@ -41,17 +41,6 @@ function isValidFilename(filename) {
     return isValidString(filename) && filename.indexOf("/") == -1 && filename.indexOf("\\") == -1
 }
 
-function isValidVersion(version) {
-    return isValidString(version) && (
-        version.startsWith("2020") ||
-        version.startsWith("9.0") ||
-        version.startsWith("8.9") ||
-        version.startsWith("8.8") ||
-        version.startsWith("8.7") ||
-        version.startsWith("8.6")
-    )
-}
-
 function isValidAction(action) {
     return isValidString(action) && VALID_ACTIONS.includes(action)
 }
@@ -68,7 +57,6 @@ module.exports = {
     isBoolean: isBoolean,
     isValidTeam: isValidTeam,
     isValidFilename: isValidFilename,
-    isValidVersion: isValidVersion,
     isValidAction: isValidAction,
     getValidAction: getValidAction
 }

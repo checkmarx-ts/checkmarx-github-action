@@ -19,7 +19,7 @@ const CLI_DOWNLOAD_URLS = [
 const CLI_FOLDER_NAME = "cxcli"
 
 function getCliDownloadUrl(cxVersion) {
-    if (utils.isValidVersion(cxVersion)) {
+    if (isValidVersion(cxVersion)) {
         switch (cxVersion) {
             case "2020":
                 return CLI_DOWNLOAD_URLS[9]
@@ -93,6 +93,17 @@ function getCliDownloadUrl(cxVersion) {
             return CLI_DOWNLOAD_URLS[3]
         }
     }
+}
+
+function isValidVersion(version) {
+    return utils.isValidString(version) && (
+        version.startsWith("2020") ||
+        version.startsWith("9.0") ||
+        version.startsWith("8.9") ||
+        version.startsWith("8.8") ||
+        version.startsWith("8.7") ||
+        version.startsWith("8.6")
+    )
 }
 
 async function downloadCli(cxVersion, skipIfFail) {
@@ -190,7 +201,6 @@ function getCliStartCommand() {
     return getFolderName() + "/runCxConsole.sh "
 }
 
-
 async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
         core.setOutput("cmdExecuted", command)
@@ -221,5 +231,6 @@ module.exports = {
     getFolderName: getFolderName,
     getCliDownloadUrls: getCliDownloadUrls,
     getCliStartCommand: getCliStartCommand,
-    executeCommand: executeCommand
+    executeCommand: executeCommand,
+    isValidVersion: isValidVersion
 }

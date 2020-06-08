@@ -78,7 +78,7 @@ async function run() {
 
         let cxVersion = core.getInput('cxVersion', { required: false })
 
-        if (utils.isValidVersion(cxVersion)) {
+        if (cxcli.isValidVersion(cxVersion)) {
             core.info('cxVersion: ' + cxVersion)
             version = cxVersion.trim()
         } else {
