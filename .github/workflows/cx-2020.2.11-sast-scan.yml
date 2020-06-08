@@ -1,4 +1,4 @@
-name: 2020.2.11 Revoke Token 
+name: 2020.2.11 SAST Scan
 on:
   push:
     branches: 
