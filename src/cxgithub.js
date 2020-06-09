@@ -48,8 +48,8 @@ function getXmlReportPath() {
 }
 
 function getIssuesFromXml(xmlPath, repository, commitSha) {
-    //const GITHUB_FILE_URL = "https://github.com/" + repository + "/blame/" + commitSha + "/" //Blame person who did the code
-    const GITHUB_FILE_URL = "https://github.com/" + repository + "/blob/" + commitSha + "/"
+    const GITHUB_FILE_URL = "https://github.com/" + repository + "/blame/" + commitSha + "/" //Blame person who did the code
+    //const GITHUB_FILE_URL = "https://github.com/" + repository + "/blob/" + commitSha + "/"
     let issues = []
     if (fs.existsSync(xmlPath)) {
         let xmlData = fs.readFileSync(xmlPath)
@@ -122,6 +122,24 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             issue.similarityId = pathAttributes.SimilarityId
 
                             let pathNodes = path.elements
+                            issue.resultNodes = []
+
+                            for (let w = 0; w < pathNodes.length; w++) {
+                                let node = pathNodes[w]
+                                let resultNode = {}
+
+                                resultNode.line = parseInt(node.elements[1].elements[0].text),
+                                    resultNode.fileName = GITHUB_FILE_URL + node.elements[0].elements[0].text + "#L" + (resultNode.line - 1) + "-L" + (resultNode.line + 1)
+                                resultNode.column = node.elements[2].elements[0].text
+                                resultNode.id = node.elements[3].elements[0].text
+                                resultNode.name = node.elements[4].elements[0].text
+                                //resultNode.type= node.elements[5] does not have elements
+                                resultNode.length = node.elements[6].elements[0].text
+                                resultNode.snippet = node.elements[7].elements[0].elements[1].elements[0].text.trim()
+
+                                issue.resultNodes.push(resultNode)
+                            }
+
                             let startNode = pathNodes[0]
                             let endNode = pathNodes[pathNodes.length - 1]
 
@@ -133,7 +151,6 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             //issue.resultStartNodeType= startNode.elements[5] does not have elements
                             issue.resultStartNodeLength = startNode.elements[6].elements[0].text
                             issue.resultStartNodeSnippet = startNode.elements[7].elements[0].elements[1].elements[0].text.trim()
-
 
                             issue.resultEndNodeLine = parseInt(endNode.elements[1].elements[0].text)
                             issue.resultEndNodeFileName = GITHUB_FILE_URL + endNode.elements[0].elements[0].text + "#L" + + (issue.resultEndNodeLine - 1) + "-L" + (issue.resultEndNodeLine + 1)
@@ -642,12 +659,13 @@ async function createIssues(repository, commitSha) {
                 let issue = issues[i]
                 const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
-                body += "**Start Node**\n"
-                body += issue.resultStartNodeFileName + "\n"
-                body += "-----------------------------------\n"
-                body += "**End Node**\n"
-                body += issue.resultEndNodeFileName + "\n"
-                body += "-----------------------------------\n"
+                for (let j = 0; j < issue.resultNodes; j++) {
+                    let node = issue.resultNodes[j]
+                    body += "**#" + j + " Node**\n"
+                    body += node.fileName + "\n"
+                    body += "-----------------------------------\n"
+                }
+                body += "\n"
                 body += "**Comments**\n"
                 for (let j = 0; j < issue.resultRemark.length; j++) {
                     body += issue.resultRemark[j] + "\n"
