@@ -660,11 +660,11 @@ async function createIssues(repository, commitSha) {
             for (let i = 0; i < issues.length; i++) {
                 let issue = issues[i]
 
-                let issueGithubLabels = githubLabels
+                let issueGithubLabels = JSON.parse(JSON.stringify(githubLabels))
 
                 issueGithubLabels.push(issue.resultSeverity)
                 issueGithubLabels.push(issue.resultStatus)
-                
+
                 switch (issue.resultState) {
                     case "0":
                         issueGithubLabels.push("To Verify")
@@ -689,7 +689,7 @@ async function createIssues(repository, commitSha) {
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 for (let j = 0; j < issue.resultNodes.length; j++) {
                     let node = issue.resultNodes[j]
-                    body += "**" + j + " Node** - " + node.line + " - " + node.name + "\n"
+                    body += "**" + j + " Node** - Line " + node.line + " - " + node.name + "\n"
                     body += node.fileName + "\n"
                     body += "-----------------------------------\n"
                 }
