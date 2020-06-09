@@ -168,6 +168,10 @@ inputs:
     description: 'Github Labels for Issues created'
     required: false
     default: 'bug'
+  cxGithubAssignees:
+    description: 'Github Assignees for Issues created'
+    required: false
+    default: ''
 runs:
   using: 'node12'
   main: 'src/index.js'

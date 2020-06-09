@@ -22,6 +22,7 @@ jobs:
         cxGithubIssues: true
         cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
         cxGithubLabels: bug,test
+        cxGithubAssignees: miguelfreitas93
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:

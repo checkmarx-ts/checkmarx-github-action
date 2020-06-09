@@ -603,6 +603,7 @@ async function createIssues(repository, commitSha) {
     if (token) {
 
         let githubLabels = ["bug"]
+        let githubAssignees = []
         let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
         if (utils.isValidString(cxGithubLabels)) {
             if (cxGithubLabels.indexOf(",") != -1) {
@@ -612,6 +613,16 @@ async function createIssues(repository, commitSha) {
             }
         } else {
             githubLabels = ["bug"]
+        }
+        let cxGithubAssignees = core.getInput('cxGithubAssignees', { required: false })
+        if (utils.isValidString(cxGithubAssignees)) {
+            if (cxGithubAssignees.indexOf(",") != -1) {
+                githubAssignees = cxGithubAssignees.split(",")
+            } else {
+                githubAssignees = [cxGithubAssignees]
+            }
+        } else {
+            githubAssignees = []
         }
 
         const repoSplit = repository.split("/")
@@ -690,15 +701,15 @@ async function createIssues(repository, commitSha) {
                 body += "CWE ID: " + issue.cweId + "\n"
                 body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
-                await createIssue(owner, repo, octokit, title, body, githubLabels, [])
+                await createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, i)
             }
         }
     }
 }
 
-async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees) {
+async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, id) {
 
-    core.info("Creating ticket for " + owner + "/" + repo)
+    core.info("Creating ticket #" + i + " for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
         repo: repo,
@@ -707,7 +718,7 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         assignees: githubAssignees,
         labels: githubLabels
     })
-    core.info("Ticket Created!")
+    core.info("Ticket #" + i + " Created!")
     return true
 }
 
