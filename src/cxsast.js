@@ -112,30 +112,31 @@ let defaultFolderExclusions = [
     "xjs", //3rd Party Libraries (JS)
 ].join()
 let defaultFileExclusions = [
-    "*.min.js", //3rd Party Libraries (JS)
-    "*.spec", // Tests (JS/Typescript/Node JS)
-    "*.spec.*", // Tests (JS/Typescript/Node JS)
-    "*Test.*", // Tests
-    "Test*", // Tests
-    "test*", // Tests
-    "*Mock*", // Tests
-    "Mock*", // Tests
-    "LICENSE", // Non-relevant files
-    "*.md", // Non-relevant files
-    ".gitignore", // Non-relevant files
-    ".npmignore", // Non-relevant files
-    ".editorconfig", // Non-relevant files
-    "*.pdf", // Non-relevant files
-    "*.markdown", // Non-relevant files
-    "*.db", // Non-relevant files
-    "*.apk", // Non-relevant files (Android)
-    "*.ipa", // Non-relevant files (IOS)
-    "*.ico", // Non-relevant files (Icons)
-    "*.sh", // Non-relevant files (Bash)
-    "*.bat", // Non-relevant files (Batch)
-    "*.ps1", // Non-relevant files (Powershell)
-    "*.svg", // Non-relevant files (SVG Images)
-    "*.zip", // Non-relevant files (Zip)
+    "**/*.min.js", //3rd Party Libraries (JS)
+    "**/*.spec", // Tests (JS/Typescript/Node JS)
+    "**/*.spec.*", // Tests (JS/Typescript/Node JS)
+    "**/*Test.*", // Tests
+    "**/Test*", // Tests
+    "**/test*", // Tests
+    "**/*Mock*", // Tests
+    "**/Mock*", // Tests
+    "**/package-lock.json", // 3rd party libraries
+    "**/LICENSE", // Non-relevant files
+    "**/*.md", // Non-relevant files
+    "**/.gitignore", // Non-relevant files
+    "**/.npmignore", // Non-relevant files
+    "**/.editorconfig", // Non-relevant files
+    "**/*.pdf", // Non-relevant files
+    "**/*.markdown", // Non-relevant files
+    "**/*.db", // Non-relevant files
+    "**/*.apk", // Non-relevant files (Android)
+    "**/*.ipa", // Non-relevant files (IOS)
+    "**/*.ico", // Non-relevant files (Icons)
+    "**/*.sh", // Non-relevant files (Bash)
+    "**/*.bat", // Non-relevant files (Batch)
+    "**/*.ps1", // Non-relevant files (Powershell)
+    "**/*.svg", // Non-relevant files (SVG Images)
+    "**/*.zip", // Non-relevant files (Zip)
 ].join()
 
 async function getSastCmd(server, action, skipIfFail) {
