@@ -601,13 +601,33 @@ async function createIssues(repository, commitSha) {
     let token = getToken()
 
     if (token) {
+
+        let githubLabels = ["bug"]
+        let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
+        if (utils.isValidString(cxGithubLabels)) {
+            if(cxGithubLabels.indexOf(",") != -1){
+                githubLabels = cxGithubLabels.split(",")
+            } else{
+                githubLabels = [cxGithubLabels]
+            }
+        } else {
+            githubLabels = ["bug"]
+        }
+
+        const repoSplit = repository.split("/")
+        const owner = repoSplit[0]
+        const repo = repoSplit[1]
+
+        core.info("Getting Octokit...")
+        const octokit = github.getOctokit(token)
+
         let xmlPath = getXmlReportPath()
         let issues = getIssuesFromXml(xmlPath, repository, commitSha)
         if (issues) {
             let summary = getSummary(issues)
             for (let i = 0; i < issues.length; i++) {
                 let issue = issues[i]
-                let title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
+                const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 body += "**Start Node**\n"
                 body += issue.resultStartNodeFileName + "\n"
@@ -664,21 +684,15 @@ async function createIssues(repository, commitSha) {
                 body += "Result Status: " + issue.resultStatus + "\n"
                 body += "Result Assignee: " + issue.resultAssignee + "\n"
 
-                await createIssue(repository, token, title, body, ["bug", "test"], [])
+                await createIssue(owner, repo, octokit, title, body, githubLabels, [])
             }
         }
     }
 }
 
-async function createIssue(repository, token, title, body, githubLabels, githubAssignees) {
-    const repoSplit = repository.split("/")
-    const owner = repoSplit[0]
-    const repo = repoSplit[1]
+async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees) {
 
-    core.info("Getting Octokit...")
-    const octokit = github.getOctokit(token)
-
-    core.info("Creating ticket for " + repository)
+    core.info("Creating ticket for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
         repo: repo,

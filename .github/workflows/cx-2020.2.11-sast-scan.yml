@@ -21,6 +21,7 @@ jobs:
         cxLog: log.log
         cxGithubIssues: true
         cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
+        cxGithubLabels: bug,test
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
       with:

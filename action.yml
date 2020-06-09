@@ -164,6 +164,10 @@ inputs:
     description: 'Create Github Issues'
     required: false
     default: false
+  cxGithubLabels:
+    description: 'Github Labels for Issues created'
+    required: false
+    default: 'bug'
 runs:
   using: 'node12'
   main: 'src/index.js'
