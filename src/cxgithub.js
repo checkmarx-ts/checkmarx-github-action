@@ -632,6 +632,8 @@ async function createIssues(repository, commitSha) {
             githubLabels = ["bug"]
         }
 
+        githubLabels.push("checkmarx")
+
         let cxGithubAssignees = core.getInput('cxGithubAssignees', { required: false })
         if (utils.isValidString(cxGithubAssignees)) {
             if (cxGithubAssignees.indexOf(",") != -1) {
@@ -654,8 +656,14 @@ async function createIssues(repository, commitSha) {
         let issues = getIssuesFromXml(xmlPath, repository, commitSha)
         if (issues) {
             let summary = getSummary(issues)
+            
             for (let i = 0; i < issues.length; i++) {
                 let issue = issues[i]
+                
+                let issueGithubLabels = githubLabels
+                issueGithubLabels.push(issue.resultSeverity)
+                issueGithubLabels.push(issue.resultState)
+                issueGithubLabels.push(issue.resultStatus)
                 const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 for (let j = 0; j < issue.resultNodes.length; j++) {
@@ -720,7 +728,7 @@ async function createIssues(repository, commitSha) {
                 body += "CWE ID: " + issue.cweId + "\n"
                 body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
-                await createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, i)
+                await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
             }
         }
     }
