@@ -659,7 +659,7 @@ async function createIssues(repository, commitSha) {
                 let issue = issues[i]
                 const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
-                for (let j = 0; j < issue.resultNodes; j++) {
+                for (let j = 0; j < issue.resultNodes.length; j++) {
                     let node = issue.resultNodes[j]
                     body += "**#" + j + " Node**\n"
                     body += node.fileName + "\n"
