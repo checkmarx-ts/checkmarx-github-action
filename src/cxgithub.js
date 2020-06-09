@@ -127,8 +127,9 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                                 let node = pathNodes[w]
                                 let resultNode = {}
 
-                                resultNode.line = parseInt(node.elements[1].elements[0].text),
-                                    resultNode.fileName = GITHUB_FILE_URL + node.elements[0].elements[0].text + "#L" + (resultNode.line - 1) + "-L" + (resultNode.line + 1)
+                                resultNode.line = parseInt(node.elements[1].elements[0].text)
+                                resultNode.relativefileName = node.elements[0].elements[0].text
+                                resultNode.fileName = GITHUB_FILE_URL + node.elements[0].elements[0].text + "#L" + (resultNode.line - 1) + "-L" + (resultNode.line + 1)
                                 resultNode.column = node.elements[2].elements[0].text
                                 resultNode.id = node.elements[3].elements[0].text
                                 resultNode.name = node.elements[4].elements[0].text
@@ -143,6 +144,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             let endNode = pathNodes[pathNodes.length - 1]
 
                             issue.resultStartNodeLine = parseInt(startNode.elements[1].elements[0].text)
+                            issue.resultStartNodeRelativeFileName = startNode.elements[0].elements[0].text
                             issue.resultStartNodeFileName = GITHUB_FILE_URL + startNode.elements[0].elements[0].text + "#L" + (issue.resultStartNodeLine - 1) + "-L" + (issue.resultStartNodeLine + 1)
                             issue.resultStartNodeColumn = startNode.elements[2].elements[0].text
                             issue.resultStartNodeId = startNode.elements[3].elements[0].text
@@ -152,6 +154,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             issue.resultStartNodeSnippet = startNode.elements[7].elements[0].elements[1].elements[0].text.trim()
 
                             issue.resultEndNodeLine = parseInt(endNode.elements[1].elements[0].text)
+                            issue.resultEndNodeRelativeFileName = endNode.elements[0].elements[0].text
                             issue.resultEndNodeFileName = GITHUB_FILE_URL + endNode.elements[0].elements[0].text + "#L" + + (issue.resultEndNodeLine - 1) + "-L" + (issue.resultEndNodeLine + 1)
                             issue.resultEndNodeColumn = endNode.elements[2].elements[0].text
                             issue.resultEndNodeId = endNode.elements[3].elements[0].text
@@ -656,7 +659,7 @@ async function createIssues(repository, commitSha) {
         let issues = getIssuesFromXml(xmlPath, repository, commitSha)
         if (issues) {
             let summary = getSummary(issues)
-
+            await createCommitComment(owner, repo, octokit, commitSha, "My Summary Test Comment", null, null)
             for (let i = 0; i < issues.length; i++) {
                 let issue = issues[i]
 
@@ -687,6 +690,7 @@ async function createIssues(repository, commitSha) {
 
                 const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
+                body += "-----------------------------------\n"
                 for (let j = 0; j < issue.resultNodes.length; j++) {
                     let node = issue.resultNodes[j]
                     body += "**" + j + " Node** - Line " + node.line + " - " + node.name + "\n"
@@ -749,7 +753,13 @@ async function createIssues(repository, commitSha) {
                 body += "CWE ID: " + issue.cweId + "\n"
                 body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
-                await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
+                let issueCreated = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
+                
+                for (let j = 0; j < issue.resultNodes.length; j++) {
+                    let node = issue.resultNodes[j]
+                    let commentBody = "**" + j + " Node** - " + node.name
+                    await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
+                }
                 issueGithubLabels = []
             }
         }
@@ -768,6 +778,21 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         labels: githubLabels
     })
     core.info("Ticket #" + id + " Created!")
+    core.info(issueCreated)
+    return issueCreated
+}
+
+async function createCommitComment(owner, repo, octokit, commitSha, body, path, position) {
+    core.info("Creating Comment with Checkmarx Summary for Commit #" + commitSha + " for " + owner + "/" + repo)
+    const commitCommentCreated = await octokit.repos.createCommitComment({
+        owner: owner,
+        repo: repo,
+        commit_sha: commitSha,
+        body: body,
+        path: path,
+        position: position
+    })
+    core.info("Comment Created!")
     return true
 }
 
