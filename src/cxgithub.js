@@ -656,14 +656,35 @@ async function createIssues(repository, commitSha) {
         let issues = getIssuesFromXml(xmlPath, repository, commitSha)
         if (issues) {
             let summary = getSummary(issues)
-            
+
             for (let i = 0; i < issues.length; i++) {
                 let issue = issues[i]
-                
+
                 let issueGithubLabels = githubLabels
+
                 issueGithubLabels.push(issue.resultSeverity)
-                issueGithubLabels.push(issue.resultState)
                 issueGithubLabels.push(issue.resultStatus)
+                
+                switch (issue.resultState) {
+                    case "0":
+                        issueGithubLabels.push("To Verify")
+                        break
+                    case "1":
+                        issueGithubLabels.push("Not Exploitable")
+                        break
+                    case "2":
+                        issueGithubLabels.push("Confirmed")
+                        break
+                    case "3":
+                        issueGithubLabels.push("Urgent")
+                        break
+                    case "4":
+                        issueGithubLabels.push("Proposed Not Exploitable")
+                        break
+                    default:
+                        break
+                }
+
                 const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 for (let j = 0; j < issue.resultNodes.length; j++) {
@@ -729,6 +750,7 @@ async function createIssues(repository, commitSha) {
                 body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
                 await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
+                issueGithubLabels = []
             }
         }
     }
