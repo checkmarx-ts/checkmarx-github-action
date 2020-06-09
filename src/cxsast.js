@@ -259,6 +259,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info("Following file exclusions will be applied:")
             core.info(excludeFiles)
         } else {
+            excludeFiles = defaultFileExclusions
             core.info("No 'cxExcludeFiles' input provided")
             core.info("Default File exclusions will be applied:")
             core.info(defaultFileExclusions)
