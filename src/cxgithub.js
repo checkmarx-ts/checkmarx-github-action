@@ -604,6 +604,7 @@ async function createIssues(repository, commitSha) {
 
         let githubLabels = ["bug"]
         let githubAssignees = []
+
         let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
         if (utils.isValidString(cxGithubLabels)) {
             if (cxGithubLabels.indexOf(",") != -1) {
@@ -614,6 +615,7 @@ async function createIssues(repository, commitSha) {
         } else {
             githubLabels = ["bug"]
         }
+
         let cxGithubAssignees = core.getInput('cxGithubAssignees', { required: false })
         if (utils.isValidString(cxGithubAssignees)) {
             if (cxGithubAssignees.indexOf(",") != -1) {
@@ -709,7 +711,7 @@ async function createIssues(repository, commitSha) {
 
 async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, id) {
 
-    core.info("Creating ticket #" + i + " for " + owner + "/" + repo)
+    core.info("Creating ticket #" + id + " for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
         repo: repo,
@@ -718,7 +720,7 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         assignees: githubAssignees,
         labels: githubLabels
     })
-    core.info("Ticket #" + i + " Created!")
+    core.info("Ticket #" + id + " Created!")
     return true
 }
 
