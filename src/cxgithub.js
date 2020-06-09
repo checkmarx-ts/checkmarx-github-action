@@ -605,9 +605,9 @@ async function createIssues(repository, commitSha) {
         let githubLabels = ["bug"]
         let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
         if (utils.isValidString(cxGithubLabels)) {
-            if(cxGithubLabels.indexOf(",") != -1){
+            if (cxGithubLabels.indexOf(",") != -1) {
                 githubLabels = cxGithubLabels.split(",")
-            } else{
+            } else {
                 githubLabels = [cxGithubLabels]
             }
         } else {
@@ -656,7 +656,7 @@ async function createIssues(repository, commitSha) {
                 body += "LOC: " + issue.loc + "\n"
                 body += "Files Scanned: " + issue.filesScanned + "\n"
                 body += "Scan Type: " + issue.scanType + "\n"
-                body += "Scan URL: [" + issue.scanDeepLink + "](url)\n"
+                body += "Scan URL: " + issue.scanDeepLink + "\n"
                 body += "Scan Comment: " + issue.scanComment + "\n"
                 body += "Scan Type: " + issue.scanTime + "\n"
                 body += "Scan Start Date: " + issue.scanStartDate + "\n"
@@ -683,6 +683,12 @@ async function createIssues(repository, commitSha) {
                 body += "Result Severity: " + issue.resultSeverity + "\n"
                 body += "Result Status: " + issue.resultStatus + "\n"
                 body += "Result Assignee: " + issue.resultAssignee + "\n"
+                body += "\n"
+                body += "-----------------------------------\n"
+                body += "**Mitigation Details**\n"
+                body += "Checkmarx Recommendations URL: " + issue.scanDeepLink.split("/ViewerMain.aspx")[0] + "/ScanQueryDescription.aspx?queryID=" + issue.queryId + "&queryVersionCode=" + issue.queryVersionCode + "&queryTitle=" + issue.queryName + "\n"
+                body += "CWE ID: " + issue.cweId + "\n"
+                body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
                 await createIssue(owner, repo, octokit, title, body, githubLabels, [])
             }
