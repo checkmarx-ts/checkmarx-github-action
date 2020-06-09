@@ -48,8 +48,7 @@ function getXmlReportPath() {
 }
 
 function getIssuesFromXml(xmlPath, repository, commitSha) {
-    const GITHUB_FILE_URL = "https://github.com/" + repository + "/blame/" + commitSha + "/" //Blame person who did the code
-    //const GITHUB_FILE_URL = "https://github.com/" + repository + "/blob/" + commitSha + "/"
+    const GITHUB_FILE_URL = "https://github.com/" + repository + "/blob/" + commitSha + "/"
     let issues = []
     if (fs.existsSync(xmlPath)) {
         let xmlData = fs.readFileSync(xmlPath)
@@ -661,7 +660,7 @@ async function createIssues(repository, commitSha) {
                 let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                 for (let j = 0; j < issue.resultNodes.length; j++) {
                     let node = issue.resultNodes[j]
-                    body += "**#" + j + " Node**\n"
+                    body += "**" + j + " Node** - " + node.line + " - " + node.name + "\n"
                     body += node.fileName + "\n"
                     body += "-----------------------------------\n"
                 }
