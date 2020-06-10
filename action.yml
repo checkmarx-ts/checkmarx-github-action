@@ -172,6 +172,10 @@ inputs:
     description: 'Github Assignees for Issues created'
     required: false
     default: ''
+  cxGithubMilestone:
+    description: 'Github Milestone for Issues created'
+    required: false
+    default: null
 outputs:
   cxActionId:
     description: 'Github Action ID (e.g. self)'

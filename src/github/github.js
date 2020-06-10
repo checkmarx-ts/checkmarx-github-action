@@ -40,6 +40,7 @@ async function createIssues(repository, commitSha, workspace) {
 
         let githubLabels = []
         let githubAssignees = []
+        let githubMilestone = null
 
         let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
         if (utils.isValidString(cxGithubLabels)) {
@@ -65,6 +66,15 @@ async function createIssues(repository, commitSha, workspace) {
             githubAssignees = []
         }
 
+        let cxGithubMilestone = core.getInput('cxGithubMilestone', { required: false })
+        if (utils.isValidInt(cxGithubMilestone)) {
+            githubMilestone = cxGithubMilestone
+            core.info("cxGithubMilestone: " + githubMilestone)
+        } else {
+            githubMilestone = null
+            core.info("cxGithubMilestone was not provided")
+        }
+
         const repoSplit = repository.split("/")
         const owner = repoSplit[0]
         const repo = repoSplit[1]
@@ -80,30 +90,7 @@ async function createIssues(repository, commitSha, workspace) {
                 for (let i = 0; i < issues.length; i++) {
                     let issue = issues[i]
 
-                    let issueGithubLabels = JSON.parse(JSON.stringify(githubLabels))
-
-                    issueGithubLabels.push(issue.resultSeverity)
-                    issueGithubLabels.push(issue.resultStatus)
-
-                    switch (issue.resultState) {
-                        case "0":
-                            issueGithubLabels.push("To Verify")
-                            break
-                        case "1":
-                            issueGithubLabels.push("Not Exploitable")
-                            break
-                        case "2":
-                            issueGithubLabels.push("Confirmed")
-                            break
-                        case "3":
-                            issueGithubLabels.push("Urgent")
-                            break
-                        case "4":
-                            issueGithubLabels.push("Proposed Not Exploitable")
-                            break
-                        default:
-                            break
-                    }
+                    let issueGithubLabels = report.getLabels(githubLabels, issue)
 
                     const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
                     let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
@@ -170,7 +157,7 @@ async function createIssues(repository, commitSha, workspace) {
                     body += "CWE ID: " + issue.cweId + "\n"
                     body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
-                    let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
+                    let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i)
 
                     for (let j = 0; j < issue.resultNodes.length; j++) {
                         let node = issue.resultNodes[j]
@@ -186,7 +173,7 @@ async function createIssues(repository, commitSha, workspace) {
     }
 }
 
-async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, id) {
+async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, githubMilestone, id) {
     core.info("\nCreating ticket #" + id + " for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
@@ -194,7 +181,8 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         title: title,
         body: body,
         assignees: githubAssignees,
-        labels: githubLabels
+        labels: githubLabels,
+        milestone: githubMilestone
     })
     if (issueCreated.status == 201) {
         const issueId = issueCreated.data.number

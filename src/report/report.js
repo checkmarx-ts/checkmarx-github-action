@@ -14,6 +14,11 @@ const NOT_EXPLOITABLE = "1"
 const CONFIRMED = "2"
 const URGENT = "3"
 const PROPOSED_NOT_EXPLOITABLE = "4"
+const TO_VERIFY_LABEL = "To Verify"
+const NOT_EXPLOITABLE_LABEL = "Not Exploitable"
+const CONFIRMED_LABEL = "Confirmed"
+const URGENT_LABEL = "Urgent"
+const PROPOSED_NOT_EXPLOITABLE_LABEL = "Proposed Not Exploitable"
 
 function getXmlReportPath(workspace) {
     let reportXml = ''
@@ -22,7 +27,7 @@ function getXmlReportPath(workspace) {
         core.info('cxReportXML: ' + cxReportXML)
         reportXml = cxReportXML.trim()
     } else {
-        core.info("No 'cxReportXML' input provided. It will be used:" + workspace + path.sep + " report.xml")
+        core.info("No 'cxReportXML' input provided. It will be used the default one: " + workspace + path.sep + "report.xml")
         reportXml = workspace + path.sep + "report.xml"
     }
     return reportXml
@@ -596,8 +601,37 @@ function getSummary(issues) {
     return summary
 }
 
+function getLabels(githubLabels, issue) {
+    let issueGithubLabels = JSON.parse(JSON.stringify(githubLabels))
+
+    issueGithubLabels.push(issue.resultSeverity)
+    issueGithubLabels.push(issue.resultStatus)
+
+    switch (issue.resultState) {
+        case TO_VERIFY:
+            issueGithubLabels.push(TO_VERIFY_LABEL)
+            break
+        case NOT_EXPLOITABLE:
+            issueGithubLabels.push(NOT_EXPLOITABLE_LABEL)
+            break
+        case CONFIRMED:
+            issueGithubLabels.push(CONFIRMED_LABEL)
+            break
+        case URGENT:
+            issueGithubLabels.push(URGENT_LABEL)
+            break
+        case PROPOSED_NOT_EXPLOITABLE:
+            issueGithubLabels.push(PROPOSED_NOT_EXPLOITABLE_LABEL)
+            break
+        default:
+            break
+    }
+    return issueGithubLabels
+}
+
 module.exports = {
     getXmlReportPath: getXmlReportPath,
     getIssuesFromXml: getIssuesFromXml,
-    getSummary: getSummary
+    getSummary: getSummary,
+    getLabels: getLabels
 }
