@@ -1,6 +1,6 @@
 const fs = require("fs")
 const path = require('path')
-const utils = require('./utils.js')
+const utils = require('../utils/utils.js')
 const core = require('@actions/core')
 const exec = require('@actions/exec')
 const isWin = process.platform === "win32" || process.platform === "win64";
@@ -112,10 +112,10 @@ async function downloadCli(cxVersion, skipIfFail) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
         if (cliDownloadUrl) {
-            core.setOutput("cliDownloadUrl", cliDownloadUrl)
+            core.setOutput("cxCliDownloadUrl", cliDownloadUrl)
             let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
             if (versionFileName) {
-                core.setOutput("cliVersionFileName", versionFileName)
+                core.setOutput("cxCliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
                 const zipFileName = CLI_FOLDER_NAME + ".zip";
                 const cliExists = fs.existsSync(CLI_FOLDER_NAME)
@@ -209,7 +209,7 @@ function getCliStartCommand() {
 
 async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
-        core.setOutput("cmdExecuted", command)
+        core.setOutput("cxCmdExecuted", command)
         try {
             await exec.exec(command)
             return true

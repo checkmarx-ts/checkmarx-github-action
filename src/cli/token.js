@@ -9,7 +9,7 @@ async function revokeTokenGetCmd(server, skipIfFail) {
         let cxToken = core.getInput('cxToken', { required: true })
 
         if (utils.isValidString(cxToken)) {
-            token = cxToken
+            token = cxToken.trim()
         } else {
             let message = "Please provide 'cxToken' input (string)"
             if(skipIfFail && skipIfFail != "false"){
@@ -61,7 +61,7 @@ async function generateTokenGetCmd(server, skipIfFail) {
         }
 
         if (utils.isValidString(cxPassword)) {
-            password = cxPassword
+            password = cxPassword.trim()
         } else {
             let message = "Please provide 'cxPassword' input (string)"
             if(skipIfFail && skipIfFail != "false"){
@@ -73,8 +73,6 @@ async function generateTokenGetCmd(server, skipIfFail) {
                 return
             }
         }
-
-        core.setOutput("cxUsername", user)
 
         let command = "GenerateToken" +
             " -CxServer " + server +

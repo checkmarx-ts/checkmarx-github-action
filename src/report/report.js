@@ -2,38 +2,17 @@ const fs = require("fs")
 const path = require('path')
 const xmljs = require('xml-js')
 const core = require('@actions/core')
-const github = require('@actions/github')
-const utils = require('./utils.js')
-const cxcli = require('./cxcli.js')
-
-function getToken() {
-    let token = ""
-    let cxGithubIssues = core.getInput('cxGithubIssues', { required: false })
-    let createGithubIssues = false;
-    if (utils.isBoolean(cxGithubIssues)) {
-        core.info('cxGithubIssues: ' + cxGithubIssues)
-        createGithubIssues = cxGithubIssues
-    } else {
-        core.info('cxGithubIssues was not provided')
-        createGithubIssues = false
-    }
-
-    if (createGithubIssues && createGithubIssues != "false") {
-        let cxGithubToken = core.getInput('cxGithubToken', { required: false })
-        if (utils.isValidString(cxGithubToken)) {
-            core.info('cxGithubToken was provided')
-            token = cxGithubToken
-        } else {
-            token = ''
-            core.info('cxGithubToken was not provided')
-            core.info('No issues will be created')
-        }
-    } else {
-        core.info('Issues will not be created since cxGithubIssues was not provided or set to false')
-    }
-
-    return token
-}
+const HIGH = "High"
+const MEDIUM = "Medium"
+const LOW = "Low"
+const INFO = "Information"
+const NEW = "New"
+const RECURRENT = "Recurrent"
+const TO_VERIFY = "0"
+const NOT_EXPLOITABLE = "1"
+const CONFIRMED = "2"
+const URGENT = "3"
+const PROPOSED_NOT_EXPLOITABLE = "4"
 
 function getXmlReportPath(workspace) {
     let reportXml = ''
@@ -293,71 +272,71 @@ function getSummary(issues) {
         let issue = issues[i];
         summary.total++
         switch (issue.resultStatus) {
-            case "New":
+            case NEW:
                 summary.new.total++
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.new++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.new++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.new++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.new++
                         break
                 }
 
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.new++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.new++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.new++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.new++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.new++
                         break
                 }
                 break
-            case "Recurrent":
+            case RECURRENT:
                 summary.recurrent.total++
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.recurrent++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.recurrent++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.recurrent++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.recurrent++
                         break
                 }
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.recurrent++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.recurrent++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.recurrent++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.recurrent++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.recurrent++
                         break
                 }
@@ -365,115 +344,115 @@ function getSummary(issues) {
         }
 
         switch (issue.resultSeverity) {
-            case "High":
+            case HIGH:
                 summary.high.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.high++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.high++
                         break
                 }
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.high++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.high++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.high++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.high++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.high++
                         break
                 }
                 break
-            case "Medium":
+            case MEDIUM:
                 summary.medium.total++
 
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.medium++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.medium++
                         break
                 }
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.medium++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.medium++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.medium++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.medium++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.medium++
                         break
                 }
                 break
-            case "Low":
+            case LOW:
                 summary.low.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.low++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.low++
                         break
                 }
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.low++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.low++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.low++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.low++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.low++
                         break
                 }
                 break
-            case "Information":
+            case INFO:
                 summary.info.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.info++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.info++
                         break
                 }
                 switch (issue.resultState) {
-                    case "0":
+                    case TO_VERIFY:
                         summary.toVerify.info++
                         break
-                    case "1":
+                    case NOT_EXPLOITABLE:
                         summary.notExploitable.info++
                         break
-                    case "2":
+                    case CONFIRMED:
                         summary.confirmed.info++
                         break
-                    case "3":
+                    case URGENT:
                         summary.urgent.info++
                         break
-                    case "4":
+                    case PROPOSED_NOT_EXPLOITABLE:
                         summary.proposedNotExploitable.info++
                         break
                 }
@@ -481,132 +460,132 @@ function getSummary(issues) {
         }
 
         switch (issue.resultState) {
-            case "0":
+            case TO_VERIFY:
                 summary.toVerify.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.toVerify++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.toVerify++
                         break
                 }
 
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.toVerify++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.toVerify++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.toVerify++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.toVerify++
                         break
                 }
                 break
-            case "1":
+            case NOT_EXPLOITABLE:
                 summary.notExploitable.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.notExploitable++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.notExploitable++
                         break
                 }
 
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.notExploitable++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.notExploitable++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.notExploitable++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.notExploitable++
                         break
                 }
                 break
-            case "2":
+            case CONFIRMED:
                 summary.confirmed.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.confirmed++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.confirmed++
                         break
                 }
 
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.confirmed++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.confirmed++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.confirmed++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.confirmed++
                         break
                 }
                 break
-            case "3":
+            case URGENT:
                 summary.urgent.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.urgent++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.urgent++
                         break
                 }
 
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.urgent++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.urgent++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.urgent++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.urgent++
                         break
                 }
                 break
-            case "4":
+            case PROPOSED_NOT_EXPLOITABLE:
                 summary.proposedNotExploitable.total++
                 switch (issue.resultStatus) {
-                    case "New":
+                    case NEW:
                         summary.new.proposedNotExploitable++
                         break;
-                    case "Recurrent":
+                    case RECURRENT:
                         summary.recurrent.proposedNotExploitable++
                         break
                 }
 
                 switch (issue.resultSeverity) {
-                    case "High":
+                    case HIGH:
                         summary.high.proposedNotExploitable++
                         break
-                    case "Medium":
+                    case MEDIUM:
                         summary.medium.proposedNotExploitable++
                         break
-                    case "Low":
+                    case LOW:
                         summary.low.proposedNotExploitable++
                         break
-                    case "Information":
+                    case INFO:
                         summary.info.proposedNotExploitable++
                         break
                 }
@@ -616,206 +595,8 @@ function getSummary(issues) {
     return summary
 }
 
-async function createIssues(repository, commitSha, workspace) {
-
-    let token = getToken()
-
-    if (token) {
-
-        let githubLabels = []
-        let githubAssignees = []
-
-        let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
-        if (utils.isValidString(cxGithubLabels)) {
-            if (cxGithubLabels.indexOf(",") != -1) {
-                githubLabels = cxGithubLabels.split(",")
-            } else {
-                githubLabels = [cxGithubLabels]
-            }
-        } else {
-            githubLabels = []
-        }
-
-        githubLabels.push("checkmarx")
-
-        let cxGithubAssignees = core.getInput('cxGithubAssignees', { required: false })
-        if (utils.isValidString(cxGithubAssignees)) {
-            if (cxGithubAssignees.indexOf(",") != -1) {
-                githubAssignees = cxGithubAssignees.split(",")
-            } else {
-                githubAssignees = [cxGithubAssignees]
-            }
-        } else {
-            githubAssignees = []
-        }
-
-        const repoSplit = repository.split("/")
-        const owner = repoSplit[0]
-        const repo = repoSplit[1]
-
-        core.info("Getting Octokit...")
-        const octokit = github.getOctokit(token)
-        if (octokit) {
-            let xmlPath = getXmlReportPath(workspace)
-            let issues = getIssuesFromXml(xmlPath, repository, commitSha)
-            if (issues) {
-                let summary = getSummary(issues)
-                await createCommitComment(owner, repo, octokit, commitSha, "My Summary Test Comment", null, null)
-                for (let i = 0; i < issues.length; i++) {
-                    let issue = issues[i]
-
-                    let issueGithubLabels = JSON.parse(JSON.stringify(githubLabels))
-
-                    issueGithubLabels.push(issue.resultSeverity)
-                    issueGithubLabels.push(issue.resultStatus)
-
-                    switch (issue.resultState) {
-                        case "0":
-                            issueGithubLabels.push("To Verify")
-                            break
-                        case "1":
-                            issueGithubLabels.push("Not Exploitable")
-                            break
-                        case "2":
-                            issueGithubLabels.push("Confirmed")
-                            break
-                        case "3":
-                            issueGithubLabels.push("Urgent")
-                            break
-                        case "4":
-                            issueGithubLabels.push("Proposed Not Exploitable")
-                            break
-                        default:
-                            break
-                    }
-
-                    const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
-                    let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
-                    body += "-----------------------------------\n"
-                    for (let j = 0; j < issue.resultNodes.length; j++) {
-                        let node = issue.resultNodes[j]
-                        body += "**" + j + " Node** - Line " + node.line + " - " + node.name + "\n"
-                        body += node.fileName + "\n"
-                        body += "-----------------------------------\n"
-                    }
-                    body += "\n"
-                    body += "**Comments**\n"
-                    for (let j = 0; j < issue.resultRemark.length; j++) {
-                        body += issue.resultRemark[j] + "\n"
-                    }
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Project Details**\n"
-                    body += "Checkmarx Version: " + issue.cxVersion + "\n"
-                    body += "Project ID: " + issue.projectId + "\n"
-                    body += "Project Name: " + issue.projectName + "\n"
-                    body += "Preset: " + issue.preset + "\n"
-                    body += "Owner: " + issue.owner + "\n"
-                    body += "Team: " + issue.teamFullPath + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Scan Details**\n"
-                    body += "Initiator Name: " + issue.initiatorName + "\n"
-                    body += "Scan ID: " + issue.scanId + "\n"
-                    body += "LOC: " + issue.loc + "\n"
-                    body += "Files Scanned: " + issue.filesScanned + "\n"
-                    body += "Scan Type: " + issue.scanType + "\n"
-                    body += "Scan URL: " + issue.scanDeepLink + "\n"
-                    body += "Scan Comment: " + issue.scanComment + "\n"
-                    body += "Scan Type: " + issue.scanTime + "\n"
-                    body += "Scan Start Date: " + issue.scanStartDate + "\n"
-                    body += "Scan Time: " + issue.scanTime + "\n"
-                    body += "Source Origin: " + issue.sourceOrigin + "\n"
-                    body += "Visibility: " + issue.visibility + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Result Details**\n"
-                    body += "Query ID: " + issue.queryId + "\n"
-                    body += "Query Path: " + issue.queryPath + "\n"
-                    body += "Query Group: " + issue.queryGroup + "\n"
-                    body += "Query Name: " + issue.queryName + "\n"
-                    body += "Query Language: " + issue.queryLanguage + "\n"
-                    body += "Query Language Hash: " + issue.queryLanguageHash + "\n"
-                    body += "Query Language Change Date: " + issue.queryLanguageChangeDate + "\n"
-                    body += "Query Version Code: " + issue.queryVersionCode + "\n"
-                    body += "Query Severity: " + issue.querySeverity + "\n"
-                    body += "Query Severity Index: " + issue.querySeverityIndex + "\n"
-                    body += "Similarity ID: " + issue.similarityId + "\n"
-                    body += "Path ID: " + issue.pathId + "\n"
-                    body += "Result ID: " + issue.resultId + "\n"
-                    body += "Result State: " + issue.resultState + "\n"
-                    body += "Result Severity: " + issue.resultSeverity + "\n"
-                    body += "Result Status: " + issue.resultStatus + "\n"
-                    body += "Result Assignee: " + issue.resultAssignee + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Mitigation Details**\n"
-                    body += "Checkmarx Recommendations URL: " + issue.scanDeepLink.split("/ViewerMain.aspx")[0] + "/ScanQueryDescription.aspx?queryID=" + issue.queryId + "&queryVersionCode=" + issue.queryVersionCode + "&queryTitle=" + issue.queryName + "\n"
-                    body += "CWE ID: " + issue.cweId + "\n"
-                    body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
-
-                    let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, i)
-
-                    for (let j = 0; j < issue.resultNodes.length; j++) {
-                        let node = issue.resultNodes[j]
-                        let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
-                        await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
-                    }
-                    issueGithubLabels = []
-                }
-            }
-        } else {
-            core.info("Unable to authenticate to octokit. Please provide a proper GITHUB_TOKEN")
-        }
-    }
-}
-
-async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, id) {
-    core.info("Creating ticket #" + id + " for " + owner + "/" + repo)
-    let issueCreated = await octokit.issues.create({
-        owner: owner,
-        repo: repo,
-        title: title,
-        body: body,
-        assignees: githubAssignees,
-        labels: githubLabels
-    })
-    if (issueCreated.status == 201) {
-        const issueId = issueCreated.data.number
-        const issueUrl = issueCreated.data.html_url
-        core.info("Ticket #" + issueId + " was Created for " + owner + "/" + repo)
-        core.info(issueUrl)
-        return issueId
-    } else {
-        core.info("Ticket #" + id + " failed to be Created for " + owner + "/" + repo)
-        return false
-    }
-}
-
-async function createCommitComment(owner, repo, octokit, commitSha, body, path, position) {
-    core.info("Creating Comment with Checkmarx Summary for Commit #" + commitSha + " for " + owner + "/" + repo)
-    const commitCommentCreated = await octokit.repos.createCommitComment({
-        owner: owner,
-        repo: repo,
-        commit_sha: commitSha,
-        body: body,
-        path: path,
-        position: position
-    })
-    if (commitCommentCreated.status == 201) {
-        const commentUrl = commitCommentCreated.data.html_url
-        core.info("New Comment was Created for Commit #" + commitSha + " for " + owner + "/" + repo)
-        core.info(commentUrl)
-        return true
-    } else {
-        core.info("New Comment failed to be created for Commit #" + commitSha + " for " + owner + "/" + repo)
-        return false
-    }
-}
-
 module.exports = {
-    createIssues: createIssues,
-    createIssue: createIssue,
+    getXmlReportPath: getXmlReportPath,
     getIssuesFromXml: getIssuesFromXml,
     getSummary: getSummary
 }

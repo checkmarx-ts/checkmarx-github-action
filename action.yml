@@ -172,6 +172,43 @@ inputs:
     description: 'Github Assignees for Issues created'
     required: false
     default: ''
+outputs:
+  cxActionId:
+    description: 'Github Action ID (e.g. self)'
+  cxRunId:
+    description: 'Github Run ID (e.g. 130420638)'
+  cxWorkflow:
+    description: 'Github Workflow Name (e.g. My Workflow)'
+  cxWorkflowUser:
+    description: 'Github Workflow Actor (e.g. miguelfreitas93)'
+  cxEvent:
+    description: 'Github Event Name (e.g. push)'
+  cxRepository:
+    description: 'Github Repository Name (e.g. user/repository)'
+  cxBranch:
+    description: 'Github Repository Branch (e.g. refs/heads/master)'
+  cxHeadBranch:
+    description: 'Github Repository Head Branch - Pull Requests (e.g. refs/heads/master)'
+  cxBaseBranch:
+    description: 'Github Repository Base Branch - Pull Requests (e.g. refs/heads/master)'
+  cxWorkspace:
+    description: 'Github Workspace Path (e.g. /home/runner/work/checkmarx-github-action/checkmarx-github-action)'
+  cxCommitSHA:
+    description: 'Github Commit SHA (e.g. 5748bf5c580dd1ce8853f26eebe123754692c18e)'
+  cxVersion:
+    description: 'Checkmarx CLI Version used (e.g. 2020.2.11)'
+  cxServer:
+    description: 'Checkmarx Server URL (e.g. https://company.checkmarx.com)'
+  cxAction:
+    description: 'Checkmarx CLI Action (e.g. Scan)'
+  cxLogFile:
+    description: 'Checkmarx CLI Log File Path (e.g. /home/runner/work/checkmarx-github-action/checkmarx-github-action/log.log)'
+  cxCliDownloadUrl:
+    description: 'Checkmarx CLI Download URL (e.g. https://download.checkmarx.com/9.0.0/Plugins/CxConsolePlugin-2020.2.11.zip)'
+  cxCliVersionFileName:
+    description: 'Checkmarx CLI Version File Name (e.g. CxConsolePlugin-2020.2.11)'
+  cxCmdExecuted:
+    description: 'Checkmarx CLI Executed Command (e.g. ./cxcli/runCxConsole.sh Scan -CxServer...)'
 runs:
   using: 'node12'
   main: 'src/index.js'

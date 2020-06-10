@@ -1,13 +1,12 @@
-const dotenv = require('dotenv').config()
-const fs = require('fs')
+require('dotenv').config()
 const path = require('path')
 const core = require('@actions/core')
-const utils = require('./utils.js')
-const cxcli = require('./cxcli.js')
+const utils = require('./utils/utils.js')
+const cxcli = require('./cli/cli.js')
 const cxtoken = require('./cxtoken.js')
-const cxsast = require('./cxsast.js')
+const cxsast = require('./cli/sast.js')
 const cxosa = require('./cxosa.js')
-const cxgithub = require('./cxgithub.js')
+const cxgithub = require('./github/github.js')
 const envs = process.env
 let action = "Scan"
 let version = "8.9" //STABLE VERSION
@@ -158,7 +157,7 @@ async function run() {
         }
 
         if (logFile) {
-            command += " -Log \"" + envs.GITHUB_WORKSPACE + "/" + logFile + "\""
+            command += " -Log \"" + envs.GITHUB_WORKSPACE + path.sep + logFile + "\""
             core.setOutput("cxLogFile", logFile)
         }
 
@@ -210,7 +209,7 @@ async function run() {
                     return
                 }
             }
-        } else{
+        } else {
             core.info("Test mode is enabled")
         }
         await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
