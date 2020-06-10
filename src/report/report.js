@@ -1,6 +1,7 @@
 const fs = require("fs")
 const path = require('path')
 const xmljs = require('xml-js')
+const utils = require('../utils/utils.js')
 const core = require('@actions/core')
 const HIGH = "High"
 const MEDIUM = "Medium"

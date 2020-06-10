@@ -1,5 +1,5 @@
 const core = require('@actions/core')
-const utils = require('./utils.js')
+const utils = require('../utils/utils.js')
 const envs = process.env
 const GITHUB_REPOSITORY = utils.getLastString(envs.GITHUB_REPOSITORY)
 const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)

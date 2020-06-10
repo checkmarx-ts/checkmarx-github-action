@@ -1,5 +1,5 @@
 const core = require('@actions/core')
-const utils = require('./utils.js')
+const utils = require('../utils/utils.js')
 let user
 let password
 let token

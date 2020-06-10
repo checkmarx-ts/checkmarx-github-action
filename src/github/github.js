@@ -1,6 +1,3 @@
-const fs = require("fs")
-const path = require('path')
-const xmljs = require('xml-js')
 const core = require('@actions/core')
 const github = require('@actions/github')
 const utils = require('../utils/utils.js')
@@ -190,7 +187,7 @@ async function createIssues(repository, commitSha, workspace) {
 }
 
 async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, id) {
-    core.info("Creating ticket #" + id + " for " + owner + "/" + repo)
+    core.info("\nCreating ticket #" + id + " for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
         repo: repo,
@@ -212,7 +209,7 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
 }
 
 async function createCommitComment(owner, repo, octokit, commitSha, body, path, position) {
-    core.info("Creating Comment with Checkmarx Summary for Commit #" + commitSha + " for " + owner + "/" + repo)
+    core.info("\nCreating Comment with Checkmarx Summary for Commit #" + commitSha + " for " + owner + "/" + repo)
     const commitCommentCreated = await octokit.repos.createCommitComment({
         owner: owner,
         repo: repo,
@@ -234,7 +231,5 @@ async function createCommitComment(owner, repo, octokit, commitSha, body, path, 
 
 module.exports = {
     createIssues: createIssues,
-    createIssue: createIssue,
-    getIssuesFromXml: getIssuesFromXml,
-    getSummary: getSummary
+    createIssue: createIssue
 }
