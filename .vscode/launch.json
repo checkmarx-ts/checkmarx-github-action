@@ -4,6 +4,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}/src/index.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Test: CxGithub",
             "runtimeExecutable": "npm",
             "runtimeArgs": [

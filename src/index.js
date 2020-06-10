@@ -1,3 +1,6 @@
+const dotenv = require('dotenv').config()
+const fs = require('fs')
+const path = require('path')
 const core = require('@actions/core')
 const utils = require('./utils.js')
 const cxcli = require('./cxcli.js')
@@ -53,7 +56,7 @@ async function run() {
         let cxAction = core.getInput('cxAction', { required: false })
         let cxServer = core.getInput('cxServer', { required: true })
         let cxTrustedCertificates = core.getInput('cxTrustedCertificates', { required: false })
-        
+
         if (utils.isValidAction(cxAction)) {
             action = cxAction
             core.info('cxAction: ' + action)
@@ -101,9 +104,9 @@ async function run() {
             trustedCertificates = false
         }
 
-        let command = "./" 
+        let command = "." + path.sep
 
-        command +=  cxcli.getCliStartCommand()
+        command += cxcli.getCliStartCommand()
 
         let auxCommand = ""
 
@@ -176,38 +179,41 @@ async function run() {
         if (trustedCertificates && trustedCertificates != "false") {
             command += " -TrustedCertificates"
         }
-        
+
 
         core.setOutput("cxVerbose", verbose)
 
         core.info("[END] Read Inputs...\n")
 
-        try {
-            await cxcli.downloadCli(version, skipIfFail)
-        } catch (e) {
-            if (skipIfFail && skipIfFail != "false") {
-                core.warning(e.message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(e.message)
-                return
+        if (!envs.TEST) {
+            try {
+                await cxcli.downloadCli(version, skipIfFail)
+            } catch (e) {
+                if (skipIfFail && skipIfFail != "false") {
+                    core.warning(e.message)
+                    core.warning("Step was skipped")
+                    return true
+                } else {
+                    core.setFailed(e.message)
+                    return
+                }
             }
-        }
-        try {
-            let output = await cxcli.executeCommand(command, skipIfFail)
-        } catch (e) {
-            if (skipIfFail && skipIfFail != "false") {
-                core.warning(e.message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(e.message)
-                return
+            try {
+                let output = await cxcli.executeCommand(command, skipIfFail)
+            } catch (e) {
+                if (skipIfFail && skipIfFail != "false") {
+                    core.warning(e.message)
+                    core.warning("Step was skipped")
+                    return true
+                } else {
+                    core.setFailed(e.message)
+                    return
+                }
             }
+        } else{
+            core.info("Test mode is enabled")
         }
-
-        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA);
+        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
 
     } catch (e) {
         if (skipIfFail && skipIfFail != "false") {

@@ -7,7 +7,7 @@ function getLastString(s) {
         let auxArray = s.split("/")
         return auxArray[auxArray.length - 1]
     } else {
-        core.warning("[" + method + "] variable is not defined")
+        core.warning("[" + method + "] variable '" + s + "' is not defined")
         return s
     }
 }

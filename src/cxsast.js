@@ -1,4 +1,5 @@
 const core = require('@actions/core')
+const path = require('path')
 const utils = require('./utils.js')
 const cxexclusions = require('./cxexclusions.js')
 const envs = process.env
@@ -241,7 +242,7 @@ async function getSastCmd(server, action, skipIfFail) {
             core.info('cxGithubIssues: ' + cxGithubIssues)
             if (cxGithubIssues && cxGithubIssues != "false") {
                 if (!utils.isValidString(reportXml)) {
-                    reportXml = "report.xml"
+                    reportXml = GITHUB_WORKSPACE + path.sep + "report.xml"
                     core.info('cxReportXML will be the default: ' + reportXml)
                 } else {
                     core.info('cxReportXML: ' + cxReportXML)

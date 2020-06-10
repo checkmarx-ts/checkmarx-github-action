@@ -1,4 +1,9 @@
+.env
 results.*
 .nyc_output
 *.zip
 CxConsolePlugin-*
+cxcli
+cxcli.zip
+log.log
+report.xml
