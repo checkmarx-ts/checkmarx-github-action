@@ -16,6 +16,7 @@ let verbose = true
 let logFile
 
 async function run() {
+    let skipIfFail = false
     try {
         core.info('Action ID : ' + envs.GITHUB_ACTION)
         core.info('Run ID : ' + envs.GITHUB_RUN_ID)
@@ -43,7 +44,7 @@ async function run() {
 
         core.info("\n[START] Read Inputs...")
 
-        let skipIfFail = inputs.getBoolean(inputs.CX_SKIP_IF_FAIL, false)
+        skipIfFail = inputs.getBoolean(inputs.CX_SKIP_IF_FAIL, false)
 
         let cxAction = inputs.get(inputs.CX_ACTION, false)
         if (utils.isValidAction(cxAction)) {
@@ -166,7 +167,7 @@ async function run() {
         } else {
             core.info("Test mode is enabled")
         }
-        //await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
+        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
 
     } catch (e) {
         return inputs.coreError(e.message, skipIfFail)

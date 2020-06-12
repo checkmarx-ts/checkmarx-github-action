@@ -2,6 +2,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const report = require('../report/report')
 const inputs = require("./inputs")
+const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
 
 function getToken() {
@@ -38,6 +39,7 @@ async function createIssues(repository, commitSha, workspace) {
             let xmlPath = report.getXmlReportPath(workspace)
             let issues = report.getIssuesFromXml(xmlPath, repository, commitSha)
             if (issues) {
+                let repositoryIssues = await getIssues(owner, repo, octokit)
                 let summary = report.getSummary(issues)
                 await createCommitComment(owner, repo, octokit, commitSha, "My Summary Test Comment", null, null)
                 for (let i = 0; i < issues.length; i++) {
@@ -45,7 +47,7 @@ async function createIssues(repository, commitSha, workspace) {
 
                     let issueGithubLabels = report.getLabels(githubLabels, issue)
 
-                    const title = "[Cx] " + issue.resultSeverity + " - " + issue.queryName
+                    const title = "[Checkmarx] " + issue.queryGroup + " - " + issue.queryName + " : " + issue.similarityId
                     let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
                     body += "-----------------------------------\n"
                     for (let j = 0; j < issue.resultNodes.length; j++) {
@@ -126,6 +128,29 @@ async function createIssues(repository, commitSha, workspace) {
     } else {
         core.info('No issues will be created')
     }
+}
+
+async function getIssues(owner, repo, octokit) {
+    core.info("\nGetting Issues from " + owner + "/" + repo)
+    let issues = []
+    for (let i = 0; i < 1000000; i++) {//TODO Find a better way to get total number of pages for issues
+        let res = await octokit.issues.listForRepo({
+            owner: owner,
+            repo: repo,
+            state: "all",
+            page: i
+        })
+        if (res.status == HTTP_STATUS_OK) {
+            issues = issues.concat(res.data)
+            if (res.data.length < 30) {
+                break
+            }
+        } else {
+            core.info("Cannot retrieve issues page " + i + " from " + owner + "/" + repo)
+            return issues
+        }
+    }
+    return issues
 }
 
 async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, githubMilestone, id) {

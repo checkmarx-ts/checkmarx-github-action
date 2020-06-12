@@ -144,15 +144,7 @@ function getSastCmd(server, action, skipIfFail) {
 
         return command
     } else {
-        let message = "Invalid Server or action : " + server + " " + action
-        if (skipIfFail && skipIfFail != "false") {
-            core.warning(message)
-            core.warning("Step was skipped")
-            return true
-        } else {
-            core.setFailed(message)
-            return
-        }
+        return inputs.error(inputs.CX_SERVER, server, skipIfFail)
     }
 }
 

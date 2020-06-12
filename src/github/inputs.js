@@ -53,7 +53,7 @@ function getBoolean(key, isRequired) {
     let tempValue = get(key, isRequired)
     if (utils.isBoolean(tempValue)) {
         core.info(key + ' : ' + tempValue)
-        const value = tempValue == true
+        const value = tempValue == "true"
         core.setOutput(key, value)
         return value
     } else {
