@@ -1,30 +1,15 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-const utils = require('../utils/utils.js')
-const report = require('../report/report.js')
+const report = require('../report/report')
+const inputs = require("./inputs")
+const HTTP_STATUS_CREATED = 201
 
 function getToken() {
     let token = ""
-    let cxGithubIssues = core.getInput('cxGithubIssues', { required: false })
-    let createGithubIssues = false;
-    if (utils.isBoolean(cxGithubIssues)) {
-        core.info('cxGithubIssues: ' + cxGithubIssues)
-        createGithubIssues = cxGithubIssues
-    } else {
-        core.info('cxGithubIssues was not provided')
-        createGithubIssues = false
-    }
+    let createGithubIssues = inputs.getBoolean(inputs.CX_GITHUB_ISSUES, false)
 
     if (createGithubIssues && createGithubIssues != "false") {
-        let cxGithubToken = core.getInput('cxGithubToken', { required: false })
-        if (utils.isValidString(cxGithubToken)) {
-            core.info('cxGithubToken was provided')
-            token = cxGithubToken
-        } else {
-            token = ''
-            core.info('cxGithubToken was not provided')
-            core.info('No issues will be created')
-        }
+        token = inputs.getString(inputs.CX_GITHUB_TOKEN, false)
     } else {
         core.info('Issues will not be created since cxGithubIssues was not provided or set to false')
     }
@@ -38,42 +23,10 @@ async function createIssues(repository, commitSha, workspace) {
 
     if (token) {
 
-        let githubLabels = []
-        let githubAssignees = []
-        let githubMilestone = null
-
-        let cxGithubLabels = core.getInput('cxGithubLabels', { required: false })
-        if (utils.isValidString(cxGithubLabels)) {
-            if (cxGithubLabels.indexOf(",") != -1) {
-                githubLabels = cxGithubLabels.split(",")
-            } else {
-                githubLabels = [cxGithubLabels]
-            }
-        } else {
-            githubLabels = []
-        }
-
+        let githubLabels = inputs.getArray(inputs.CX_GITHUB_LABELS, false)
         githubLabels.push("checkmarx")
-
-        let cxGithubAssignees = core.getInput('cxGithubAssignees', { required: false })
-        if (utils.isValidString(cxGithubAssignees)) {
-            if (cxGithubAssignees.indexOf(",") != -1) {
-                githubAssignees = cxGithubAssignees.split(",")
-            } else {
-                githubAssignees = [cxGithubAssignees]
-            }
-        } else {
-            githubAssignees = []
-        }
-
-        let cxGithubMilestone = core.getInput('cxGithubMilestone', { required: false })
-        if (utils.isValidInt(cxGithubMilestone)) {
-            githubMilestone = cxGithubMilestone
-            core.info("cxGithubMilestone: " + githubMilestone)
-        } else {
-            githubMilestone = null
-            core.info("cxGithubMilestone was not provided")
-        }
+        let githubAssignees = inputs.getArray(inputs.CX_GITHUB_ASSIGNEES, false)
+        let githubMilestone = inputs.getInt(inputs.CX_GITHUB_MILESTONE, false)
 
         const repoSplit = repository.split("/")
         const owner = repoSplit[0]
@@ -170,6 +123,8 @@ async function createIssues(repository, commitSha, workspace) {
         } else {
             core.info("Unable to authenticate to octokit. Please provide a proper GITHUB_TOKEN")
         }
+    } else {
+        core.info('No issues will be created')
     }
 }
 
@@ -184,7 +139,7 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         labels: githubLabels,
         milestone: githubMilestone
     })
-    if (issueCreated.status == 201) {
+    if (issueCreated.status == HTTP_STATUS_CREATED) {
         const issueId = issueCreated.data.number
         const issueUrl = issueCreated.data.html_url
         core.info("Ticket #" + issueId + " was Created for " + owner + "/" + repo)
@@ -206,7 +161,7 @@ async function createCommitComment(owner, repo, octokit, commitSha, body, path, 
         path: path,
         position: position
     })
-    if (commitCommentCreated.status == 201) {
+    if (commitCommentCreated.status == HTTP_STATUS_CREATED) {
         const commentUrl = commitCommentCreated.data.html_url
         core.info("New Comment was Created for Commit #" + commitSha + " for " + owner + "/" + repo)
         core.info(commentUrl)

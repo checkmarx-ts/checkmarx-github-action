@@ -205,7 +205,7 @@ outputs:
     description: 'Checkmarx Server URL (e.g. https://company.checkmarx.com)'
   cxAction:
     description: 'Checkmarx CLI Action (e.g. Scan)'
-  cxLogFile:
+  cxLog:
     description: 'Checkmarx CLI Log File Path (e.g. /home/runner/work/checkmarx-github-action/checkmarx-github-action/log.log)'
   cxCliDownloadUrl:
     description: 'Checkmarx CLI Download URL (e.g. https://download.checkmarx.com/9.0.0/Plugins/CxConsolePlugin-2020.2.11.zip)'

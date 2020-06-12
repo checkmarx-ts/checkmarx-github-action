@@ -1,6 +1,7 @@
 const fs = require("fs")
 const path = require('path')
 const xmljs = require('xml-js')
+const inputs = require('../github/inputs.js')
 const utils = require('../utils/utils.js')
 const core = require('@actions/core')
 const HIGH = "High"
@@ -22,12 +23,12 @@ const PROPOSED_NOT_EXPLOITABLE_LABEL = "Proposed Not Exploitable"
 
 function getXmlReportPath(workspace) {
     let reportXml = ''
-    let cxReportXML = core.getInput('cxReportXML', { required: false })
+    let cxReportXML = inputs.get(inputs.CX_REPORT_XML, false)
     if (utils.isValidString(cxReportXML)) {
-        core.info('cxReportXML: ' + cxReportXML)
+        core.info(inputs.CX_REPORT_XML + ': ' + cxReportXML)
         reportXml = cxReportXML.trim()
     } else {
-        core.info("No 'cxReportXML' input provided. It will be used the default one: " + workspace + path.sep + "report.xml")
+        core.info("No '" + inputs.CX_REPORT_XML + "' input provided. It will be used the default one: " + workspace + path.sep + "report.xml")
         reportXml = workspace + path.sep + "report.xml"
     }
     return reportXml

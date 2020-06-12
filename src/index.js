@@ -1,20 +1,19 @@
 require('dotenv').config()
 const path = require('path')
 const core = require('@actions/core')
-const utils = require('./utils/utils.js')
-const cxcli = require('./cli/cli.js')
-const cxtoken = require('./cli/token.js')
-const cxsast = require('./cli/sast.js')
-const cxosa = require('./cli/osa.js')
-const cxgithub = require('./github/github.js')
+const utils = require('./utils/utils')
+const cxcli = require('./cli/cli')
+const cxtoken = require('./cli/token')
+const cxsast = require('./cli/sast')
+const cxosa = require('./cli/osa')
+const cxgithub = require('./github/github')
+const inputs = require('./github/inputs')
 const envs = process.env
-let action = "Scan"
-let version = "8.9" //STABLE VERSION
+let action = utils.getDefaultAction()
+let version = utils.getStableVersion()
 let server
 let verbose = true
 let logFile
-let skipIfFail = false
-let trustedCertificates = false
 
 async function run() {
     try {
@@ -44,62 +43,39 @@ async function run() {
 
         core.info("\n[START] Read Inputs...")
 
-        let cxSkipIfFail = core.getInput('cxSkipIfFail', { required: false })
-        if (utils.isBoolean(cxSkipIfFail)) {
-            core.info('cxSkipIfFail: ' + cxSkipIfFail)
-            skipIfFail = cxSkipIfFail
-        } else {
-            core.info('Skip If Fail valid flag not provided')
-            skipIfFail = false
-        }
-        let cxAction = core.getInput('cxAction', { required: false })
-        let cxServer = core.getInput('cxServer', { required: true })
-        let cxTrustedCertificates = core.getInput('cxTrustedCertificates', { required: false })
+        let skipIfFail = inputs.getBoolean(inputs.CX_SKIP_IF_FAIL, false)
 
+        let cxAction = inputs.get(inputs.CX_ACTION, false)
         if (utils.isValidAction(cxAction)) {
             action = cxAction
-            core.info('cxAction: ' + action)
+            core.info(inputs.CX_ACTION + ': ' + action)
         } else {
-            core.info('"cxAction" not provided')
+            core.info(inputs.CX_ACTION + ' not provided')
             core.info('Default Action will be used: ' + action)
         }
 
+        let cxServer = inputs.get(inputs.CX_SERVER, true)
         if (utils.isValidUrl(cxServer)) {
-            core.info('cxServer: ' + cxServer)
+            core.info(inputs.CX_SERVER + ' : ' + cxServer)
             server = cxServer.trim()
         } else {
-            let message = "Please provide 'cxServer' input (string - HTTPS should be used): " + cxServer
-            if (skipIfFail && skipIfFail != "false") {
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return
-            }
+            return inputs.error(inputs.CX_SERVER, cxServer, skipIfFail)
         }
 
-        let cxVersion = core.getInput('cxVersion', { required: false })
+        let cxVersion = inputs.get(inputs.CX_VERSION, false)
 
         if (cxcli.isValidVersion(cxVersion)) {
-            core.info('cxVersion: ' + cxVersion)
+            core.info(inputs.CX_VERSION + ' : ' + cxVersion)
             version = cxVersion.trim()
         } else {
-            core.info("No 'cxVersion' valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
+            core.info("No " + inputs.CX_VERSION + " valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
         }
-        core.setOutput("cxVersion", version)
-        core.setOutput("cxServer", server)
-        core.setOutput("cxAction", action)
+        core.setOutput(inputs.CX_VERSION, version)
+        core.setOutput(inputs.CX_SERVER, server)
+        core.setOutput(inputs.CX_ACTION, action)
 
-        if (!cxVersion.startsWith("9.0")) {
-            if (utils.isBoolean(cxTrustedCertificates)) {
-                core.info('cxTrustedCertificates: ' + cxTrustedCertificates)
-                trustedCertificates = cxTrustedCertificates
-            } else {
-                core.info('"cxTrustedCertificates" valid flag not provided')
-                trustedCertificates = false
-            }
-        } else {
+        let trustedCertificates = inputs.getBoolean(inputs.CX_TRUSTED_CERTS, false)
+        if (!utils.is9Version(cxVersion)) {
             trustedCertificates = false
         }
 
@@ -110,26 +86,26 @@ async function run() {
         let auxCommand = ""
 
         switch (action) {
-            case "Scan":
-                auxCommand = await cxsast.getSastCmd(server, action, skipIfFail)
+            case utils.SCAN:
+                auxCommand = cxsast.getSastCmd(server, action, skipIfFail)
                 break
-            case "AsyncScan":
-                auxCommand = await cxsast.getSastCmd(server, action, skipIfFail)
+            case utils.ASYNC_SCAN:
+                auxCommand = cxsast.getSastCmd(server, action, skipIfFail)
                 break
-            case "OsaScan":
-                auxCommand = await cxosa.getOsaCmd(server, action, skipIfFail)
+            case utils.OSA_SCAN:
+                auxCommand = cxosa.getOsaCmd(server, action, skipIfFail)
                 break
-            case "AsyncOsaScan":
-                auxCommand = await cxosa.getOsaCmd(server, action, skipIfFail)
+            case utils.ASYNC_OSA_SCAN:
+                auxCommand = cxosa.getOsaCmd(server, action, skipIfFail)
                 break
-            case "RevokeToken":
-                auxCommand = await cxtoken.revokeTokenGetCmd(server, skipIfFail)
+            case utils.REVOKE_TOKEN:
+                auxCommand = cxtoken.revokeTokenGetCmd(server, skipIfFail)
                 break
-            case "GenerateToken":
-                auxCommand = await cxtoken.generateTokenGetCmd(server, skipIfFail)
+            case utils.GENERATE_TOKEN:
+                auxCommand = cxtoken.generateTokenGetCmd(server, skipIfFail)
                 break
             default:
-                auxCommand = await cxsast.getSastCmd(server, "Scan", skipIfFail)
+                auxCommand = cxsast.getSastCmd(server, utils.getDefaultAction(), skipIfFail)
                 break
         }
 
@@ -137,37 +113,30 @@ async function run() {
             command += auxCommand
         } else {
             let message = "Invalid auxCommand : " + auxCommand
-            if (skipIfFail && skipIfFail != "false") {
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return
-            }
+            return inputs.coreError(message, skipIfFail)
         }
 
-        let cxLog = core.getInput('cxLog', { required: false })
+        let cxLog = inputs.get(inputs.CX_LOG, false)
 
         if (utils.isValidFilename(cxLog)) {
-            core.info('cxLog: ' + cxLog)
+            core.info(inputs.CX_LOG + ' : ' + cxLog)
             logFile = cxLog.trim()
         } else {
-            core.info("No 'cxLog' valid input provided")
+            core.info("No " + inputs.CX_LOG + " valid input provided")
         }
 
         if (logFile) {
             command += " -Log \"" + envs.GITHUB_WORKSPACE + path.sep + logFile + "\""
-            core.setOutput("cxLogFile", logFile)
+            core.setOutput(inputs.CX_LOG, logFile)
         }
 
-        let cxVerbose = core.getInput('cxVerbose', { required: false })
+        let cxVerbose = inputs.get(inputs.CX_VERBOSE, false)
 
         if (utils.isBoolean(cxVerbose)) {
-            core.info('cxVerbose: ' + cxVerbose)
+            core.info(inputs.CX_VERBOSE + ' : ' + cxVerbose)
             verbose = cxVerbose
         } else {
-            core.info('Verbose valid flag not provided')
+            core.info(inputs.CX_VERBOSE + ' valid flag not provided')
             verbose = true
         }
 
@@ -179,8 +148,7 @@ async function run() {
             command += " -TrustedCertificates"
         }
 
-
-        core.setOutput("cxVerbose", verbose)
+        core.setOutput(inputs.CX_VERBOSE, verbose)
 
         core.info("[END] Read Inputs...\n")
 
@@ -188,41 +156,20 @@ async function run() {
             try {
                 await cxcli.downloadCli(version, skipIfFail)
             } catch (e) {
-                if (skipIfFail && skipIfFail != "false") {
-                    core.warning(e.message)
-                    core.warning("Step was skipped")
-                    return true
-                } else {
-                    core.setFailed(e.message)
-                    return
-                }
+                return inputs.coreError(e.message, skipIfFail)
             }
             try {
                 let output = await cxcli.executeCommand(command, skipIfFail)
             } catch (e) {
-                if (skipIfFail && skipIfFail != "false") {
-                    core.warning(e.message)
-                    core.warning("Step was skipped")
-                    return true
-                } else {
-                    core.setFailed(e.message)
-                    return
-                }
+                return inputs.coreError(e.message, skipIfFail)
             }
         } else {
             core.info("Test mode is enabled")
         }
-        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
+        //await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
 
     } catch (e) {
-        if (skipIfFail && skipIfFail != "false") {
-            core.warning(e.message)
-            core.warning("Step was skipped")
-            return true
-        } else {
-            core.setFailed(e.message)
-            return
-        }
+        return inputs.coreError(e.message, skipIfFail)
     }
 }
 

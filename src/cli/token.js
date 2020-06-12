@@ -1,77 +1,45 @@
 const core = require('@actions/core')
 const utils = require('../utils/utils.js')
-let user
-let password
-let token
+const inputs = require('../github/inputs.js')
 
-async function revokeTokenGetCmd(server, skipIfFail) {
+function revokeTokenGetCmd(server, skipIfFail) {
     if (utils.isValidUrl(server)) {
-        let cxToken = core.getInput('cxToken', { required: true })
+        let token = ""
 
+        let cxToken = inputs.get(inputs.CX_TOKEN, true)
         if (utils.isValidString(cxToken)) {
             token = cxToken.trim()
         } else {
-            let message = "Please provide 'cxToken' input (string)"
-            if(skipIfFail && skipIfFail != "false"){
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return
-            }
+            return inputs.error(inputs.CX_TOKEN, "********", skipIfFail)
         }
 
-        let command = "RevokeToken" +
-            " -CxServer " + server +
+        let command = "RevokeToken -CxServer " + server +
             " -CxToken " + token
 
         return command
     } else {
-        let message = "Invalid Server : " + server
-        if(skipIfFail && skipIfFail != "false"){
-            core.warning(message)
-            core.warning("Step was skipped")
-            return true
-        } else {
-            core.setFailed(message)
-            return
-        }
+        return inputs.error(inputs.CX_SERVER, server, skipIfFail)
     }
 }
 
-async function generateTokenGetCmd(server, skipIfFail) {
+function generateTokenGetCmd(server, skipIfFail) {
     if (utils.isValidUrl(server)) {
-        let cxUsername = core.getInput('cxUsername', { required: true })
-        let cxPassword = core.getInput('cxPassword', { required: true })
+        let user = ""
+        let password = ""
 
+        let cxUsername = inputs.get(inputs.CX_USERNAME, true)
         if (utils.isValidString(cxUsername)) {
-            core.info('cxUsername: ' + cxUsername)
+            core.info(inputs.CX_USERNAME + ' : ' + cxUsername)
             user = cxUsername.trim()
         } else {
-            let message = "Please provide 'cxUsername' input (string) : " + cxUsername
-            if(skipIfFail && skipIfFail != "false"){
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return
-            }
+            return inputs.error(inputs.CX_USERNAME, cxUsername, skipIfFail)
         }
 
+        let cxPassword = inputs.get(inputs.CX_PASSWORD, true)
         if (utils.isValidString(cxPassword)) {
             password = cxPassword.trim()
         } else {
-            let message = "Please provide 'cxPassword' input (string)"
-            if(skipIfFail && skipIfFail != "false"){
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return
-            }
+            return inputs.error(inputs.CX_PASSWORD, "********", skipIfFail)
         }
 
         let command = "GenerateToken" +
@@ -81,15 +49,7 @@ async function generateTokenGetCmd(server, skipIfFail) {
 
         return command
     } else {
-        let message = "Invalid Server : " + server
-        if(skipIfFail && skipIfFail != "false"){
-            core.warning(message)
-            core.warning("Step was skipped")
-            return true
-        } else {
-            core.setFailed(message)
-            return
-        }
+        return inputs.error(inputs.CX_SERVER, server, skipIfFail)
     }
 }
 

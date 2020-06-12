@@ -3,6 +3,7 @@ const path = require('path')
 const utils = require('../utils/utils.js')
 const core = require('@actions/core')
 const exec = require('@actions/exec')
+const inputs = require('../github/inputs')
 const isWin = process.platform === "win32" || process.platform === "win64";
 const DOWNLOAD_DOMAIN = "https://download.checkmarx.com"
 const DOWNLOAD_COMMON_PATH = "Plugins/CxConsolePlugin-"
@@ -122,7 +123,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
                     await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + zipFileName)
-                    if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
+                    if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(zipFileName)) {
                             await exec.exec("unzip -q " + zipFileName)
                         } else {
@@ -145,7 +146,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                 }
 
                 if (!cliExists) {
-                    if (!cxVersion.startsWith("9.0") && !cxVersion.startsWith("2020")) {
+                    if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(versionFileName)) {
                             await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
                         } else {
@@ -182,15 +183,7 @@ async function downloadCli(cxVersion, skipIfFail) {
             return false
         }
     } else {
-        let message = "Invalid version : " + cxVersion
-        if (skipIfFail && skipIfFail != "false") {
-            core.warning(message)
-            core.warning("Step was skipped")
-            return true
-        } else {
-            core.setFailed(message)
-            return false
-        }
+        return inputs.coreError("Invalid version : " + cxVersion, skipIfFail)
     }
 }
 
@@ -217,15 +210,7 @@ async function executeCommand(command, skipIfFail) {
             await exec.exec(command)
             return true
         } catch (e) {
-            let message = "Failed to execute command : " + e.message
-            if (skipIfFail && skipIfFail != "false") {
-                core.warning(message)
-                core.warning("Step was skipped")
-                return true
-            } else {
-                core.setFailed(message)
-                return false
-            }
+            return inputs.coreError( "Failed to execute command : " + e.message, skipIfFail)
         }
     } else {
         core.info("Invalid command string : " + command)
