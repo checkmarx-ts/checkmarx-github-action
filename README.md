@@ -76,6 +76,8 @@ jobs:
         cxGithubAssignees: miguelfreitas93
 ```
 
+Note: This will created automatically Github Issues and Commit Comment with detailed information about Checkmarx Project, Scan and Results 
+
 ## Workflow - Sample OSA Scan
 
 ```yml
@@ -318,6 +320,8 @@ To avoid maximum confidentiality of user and server details you should use the f
 - For example purposes, cxServer, cxUsername, cxTeam are presented in plaintext. Beside this, to assure confidentiality for production use, please place them under Secrets, as CX_PASSWORD and CX_TOKEN.
 
 - Avoid to use cxAction: GenerateToken, since this can leak Checkmarx access token to the build logs.
+
+- If Github Issues Automation is being used, please assure Issues and Commits are private in order to avoid exposure of: Server URL, Team Name, Username, Email and Vulnerabilities that might be very sensitive such as Passwords exposure.
 ```
 # Challenges:
 
