@@ -1,3 +1,5 @@
+const core = require('@actions/core')
+const path = require('path')
 const utils = require('../utils/utils.js')
 const inputs = require('../github/inputs.js')
 const envs = process.env
@@ -29,7 +31,20 @@ function getOsaCmd(server, action, skipIfFail) {
         let executePackageDependency = inputs.getBoolean(inputs.CX_OSA_EXECUTE_PACKAGE_DEPENDENCY, false)
         let osaJson = inputs.getString(inputs.CX_OSA_JSON, false)
         let checkPolicy = inputs.getBoolean(inputs.CX_OSA_CHECK_POLICY, false)
-
+        let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
+        if (utils.isBoolean(cxGithubIssues)) {
+            core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
+            if (cxGithubIssues && cxGithubIssues != "false") {
+                if (!utils.isValidString(osaJson)) {
+                    osaJson = GITHUB_WORKSPACE + path.sep + "report.json"
+                    core.info(inputs.CX_OSA_JSON + ' will be the default: ' + osaJson)
+                } else {
+                    core.info(inputs.CX_OSA_JSON + ' : ' + osaJson)
+                }
+            }
+        } else {
+            core.info(inputs.CX_GITHUB_ISSUES + ' was not provided')
+        }
 
         let command = action +
             " -CxServer " + server +

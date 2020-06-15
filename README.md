@@ -53,6 +53,29 @@ jobs:
         cxTeam: \CxServer\SP\Company\TeamA
 ```
 
+## Workflow - Sample SAST Scan with Token Authentication with Automatic Github Issues Creation
+(v1.0.2 or above)
+```yml
+name: Checkmarx SAST Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: checkmarx-ts/checkmarx-github-action@<version>
+      with:
+        cxServer: https://checkmarx.company.com
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxTeam: \CxServer\SP\Company\TeamA
+        cxGithubIssues: true
+        cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
+        cxGithubLabels: bug,test
+        cxGithubAssignees: miguelfreitas93
+```
+
 ## Workflow - Sample OSA Scan
 
 ```yml
@@ -208,6 +231,18 @@ For using this action, there is a set of options that can be used, such as:
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
+
+#### Inputs for Actions: Gihub Issues
+
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxGithubIssues | true | Create Automatically Github Issues from Checkmarx XML Report | Boolean | No | false
+| cxGithubToken | ${{ secrets.GITHUB_TOKEN }} | Github Token | Secure String | No |
+| cxGithubLabels | checkmarx,test | Github Labels for Issues | String | No | checkmarx,{{severity}},{{state}},{{status}} |
+| cxGithubAssignees | user1,user2,user3 | Github Usernames (comma ',' separated) | String | No | | 
+| cxGithubMilestone | 1 | Github Milestone | Integer | No | -1 |
+
+Note: cxGithubIssues set to "true" and cxGithubToken set to "${{ secrets.GITHUB_TOKEN }}" are mandatory for creation of Github issues
 
 ## CLI Versions Support
 
