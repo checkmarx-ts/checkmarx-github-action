@@ -4,6 +4,8 @@ const report = require('../report/report')
 const inputs = require("./inputs")
 const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
+const GITHUB_STATE_OPEN = "open"
+const GITHUB_STATE_CLOSED = "closed"
 
 function getToken() {
     let token = ""
@@ -43,87 +45,59 @@ async function createIssues(repository, commitSha, workspace) {
             let issues = report.getIssuesFromXml(xmlPath, repository, commitSha)
             if (issues) {
                 let repositoryIssues = await getIssues(owner, repo, octokit)
-                let summary = report.getSummary(issues)
-                await createCommitComment(owner, repo, octokit, commitSha, "My Summary Test Comment", null, null)
+                let resolvedIssues = 0
+                let reopenedIssues = 0
+                let recurrentIssues = 0
+                let newIssues = 0
                 for (let i = 0; i < issues.length; i++) {
                     let issue = issues[i]
-
+                    
+                    const title = report.getTitle(issue)
+                    const body = report.getBody(issue)
                     let issueGithubLabels = report.getLabels(githubLabels, issue)
 
-                    const title = "[Checkmarx] " + issue.queryGroup + " - " + issue.queryName + " : " + issue.similarityId
-                    let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
-                    body += "-----------------------------------\n"
-                    for (let j = 0; j < issue.resultNodes.length; j++) {
-                        let node = issue.resultNodes[j]
-                        body += "**" + j + " Node** - Line " + node.line + " - " + node.name + "\n"
-                        body += node.fileName + "\n"
-                        body += "-----------------------------------\n"
-                    }
-                    body += "\n"
-                    body += "**Comments**\n"
-                    for (let j = 0; j < issue.resultRemark.length; j++) {
-                        body += issue.resultRemark[j] + "\n"
-                    }
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Project Details**\n"
-                    body += "Checkmarx Version: " + issue.cxVersion + "\n"
-                    body += "Project ID: " + issue.projectId + "\n"
-                    body += "Project Name: " + issue.projectName + "\n"
-                    body += "Preset: " + issue.preset + "\n"
-                    body += "Owner: " + issue.owner + "\n"
-                    body += "Team: " + issue.teamFullPath + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Scan Details**\n"
-                    body += "Initiator Name: " + issue.initiatorName + "\n"
-                    body += "Scan ID: " + issue.scanId + "\n"
-                    body += "LOC: " + issue.loc + "\n"
-                    body += "Files Scanned: " + issue.filesScanned + "\n"
-                    body += "Scan Type: " + issue.scanType + "\n"
-                    body += "Scan URL: " + issue.scanDeepLink + "\n"
-                    body += "Scan Comment: " + issue.scanComment + "\n"
-                    body += "Scan Type: " + issue.scanTime + "\n"
-                    body += "Scan Start Date: " + issue.scanStartDate + "\n"
-                    body += "Scan Time: " + issue.scanTime + "\n"
-                    body += "Source Origin: " + issue.sourceOrigin + "\n"
-                    body += "Visibility: " + issue.visibility + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Result Details**\n"
-                    body += "Query ID: " + issue.queryId + "\n"
-                    body += "Query Path: " + issue.queryPath + "\n"
-                    body += "Query Group: " + issue.queryGroup + "\n"
-                    body += "Query Name: " + issue.queryName + "\n"
-                    body += "Query Language: " + issue.queryLanguage + "\n"
-                    body += "Query Language Hash: " + issue.queryLanguageHash + "\n"
-                    body += "Query Language Change Date: " + issue.queryLanguageChangeDate + "\n"
-                    body += "Query Version Code: " + issue.queryVersionCode + "\n"
-                    body += "Query Severity: " + issue.querySeverity + "\n"
-                    body += "Query Severity Index: " + issue.querySeverityIndex + "\n"
-                    body += "Similarity ID: " + issue.similarityId + "\n"
-                    body += "Path ID: " + issue.pathId + "\n"
-                    body += "Result ID: " + issue.resultId + "\n"
-                    body += "Result State: " + issue.resultState + "\n"
-                    body += "Result Severity: " + issue.resultSeverity + "\n"
-                    body += "Result Status: " + issue.resultStatus + "\n"
-                    body += "Result Assignee: " + issue.resultAssignee + "\n"
-                    body += "\n"
-                    body += "-----------------------------------\n"
-                    body += "**Mitigation Details**\n"
-                    body += "Checkmarx Recommendations URL: " + issue.scanDeepLink.split("/ViewerMain.aspx")[0] + "/ScanQueryDescription.aspx?queryID=" + issue.queryId + "&queryVersionCode=" + issue.queryVersionCode + "&queryTitle=" + issue.queryName + "\n"
-                    body += "CWE ID: " + issue.cweId + "\n"
-                    body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
 
-                    let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i)
-
-                    for (let j = 0; j < issue.resultNodes.length; j++) {
-                        let node = issue.resultNodes[j]
-                        let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
-                        await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
+                    let state = GITHUB_STATE_OPEN
+                    if (issue.resultState == report.NOT_EXPLOITABLE) {
+                        state = GITHUB_STATE_CLOSED
                     }
-                    issueGithubLabels = []
+
+                    let issueExists = false
+                    for (let j = 0; j < repositoryIssues.length; j++) {
+                        let repositoryIssue = repositoryIssues[j]
+                        const titleRepositoryIssue = repositoryIssue.title
+                        if (titleRepositoryIssue == title) {
+                            issueExists = true
+                            if(state != repositoryIssue.state){
+                                if(state == GITHUB_STATE_OPEN && repositoryIssue.state == GITHUB_STATE_CLOSED){
+                                    reopenedIssues++
+                                } else if(state == GITHUB_STATE_CLOSED && repositoryIssue.state == GITHUB_STATE_OPEN){
+                                    resolvedIssues++
+                                } else{
+                                    recurrentIssues++
+                                }
+                            } else{
+                                recurrentIssues++
+                            }
+                            await updateIssue(owner, repo, octokit, body, issueGithubLabels, githubAssignees, githubMilestone, repositoryIssue, state)
+                            break
+                        }
+                    }
+                    if (!issueExists) {
+                        newIssues++
+                        let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i, state)
+
+                        for (let j = 0; j < issue.resultNodes.length; j++) {
+                            let node = issue.resultNodes[j]
+                            let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
+                            await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
+                        }
+                        issueGithubLabels = []
+                    }
                 }
+
+                let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
+                await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
             }
         } else {
             core.info("Unable to authenticate to octokit. Please provide a proper GITHUB_TOKEN")
@@ -156,7 +130,56 @@ async function getIssues(owner, repo, octokit) {
     return issues
 }
 
-async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, githubMilestone, id) {
+async function updateIssue(owner, repo, octokit, body, githubLabels, githubAssignees, githubMilestone, repositoryIssue, state) {
+
+    core.info("\nUpdating ticket #" + repositoryIssue.number + " for " + owner + "/" + repo)
+    let uniqueLabels = githubLabels
+    for (let i = 0; i < repositoryIssue.labels.length; i++) {
+        const label = repositoryIssue.labels[i].name
+        if (!uniqueLabels.includes(label)) {
+            uniqueLabels.push(label)
+        }
+    }
+    let uniqueAssignees = githubAssignees
+    for (let i = 0; i < repositoryIssue.assignees.length; i++) {
+        const assignee = repositoryIssue.assignees[i].login
+        if (!uniqueAssignees.includes(assignee)) {
+            uniqueAssignees.push(assignee)
+        }
+    }
+
+    const issueUpdated = await octokit.issues.update({
+        owner: owner,
+        repo: repo,
+        issue_number: repositoryIssue.number,
+        title: repositoryIssue.title,
+        body: repositoryIssue.body,
+        state: state,
+        milestone: githubMilestone,
+        labels: uniqueLabels,
+        assignees: uniqueAssignees
+    })
+    if (issueUpdated.status == HTTP_STATUS_OK) {
+        const issueCommented = await octokit.issues.createComment({
+            owner: owner,
+            repo: repo,
+            issue_number: repositoryIssue.number,
+            body: body
+        })
+        if (issueCommented.status == HTTP_STATUS_CREATED) {
+            core.info("New Comment was Created for Issue #" + repositoryIssue.number + " for " + owner + "/" + repo)
+            return issueCommented.data
+        } else {
+            core.info("Cannot Create Comment for issue #" + repositoryIssue.number + " from " + owner + "/" + repo)
+            return issueCommented.data
+        }
+    } else {
+        core.info("Cannot update issue #" + repositoryIssue.number + " from " + owner + "/" + repo)
+        return issueUpdated.data
+    }
+}
+
+async function createIssue(owner, repo, octokit, title, body, githubLabels, githubAssignees, githubMilestone, id, state) {
     core.info("\nCreating ticket #" + id + " for " + owner + "/" + repo)
     let issueCreated = await octokit.issues.create({
         owner: owner,
@@ -172,7 +195,26 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
         const issueUrl = issueCreated.data.html_url
         core.info("Ticket #" + issueId + " was Created for " + owner + "/" + repo)
         core.info(issueUrl)
-        return issueId
+
+        const issueUpdated = await octokit.issues.update({
+            owner: owner,
+            repo: repo,
+            issue_number: issueId,
+            title: title,
+            body: body,
+            state: state,
+            milestone: githubMilestone,
+            labels: githubLabels,
+            assignees: githubAssignees
+        })
+        if (issueUpdated.status == HTTP_STATUS_OK) {
+            core.info("Update State of Issue #" + issueId + " from " + owner + "/" + repo)
+            return issueId
+        } else {
+
+            core.info("Cannot update issue #" + issueId + " from " + owner + "/" + repo)
+            return issueId
+        }
     } else {
         core.info("Ticket #" + id + " failed to be Created for " + owner + "/" + repo)
         return false
@@ -202,5 +244,7 @@ async function createCommitComment(owner, repo, octokit, commitSha, body, path, 
 
 module.exports = {
     createIssues: createIssues,
-    createIssue: createIssue
+    createIssue: createIssue,
+    updateIssue: updateIssue,
+    createCommitComment: createCommitComment
 }

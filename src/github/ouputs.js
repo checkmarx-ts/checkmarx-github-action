@@ -1,17 +1,26 @@
-
-const inputs = require("./inputs")
-
 module.exports = {
-    CX_SKIP_IF_FAIL: "cxSkipIfFail",
+    CX_ACTION_ID:"cxActionId",
+    CX_RUN_ID:"cxRunId",
+    CX_WORKFLOW:"cxWorkflow",
+    CX_WORKDLOW_USER:"cxWorkflowUser",
+    CX_EVENT:"cxEvent",
+    CX_REPOSITORY:"cxRepository",
+    CX_BRANCH:"cxBranch",
+    CX_HEAD_BRANCH:"cxHeadBranch",
+    CX_BASE_BRANCH:"cxBaseBranch",
+    CX_WORKSPACE:"cxWorkspace",
+    CX_COMMIT_SHA:"cxCommitSHA",
     CX_VERSION: "cxVersion",
     CX_SERVER: "cxServer",
     CX_ACTION: "cxAction",
-    CX_TRUSTED_CERTS: 'cxTrustedCertificates',
-    CX_LOG: 'cxLog',
-    CX_VERBOSE: 'cxVerbose',
-    CX_TOKEN: CX_TOKEN,
-    CX_USERNAME: CX_USERNAME,
-    CX_PASSWORD: CX_PASSWORD,
-    CX_PROJECT: CX_PROJECT,
-    CX_TEAM: CX_TEAM
+    CX_SKIP_IF_FAIL: "cxSkipIfFail",
+    CX_TRUSTED_CERTS: "cxTrustedCertificates",
+    CX_LOG: "cxLog",
+    CX_VERBOSE: "cxVerbose",
+    CX_USERNAME: "cxUsername",
+    CX_PROJECT: "cxProject",
+    CX_TEAM: "cxTeam",
+    CX_CLI_DOWNLOAD_URL: "cxCliDownloadUrl",
+    CX_CMD_EXECUTED: "cxCmdExecuted",
+    CX_IS_WIN: "cxIsWin"
 }

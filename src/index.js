@@ -8,6 +8,7 @@ const cxsast = require('./cli/sast')
 const cxosa = require('./cli/osa')
 const cxgithub = require('./github/github')
 const inputs = require('./github/inputs')
+const outputs = require("./github/ouputs")
 const envs = process.env
 let action = utils.getDefaultAction()
 let version = utils.getStableVersion()
@@ -30,17 +31,17 @@ async function run() {
         core.info('Workspace : ' + envs.GITHUB_WORKSPACE)
         core.info('Commit SHA : ' + envs.GITHUB_SHA)
 
-        core.setOutput("cxActionId", envs.GITHUB_ACTION)
-        core.setOutput("cxRunId", envs.GITHUB_RUN_ID)
-        core.setOutput("cxWorkflow", envs.GITHUB_WORKFLOW)
-        core.setOutput("cxWorkflowUser", envs.GITHUB_ACTOR)
-        core.setOutput("cxEvent", envs.GITHUB_EVENT_NAME)
-        core.setOutput("cxRepository", envs.GITHUB_REPOSITORY)
-        core.setOutput("cxBranch", envs.GITHUB_REF)
-        core.setOutput("cxHeadBranch", envs.GITHUB_HEAD_REF)
-        core.setOutput("cxBaseBranch", envs.GITHUB_BASE_REF)
-        core.setOutput("cxWorkspace", envs.GITHUB_WORKSPACE)
-        core.setOutput("cxCommitSHA", envs.GITHUB_SHA)
+        core.setOutput(outputs.CX_ACTION_ID, envs.GITHUB_ACTION)
+        core.setOutput(outputs.CX_RUN_ID, envs.GITHUB_RUN_ID)
+        core.setOutput(outputs.CX_WORKFLOW, envs.GITHUB_WORKFLOW)
+        core.setOutput(outputs.CX_WORKDLOW_USER, envs.GITHUB_ACTOR)
+        core.setOutput(outputs.CX_EVENT, envs.GITHUB_EVENT_NAME)
+        core.setOutput(outputs.CX_REPOSITORY, envs.GITHUB_REPOSITORY)
+        core.setOutput(outputs.CX_BRANCH, envs.GITHUB_REF)
+        core.setOutput(outputs.CX_HEAD_BRANCH, envs.GITHUB_HEAD_REF)
+        core.setOutput(outputs.CX_BASE_BRANCH, envs.GITHUB_BASE_REF)
+        core.setOutput(outputs.CX_WORKSPACE, envs.GITHUB_WORKSPACE)
+        core.setOutput(outputs.CX_COMMIT_SHA, envs.GITHUB_SHA)
 
         core.info("\n[START] Read Inputs...")
 
@@ -71,14 +72,18 @@ async function run() {
         } else {
             core.info("No " + inputs.CX_VERSION + " valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
         }
-        core.setOutput(inputs.CX_VERSION, version)
-        core.setOutput(inputs.CX_SERVER, server)
-        core.setOutput(inputs.CX_ACTION, action)
+        core.setOutput(outputs.CX_SKIP_IF_FAIL, skipIfFail)
+        core.setOutput(outputs.CX_VERSION, version)
+        core.setOutput(outputs.CX_SERVER, server)
+        core.setOutput(outputs.CX_ACTION, action)
 
         let trustedCertificates = inputs.getBoolean(inputs.CX_TRUSTED_CERTS, false)
         if (!utils.is9Version(cxVersion)) {
             trustedCertificates = false
         }
+
+
+        core.setOutput(outputs.CX_TRUSTED_CERTS, trustedCertificates)
 
         let command = "." + path.sep
 
@@ -128,7 +133,7 @@ async function run() {
 
         if (logFile) {
             command += " -Log \"" + envs.GITHUB_WORKSPACE + path.sep + logFile + "\""
-            core.setOutput(inputs.CX_LOG, logFile)
+            core.setOutput(outputs.CX_LOG, logFile)
         }
 
         let cxVerbose = inputs.get(inputs.CX_VERBOSE, false)
@@ -141,6 +146,8 @@ async function run() {
             verbose = true
         }
 
+        core.setOutput(outputs.CX_VERBOSE, verbose)
+
         if (verbose && verbose != "false") {
             command += " -v"
         }
@@ -148,8 +155,6 @@ async function run() {
         if (trustedCertificates && trustedCertificates != "false") {
             command += " -TrustedCertificates"
         }
-
-        core.setOutput(inputs.CX_VERBOSE, verbose)
 
         core.info("[END] Read Inputs...\n")
 

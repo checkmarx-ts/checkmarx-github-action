@@ -162,7 +162,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
     return issues
 }
 
-function getSummary(issues) {
+function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues) {
     let summary = {
         total: 0,
         high: {
@@ -275,8 +275,42 @@ function getSummary(issues) {
             recurrent: 0
         },
     }
+    let queries = []
+    let languages = []
+    let files = []
+    let firstIssue
     for (let i = 0; i < issues.length; i++) {
         let issue = issues[i];
+
+        for (let j = 0; j < issue.resultNodes.length; j++) {
+            let fileName = issue.resultNodes[j].fileName.split("#")[0]
+            if (!files.includes(fileName)) {
+                files.push(fileName)
+            }
+        }
+
+
+        let addLanguage = true
+        for (let k = 0; k < languages.length; k++) {
+            if (languages[k].name == issue.queryLanguage) {
+                languages[k].count++
+                addLanguage = false
+            }
+        }
+        if (addLanguage) {
+            languages.push({ name: issue.queryLanguage, count: 1 })
+        }
+        let addQuery = true
+        for (let k = 0; k < queries.length; k++) {
+            if (queries[k].name == issue.queryName) {
+                queries[k].count++
+                addQuery = false
+            }
+        }
+        if (addQuery) {
+            queries.push({ name: issue.queryName, count: 1 })
+        }
+        firstIssue = issue
         summary.total++
         switch (issue.resultStatus) {
             case NEW:
@@ -599,7 +633,80 @@ function getSummary(issues) {
                 break
         }
     }
-    return summary
+
+    let summaryBody = "[Checkmarx] - Project : " + firstIssue.projectName + " - Scan ID : " + firstIssue.scanId + "\n"
+    summaryBody += "\n"
+    summaryBody += "-----------------------------------\n"
+    summaryBody += "**Project Details**\n"
+    summaryBody += "Checkmarx Version: " + firstIssue.cxVersion + "\n"
+    summaryBody += "Project ID: " + firstIssue.projectId + "\n"
+    summaryBody += "Project Name: " + firstIssue.projectName + "\n"
+    summaryBody += "Preset: " + firstIssue.preset + "\n"
+    summaryBody += "Owner: " + firstIssue.owner + "\n"
+    summaryBody += "Team: " + firstIssue.teamFullPath + "\n"
+    summaryBody += "\n"
+    summaryBody += "-----------------------------------\n"
+    summaryBody += "**Scan Details**\n"
+    summaryBody += "Initiator Name: " + firstIssue.initiatorName + "\n"
+    summaryBody += "Scan ID: " + firstIssue.scanId + "\n"
+    summaryBody += "LOC: " + firstIssue.loc + "\n"
+    summaryBody += "Files Scanned: " + firstIssue.filesScanned + "\n"
+    summaryBody += "Scan Type: " + firstIssue.scanType + "\n"
+    summaryBody += "Scan URL: " + firstIssue.scanDeepLink + "\n"
+    summaryBody += "Scan Comment: " + firstIssue.scanComment + "\n"
+    summaryBody += "Scan Type: " + firstIssue.scanTime + "\n"
+    summaryBody += "Scan Start Date: " + firstIssue.scanStartDate + "\n"
+    summaryBody += "Scan Time: " + firstIssue.scanTime + "\n"
+    summaryBody += "Source Origin: " + firstIssue.sourceOrigin + "\n"
+    summaryBody += "Visibility: " + firstIssue.visibility + "\n"
+    summaryBody += "\n"
+    summaryBody += "-----------------------------------\n"
+    summaryBody += "**Result Summary Details**\n"
+    summaryBody += "\n"
+    summaryBody += "**Results By Status**\n"
+    summaryBody += "New | Recurrent | Resolved | Reopened | Total\n"
+    summaryBody += "------------ | ------------ | ------------ | ------------ | ------------\n"
+    summaryBody += newIssues + " | " + recurrentIssues + " | " + resolvedIssues + " | " + reopenedIssues + " | " + issues.length + "\n"
+    summaryBody += "\n"
+    summaryBody += "**Results By State and Severity**\n"
+    summaryBody += "Severity \\ State | Confirmed | Urgent | Proposed Not Exploitable | To Verify | Not Exploitable | Total\n"
+    summaryBody += "------------ | ------------ | ------------ | ------------ | ------------ | ------------ | ------------\n"
+    summaryBody += "High | " + summary.confirmed.high + " | " + summary.urgent.high + " | " + summary.proposedNotExploitable.high + " | " + summary.toVerify.high + " | " + summary.notExploitable.high + " | " + summary.high.total + "\n"
+    summaryBody += "Medium | " + summary.confirmed.medium + " | " + summary.urgent.medium + " | " + summary.proposedNotExploitable.medium + " | " + summary.toVerify.medium + " | " + summary.notExploitable.medium + " | " + summary.medium.total + "\n"
+    summaryBody += "Low | " + summary.confirmed.low + " | " + summary.urgent.low + " | " + summary.proposedNotExploitable.low + " | " + summary.toVerify.low + " | " + summary.notExploitable.low + " | " + summary.low.total + "\n"
+    summaryBody += "Info | " + summary.confirmed.info + " | " + summary.urgent.info + " | " + summary.proposedNotExploitable.info + " | " + summary.toVerify.info + " | " + summary.notExploitable.info + " | " + summary.info.total + "\n"
+    summaryBody += "Total | " + summary.confirmed.total + " | " + summary.urgent.total + " | " + summary.proposedNotExploitable.total + " | " + summary.toVerify.total + " | " + summary.notExploitable.total + " | " + issues.length + "\n"
+    summaryBody += "\n"
+    if (queries.length > 0) {
+        summaryBody += "**Results By Queries**\n"
+        summaryBody += "Queries | Total Results\n"
+        summaryBody += "------------ |------------\n"
+        for (let i = 0; i < queries.length; i++) {
+            const query = queries[i]
+            summaryBody += query.name + " | " + query.count + "\n"
+        }
+        summaryBody += "\n"
+    }
+    if (languages.length > 0) {
+        summaryBody += "**Results By Languages**\n"
+        summaryBody += "Languages | Total Results\n"
+        summaryBody += "------------ |------------\n"
+        for (let i = 0; i < languages.length; i++) {
+            const language = languages[i]
+            summaryBody += language.name + " | " + language.count + "\n"
+        }
+        summaryBody += "\n"
+    }
+    if (files.length > 0) {
+        summaryBody += "**Vulnerabilities in Files:**\n"
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i]
+            summaryBody += file + "\n"
+        }
+        summaryBody += "\n"
+    }
+
+    return summaryBody
 }
 
 function getLabels(githubLabels, issue) {
@@ -630,9 +737,84 @@ function getLabels(githubLabels, issue) {
     return issueGithubLabels
 }
 
+function getTitle(issue) {
+    return "[Checkmarx] " + issue.queryGroup + " - " + issue.queryName + " : " + issue.similarityId
+}
+
+
+function getBody(issue) {
+
+    let body = "**" + issue.resultSeverity + " - " + issue.queryName + "**\n"
+    body += "-----------------------------------\n"
+    for (let j = 0; j < issue.resultNodes.length; j++) {
+        let node = issue.resultNodes[j]
+        body += "**" + j + " Node** - Line " + node.line + " - " + node.name + "\n"
+        body += node.fileName + "\n"
+        body += "-----------------------------------\n"
+    }
+    body += "\n"
+    body += "**Comments**\n"
+    for (let j = 0; j < issue.resultRemark.length; j++) {
+        body += issue.resultRemark[j] + "\n"
+    }
+    body += "\n"
+    body += "-----------------------------------\n"
+    body += "**Project Details**\n"
+    body += "Checkmarx Version: " + issue.cxVersion + "\n"
+    body += "Project ID: " + issue.projectId + "\n"
+    body += "Project Name: " + issue.projectName + "\n"
+    body += "Preset: " + issue.preset + "\n"
+    body += "Owner: " + issue.owner + "\n"
+    body += "Team: " + issue.teamFullPath + "\n"
+    body += "\n"
+    body += "-----------------------------------\n"
+    body += "**Scan Details**\n"
+    body += "Initiator Name: " + issue.initiatorName + "\n"
+    body += "Scan ID: " + issue.scanId + "\n"
+    body += "LOC: " + issue.loc + "\n"
+    body += "Files Scanned: " + issue.filesScanned + "\n"
+    body += "Scan Type: " + issue.scanType + "\n"
+    body += "Scan URL: " + issue.scanDeepLink + "\n"
+    body += "Scan Comment: " + issue.scanComment + "\n"
+    body += "Scan Type: " + issue.scanTime + "\n"
+    body += "Scan Start Date: " + issue.scanStartDate + "\n"
+    body += "Scan Time: " + issue.scanTime + "\n"
+    body += "Source Origin: " + issue.sourceOrigin + "\n"
+    body += "Visibility: " + issue.visibility + "\n"
+    body += "\n"
+    body += "-----------------------------------\n"
+    body += "**Result Details**\n"
+    body += "Query ID: " + issue.queryId + "\n"
+    body += "Query Path: " + issue.queryPath + "\n"
+    body += "Query Group: " + issue.queryGroup + "\n"
+    body += "Query Name: " + issue.queryName + "\n"
+    body += "Query Language: " + issue.queryLanguage + "\n"
+    body += "Query Language Hash: " + issue.queryLanguageHash + "\n"
+    body += "Query Language Change Date: " + issue.queryLanguageChangeDate + "\n"
+    body += "Query Version Code: " + issue.queryVersionCode + "\n"
+    body += "Query Severity: " + issue.querySeverity + "\n"
+    body += "Query Severity Index: " + issue.querySeverityIndex + "\n"
+    body += "Similarity ID: " + issue.similarityId + "\n"
+    body += "Path ID: " + issue.pathId + "\n"
+    body += "Result ID: " + issue.resultId + "\n"
+    body += "Result State: " + issue.resultState + "\n"
+    body += "Result Severity: " + issue.resultSeverity + "\n"
+    body += "Result Status: " + issue.resultStatus + "\n"
+    body += "Result Assignee: " + issue.resultAssignee + "\n"
+    body += "\n"
+    body += "-----------------------------------\n"
+    body += "**Mitigation Details**\n"
+    body += "Checkmarx Recommendations URL: " + issue.scanDeepLink.split("/ViewerMain.aspx")[0] + "/ScanQueryDescription.aspx?queryID=" + issue.queryId + "&queryVersionCode=" + issue.queryVersionCode + "&queryTitle=" + issue.queryName + "\n"
+    body += "CWE ID: " + issue.cweId + "\n"
+    body += "CWE URL: https://cwe.mitre.org/data/definitions/" + issue.cweId + ".html\n"
+    return body
+}
 module.exports = {
     getXmlReportPath: getXmlReportPath,
     getIssuesFromXml: getIssuesFromXml,
     getSummary: getSummary,
-    getLabels: getLabels
+    getLabels: getLabels,
+    getTitle: getTitle,
+    getBody: getBody,
+    NOT_EXPLOITABLE: NOT_EXPLOITABLE
 }

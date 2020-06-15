@@ -4,6 +4,7 @@ const utils = require('../utils/utils.js')
 const core = require('@actions/core')
 const exec = require('@actions/exec')
 const inputs = require('../github/inputs')
+const outputs = require("../github/ouputs")
 const isWin = process.platform === "win32" || process.platform === "win64";
 const DOWNLOAD_DOMAIN = "https://download.checkmarx.com"
 const DOWNLOAD_COMMON_PATH = "Plugins/CxConsolePlugin-"
@@ -113,7 +114,7 @@ async function downloadCli(cxVersion, skipIfFail) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
         if (cliDownloadUrl) {
-            core.setOutput("cxCliDownloadUrl", cliDownloadUrl)
+            core.setOutput(outputs.CX_CLI_DOWNLOAD_URL, cliDownloadUrl)
             let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
             if (versionFileName) {
                 core.setOutput("cxCliVersionFileName", versionFileName)
@@ -196,6 +197,7 @@ function getCliDownloadUrls() {
 }
 
 function getCliStartCommand() {
+    core.setOutput(outputs.CX_IS_WIN, isWin)
     if (isWin) {
         return getFolderName() + path.sep + "runCxConsole.cmd "
     } else {
@@ -205,7 +207,7 @@ function getCliStartCommand() {
 
 async function executeCommand(command, skipIfFail) {
     if (utils.isValidString(command)) {
-        core.setOutput("cxCmdExecuted", command)
+        core.setOutput(outputs.CX_CMD_EXECUTED, command)
         try {
             await exec.exec(command)
             return true
