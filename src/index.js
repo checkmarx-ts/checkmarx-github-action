@@ -168,7 +168,11 @@ async function run() {
         } catch (e) {
             return inputs.coreError(e.message, skipIfFail)
         }
-        await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE);
+        if (cxAction == utils.SCAN || cxAction == utils.OSA_SCAN) {
+            await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE, cxAction)
+        } else{
+            core.info("Github Issues is not supported for cxAction: " + cxAction)
+        }
 
     } catch (e) {
         return inputs.coreError(e.message, skipIfFail)

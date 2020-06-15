@@ -2,6 +2,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const report = require('../report/report')
 const inputs = require("./inputs")
+const utils = require('../utils/utils')
 const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
 const GITHUB_STATE_OPEN = "open"
@@ -20,7 +21,7 @@ function getToken() {
     return token
 }
 
-async function createIssues(repository, commitSha, workspace) {
+async function createIssues(repository, commitSha, workspace, cxAction) {
 
     let token = getToken()
 
@@ -41,63 +42,70 @@ async function createIssues(repository, commitSha, workspace) {
         core.info("Getting Octokit...")
         const octokit = github.getOctokit(token)
         if (octokit) {
-            let xmlPath = report.getXmlReportPath(workspace)
-            let issues = report.getIssuesFromXml(xmlPath, repository, commitSha)
-            if (issues) {
-                let repositoryIssues = await getIssues(owner, repo, octokit)
-                let resolvedIssues = 0
-                let reopenedIssues = 0
-                let recurrentIssues = 0
-                let newIssues = 0
-                for (let i = 0; i < issues.length; i++) {
-                    let issue = issues[i]
-                    
-                    const title = report.getTitle(issue)
-                    const body = report.getBody(issue)
-                    let issueGithubLabels = report.getLabels(githubLabels, issue)
+            if (cxAction == utils.SCAN) {
+                let xmlPath = report.getXmlReportPath(workspace)
+                let issues = report.getIssuesFromXml(xmlPath, repository, commitSha)
+                if (issues) {
+                    let repositoryIssues = await getIssues(owner, repo, octokit)
+                    let resolvedIssues = 0
+                    let reopenedIssues = 0
+                    let recurrentIssues = 0
+                    let newIssues = 0
+                    for (let i = 0; i < issues.length; i++) {
+                        let issue = issues[i]
+
+                        const title = report.getTitle(issue)
+                        const body = report.getBody(issue)
+                        let issueGithubLabels = report.getLabels(githubLabels, issue)
 
 
-                    let state = GITHUB_STATE_OPEN
-                    if (issue.resultState == report.NOT_EXPLOITABLE) {
-                        state = GITHUB_STATE_CLOSED
-                    }
+                        let state = GITHUB_STATE_OPEN
+                        if (issue.resultState == report.NOT_EXPLOITABLE) {
+                            state = GITHUB_STATE_CLOSED
+                        }
 
-                    let issueExists = false
-                    for (let j = 0; j < repositoryIssues.length; j++) {
-                        let repositoryIssue = repositoryIssues[j]
-                        const titleRepositoryIssue = repositoryIssue.title
-                        if (titleRepositoryIssue == title) {
-                            issueExists = true
-                            if(state != repositoryIssue.state){
-                                if(state == GITHUB_STATE_OPEN && repositoryIssue.state == GITHUB_STATE_CLOSED){
-                                    reopenedIssues++
-                                } else if(state == GITHUB_STATE_CLOSED && repositoryIssue.state == GITHUB_STATE_OPEN){
-                                    resolvedIssues++
-                                } else{
+                        let issueExists = false
+                        for (let j = 0; j < repositoryIssues.length; j++) {
+                            let repositoryIssue = repositoryIssues[j]
+                            const titleRepositoryIssue = repositoryIssue.title
+                            if (titleRepositoryIssue == title) {
+                                issueExists = true
+                                if (state != repositoryIssue.state) {
+                                    if (state == GITHUB_STATE_OPEN && repositoryIssue.state == GITHUB_STATE_CLOSED) {
+                                        reopenedIssues++
+                                    } else if (state == GITHUB_STATE_CLOSED && repositoryIssue.state == GITHUB_STATE_OPEN) {
+                                        resolvedIssues++
+                                    } else {
+                                        recurrentIssues++
+                                    }
+                                } else {
                                     recurrentIssues++
                                 }
-                            } else{
-                                recurrentIssues++
+                                await updateIssue(owner, repo, octokit, body, issueGithubLabels, githubAssignees, githubMilestone, repositoryIssue, state)
+                                break
                             }
-                            await updateIssue(owner, repo, octokit, body, issueGithubLabels, githubAssignees, githubMilestone, repositoryIssue, state)
-                            break
                         }
-                    }
-                    if (!issueExists) {
-                        newIssues++
-                        let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i, state)
+                        if (!issueExists) {
+                            newIssues++
+                            let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i, state)
 
-                        for (let j = 0; j < issue.resultNodes.length; j++) {
-                            let node = issue.resultNodes[j]
-                            let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
-                            await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
+                            for (let j = 0; j < issue.resultNodes.length; j++) {
+                                let node = issue.resultNodes[j]
+                                let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
+                                await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
+                            }
+                            issueGithubLabels = []
                         }
-                        issueGithubLabels = []
                     }
+
+                    let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
+                    await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
                 }
-
-                let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
-                await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
+            } else if (cxAction == utils.OSA_SCAN){
+                //TODO
+                core.info("Github Issues was not implemented for cxAction: " + cxAction)
+            } else{
+                core.info("Github Issues was not implemented for cxAction: " + cxAction)
             }
         } else {
             core.info("Unable to authenticate to octokit. Please provide a proper GITHUB_TOKEN")
