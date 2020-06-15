@@ -3,6 +3,7 @@ const github = require('@actions/github')
 const report = require('../report/report')
 const inputs = require("./inputs")
 const utils = require('../utils/utils')
+const envs = process.env
 const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
 const GITHUB_STATE_OPEN = "open"
@@ -21,12 +22,15 @@ function getToken() {
     return token
 }
 
-async function createIssues(repository, commitSha, workspace, cxAction) {
+async function createIssues(cxAction) {
 
     let token = getToken()
 
     if (token) {
-
+        let repository = envs.GITHUB_REPOSITORY
+        let commitSha = envs.GITHUB_SHA
+        let workspace = envs.GITHUB_WORKSPACE
+        let event = envs.GITHUB_EVENT_NAME
         let githubLabels = inputs.getArray(inputs.CX_GITHUB_LABELS, false)
         githubLabels.push("checkmarx")
         let githubAssignees = inputs.getArray(inputs.CX_GITHUB_ASSIGNEES, false)
