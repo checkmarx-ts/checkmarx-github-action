@@ -10,7 +10,7 @@ function getToken() {
     let createGithubIssues = inputs.getBoolean(inputs.CX_GITHUB_ISSUES, false)
 
     if (createGithubIssues && createGithubIssues != "false") {
-        token = inputs.getString(inputs.CX_GITHUB_TOKEN, false)
+        token = inputs.getString(inputs.CX_GITHUB_TOKEN, false, true)
     } else {
         core.info('Issues will not be created since cxGithubIssues was not provided or set to false')
     }

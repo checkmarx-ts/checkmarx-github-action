@@ -64,17 +64,21 @@ function getBoolean(key, isRequired) {
     }
 }
 
-function getString(key, isRequired, defaultValue) {
+function getString(key, isRequired, defaultValue, isPrivate) {
     const tempValue = get(key, isRequired)
     if (utils.isValidString(tempValue)) {
-        core.info(key + ' : ' + tempValue)
+        if (!isPrivate) {
+            core.info(key + ' : ' + tempValue)
+        }
         const value = tempValue.trim()
         core.setOutput(key, value)
         return value
     } else {
         core.info(key + ' was not provided')
         if (utils.isValidString(defaultValue)) {
-            core.info("Default value will be used for " + key + " : " + defaultValue)
+            if (!isPrivate) {
+                core.info("Default value will be used for " + key + " : " + defaultValue)
+            }
             const value = defaultValue.trim()
             core.setOutput(key, value)
             return value

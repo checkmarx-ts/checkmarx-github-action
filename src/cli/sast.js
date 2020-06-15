@@ -47,9 +47,9 @@ function getSastCmd(server, action, skipIfFail) {
         let medium = inputs.getInt(inputs.CX_MEDIUM, false)
         let low = inputs.getInt(inputs.CX_LOW, false)
 
-        let forceScan = inputs.getInt(inputs.CX_FORCE_SCAN, false)
-        let incremental = inputs.getInt(inputs.CX_INCREMENTAL, false)
-        let _private = inputs.getInt(inputs.CX_PRIVATE, false)
+        let forceScan = inputs.getBoolean(inputs.CX_FORCE_SCAN, false)
+        let incremental = inputs.getBoolean(inputs.CX_INCREMENTAL, false)
+        let _private = inputs.getBoolean(inputs.CX_PRIVATE, false)
 
         let reportXml = inputs.getString(inputs.CX_REPORT_XML, false)
         let reportPdf = inputs.getString(inputs.CX_REPORT_PDF, false)
