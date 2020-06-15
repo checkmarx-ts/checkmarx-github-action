@@ -10,7 +10,7 @@ function getToken() {
     let createGithubIssues = inputs.getBoolean(inputs.CX_GITHUB_ISSUES, false)
 
     if (createGithubIssues && createGithubIssues != "false") {
-        token = inputs.getString(inputs.CX_GITHUB_TOKEN, false, true)
+        token = inputs.getString(inputs.CX_GITHUB_TOKEN, false, "", true)
     } else {
         core.info('Issues will not be created since cxGithubIssues was not provided or set to false')
     }
@@ -28,6 +28,9 @@ async function createIssues(repository, commitSha, workspace) {
         githubLabels.push("checkmarx")
         let githubAssignees = inputs.getArray(inputs.CX_GITHUB_ASSIGNEES, false)
         let githubMilestone = inputs.getInt(inputs.CX_GITHUB_MILESTONE, false)
+        if (githubMilestone == -1) {
+            githubMilestone = null
+        }
 
         const repoSplit = repository.split("/")
         const owner = repoSplit[0]
