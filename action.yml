@@ -229,12 +229,6 @@ outputs:
     description: 'Checkmarx CLI Version File Name (e.g. CxConsolePlugin-2020.2.11)'
   cxCmdExecuted:
     description: 'Checkmarx CLI Executed Command (e.g. ./cxcli/runCxConsole.sh Scan -CxServer...)'
-  cxAction:
-    description: 'Checkmarx CLI Action'
-  cxVersion:
-    description: 'Checkmarx Version'
-  cxServer:
-    description: 'IP address or resolvable name of CxSAST web server.'
   cxUsername:
     description: 'Checkmarx Username'
   cxToken:
@@ -275,8 +269,6 @@ outputs:
     description: 'SAST Scan Report in RTF format'
   cxReportCSV:
     description: 'SAST Scan Report in CSV format'
-  cxLog:
-    description: 'Log file to be created.'
   cxVerbose:
     description: 'Turns on verbose mode. All messages and events will be sent to the console or log file.'
   cxOsaHigh:
