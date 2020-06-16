@@ -2,8 +2,10 @@ const core = require('@actions/core')
 const path = require('path')
 const utils = require('../utils/utils.js')
 const inputs = require('../github/inputs.js')
+const cxexclusions = require('../utils/exclusions.js')
 const envs = process.env
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
+const DEFAULT_FOLDER_EXCLUSIONS = cxexclusions.getOsaFolderExclusions()
 
 function getOsaCmd(server, action, skipIfFail) {
     if (utils.isValidUrl(server) && utils.isValidAction(action)) {
@@ -25,6 +27,11 @@ function getOsaCmd(server, action, skipIfFail) {
         let osaFilesInclude = inputs.getString(inputs.CX_OSA_FILES_INCLUDE, false)
         let osaFilesExclude = inputs.getString(inputs.CX_OSA_FILES_EXCLUDE, false)
         let osaPathExclude = inputs.getString(inputs.CX_OSA_PATH_EXCLUDE, false)
+        if (osaPathExclude != DEFAULT_FOLDER_EXCLUSIONS && osaPathExclude.length > 0) {
+            osaPathExclude = DEFAULT_FOLDER_EXCLUSIONS + "," + osaPathExclude.trim()
+        } else {
+            osaPathExclude = DEFAULT_FOLDER_EXCLUSIONS
+        }
         let osaReportHtml = inputs.getString(inputs.CX_OSA_REPORT_HTML, false)
         let osaReportPDF = inputs.getString(inputs.CX_OSA_REPORT_PDF, false)
         let osaDepth = inputs.getInt(inputs.CX_OSA_DEPTH, false)
@@ -36,7 +43,7 @@ function getOsaCmd(server, action, skipIfFail) {
             core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
             if (cxGithubIssues && cxGithubIssues != "false") {
                 if (!utils.isValidString(osaJson)) {
-                    osaJson = GITHUB_WORKSPACE + path.sep + "report.json"
+                    osaJson = GITHUB_WORKSPACE + path.sep + "OsaReports"
                     core.info(inputs.CX_OSA_JSON + ' will be the default: ' + osaJson)
                 } else {
                     core.info(inputs.CX_OSA_JSON + ' : ' + osaJson)

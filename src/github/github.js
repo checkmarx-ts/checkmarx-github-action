@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
-const report = require('../report/report')
+const sastreport = require('../report/sastreport')
+const osareport = require('../report/osareport')
 const inputs = require("./inputs")
 const utils = require('../utils/utils')
 const envs = process.env
@@ -10,7 +11,6 @@ const GITHUB_STATE_OPEN = "open"
 const GITHUB_STATE_CLOSED = "closed"
 const GITHUB_EVENT_PUSH = "push"
 const GITHUB_EVENT_PULL_REQUEST = "pull_request"
-
 
 function getToken() {
     let token = ""
@@ -51,8 +51,8 @@ async function createIssues(cxAction) {
         const octokit = github.getOctokit(token)
         if (octokit) {
             if (cxAction == utils.SCAN) {
-                let xmlPath = report.getXmlReportPath(workspace)
-                let issues = report.getIssuesFromXml(xmlPath, repository, commitSha)
+                let xmlPath = sastreport.getXmlReportPath(workspace)
+                let issues = sastreport.getIssuesFromXml(xmlPath, repository, commitSha)
                 if (issues) {
                     let repositoryIssues = await getIssues(owner, repo, octokit)
                     let resolvedIssues = 0
@@ -62,13 +62,13 @@ async function createIssues(cxAction) {
                     for (let i = 0; i < issues.length; i++) {
                         let issue = issues[i]
 
-                        const title = report.getTitle(issue)
-                        const body = report.getBody(issue)
-                        let issueGithubLabels = report.getLabels(githubLabels, issue)
+                        const title = sastreport.getTitle(issue)
+                        const body = sastreport.getBody(issue)
+                        let issueGithubLabels = sastreport.getLabels(githubLabels, issue)
 
 
                         let state = GITHUB_STATE_OPEN
-                        if (issue.resultState == report.NOT_EXPLOITABLE) {
+                        if (issue.resultState == sastreport.NOT_EXPLOITABLE) {
                             state = GITHUB_STATE_CLOSED
                         }
 
@@ -106,7 +106,7 @@ async function createIssues(cxAction) {
                         }
                     }
 
-                    let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
+                    let summary = sastreport.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
                     await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
                     if (event == GITHUB_EVENT_PULL_REQUEST) {
                         const pull_number = parseInt(envs.GITHUB_REF.replace("/merge", "").replace("refs/pull/", ""))
