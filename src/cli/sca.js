@@ -12,9 +12,9 @@ function getScaCmd(action, skipIfFail) {
         let credentials = ""
         let cxUsername = inputs.get(inputs.CX_SCA_USERNAME, false)
         if (utils.isValidString(cxUsername)) {
-            core.info(inputs.CX_USERNAME + ' : ' + cxUsername)
+            core.info(inputs.CX_SCA_USERNAME + ' : ' + cxUsername)
             let user = cxUsername.trim()
-            core.setOutput(inputs.CX_USERNAME, user)
+            core.setOutput(inputs.CX_SCA_USERNAME, user)
             credentials = " -ScaUsername " + user
         } else {
             return inputs.error(inputs.CX_USERNAME, cxUsername, skipIfFail)
