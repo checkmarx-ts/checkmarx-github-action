@@ -28,9 +28,9 @@ function getOsaCmd(server, action, skipIfFail) {
         let osaReportHtml = inputs.getString(inputs.CX_OSA_REPORT_HTML, false)
         let osaReportPDF = inputs.getString(inputs.CX_OSA_REPORT_PDF, false)
         let osaDepth = inputs.getInt(inputs.CX_OSA_DEPTH, false)
-        let executePackageDependency = inputs.getBoolean(inputs.CX_OSA_EXECUTE_PACKAGE_DEPENDENCY, false)
+        let executePackageDependency = inputs.getBoolean(inputs.CX_EXECUTE_PACKAGE_DEPENDENCY, false)
         let osaJson = inputs.getString(inputs.CX_OSA_JSON, false)
-        let checkPolicy = inputs.getBoolean(inputs.CX_OSA_CHECK_POLICY, false)
+        let checkPolicy = inputs.getBoolean(inputs.CX_CHECK_POLICY, false)
         let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
         if (utils.isBoolean(cxGithubIssues)) {
             core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
@@ -51,7 +51,6 @@ function getOsaCmd(server, action, skipIfFail) {
             credentials +
             " -ProjectName \"" + project + "\"" +
             " -LocationType folder" +
-            " -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
             " -EnableOsa"
 
         if (high >= 0) {
@@ -74,6 +73,8 @@ function getOsaCmd(server, action, skipIfFail) {
         }
         if (osaLocationPath) {
             command += " -OsaLocationPath \"" + osaLocationPath + "\""
+        } else {
+            command += " -OsaLocationPath \"" + GITHUB_WORKSPACE + "\""
         }
         if (osaArchiveToExtract) {
             command += " -OsaArchiveToExtract \"" + osaArchiveToExtract + "\""

@@ -1,4 +1,4 @@
-.env
+.env*
 results.*
 .nyc_output
 *.zip

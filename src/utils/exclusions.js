@@ -117,8 +117,43 @@ function getDefaultFileExclusions(){
     ].join()
 }
 
+function getOsaFolderExclusions(){
+    return [
+        "cxcli",
+        ".git",
+        "test",
+        "tests",
+        ".github"
+    ].join()
+}
+function getOsaFileExclusions(){
+    return [
+        "*.spec.js",
+        "Test*",
+        "Mock*",
+        ".gitignore",
+        ".npmignore",
+        "*.pdf",
+        "*.svg",
+        "*.ico",
+        "*.ipa",
+        "*.bat",
+        "*.sh",
+        "*.apk",
+        "*.doc",
+        ".env"
+    ].join()
+}
 
+function getScaFolderExclusions(){
+    return getOsaFolderExclusions()
+}
+function getScaFileExclusions(){
+    return getOsaFileExclusions()
+}
 module.exports = {
     getDefaultFolderExclusions: getDefaultFolderExclusions,
-    getDefaultFileExclusions: getDefaultFileExclusions
+    getDefaultFileExclusions: getDefaultFileExclusions,
+    getScaFolderExclusions: getScaFolderExclusions,
+    getScaFileExclusions: getScaFileExclusions
 }

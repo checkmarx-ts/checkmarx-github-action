@@ -1,71 +1,95 @@
 const core = require('@actions/core')
-const path = require('path')
 const utils = require('../utils/utils.js')
 const inputs = require('../github/inputs.js')
+const cxexclusions = require('../utils/exclusions.js')
 const envs = process.env
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
+const DEFAULT_FOLDER_EXCLUSIONS = cxexclusions.getScaFolderExclusions()
+const DEFAULT_FILE_EXCLUSIONS = cxexclusions.getScaFileExclusions()
 
-function getScaCmd(server, action, skipIfFail) {
-    ////TODO REFACTOR TO SCA
-    if (utils.isValidUrl(server) && utils.isValidAction(action)) {
-
-        let credentials = inputs.getCredentials(skipIfFail)
-        if (!utils.isValidString(credentials)) {
-            return credentials
-        }
-        let project = inputs.getProject(skipIfFail)
-        if (!utils.isValidString(project)) {
-            return project
-        }
-
-        let high = inputs.getInt(inputs.CX_OSA_HIGH, false)
-        let medium = inputs.getInt(inputs.CX_OSA_MEDIUM, false)
-        let low = inputs.getInt(inputs.CX_OSA_LOW, false)
-        let osaLocationPath = inputs.getString(inputs.CX_OSA_LOCATION_PATH, false)
-        let osaArchiveToExtract = inputs.getString(inputs.CX_OSA_ARCHIVE_TO_EXTRACT, false)
-        let osaFilesInclude = inputs.getString(inputs.CX_OSA_FILES_INCLUDE, false)
-        let osaFilesExclude = inputs.getString(inputs.CX_OSA_FILES_EXCLUDE, false)
-        let osaPathExclude = inputs.getString(inputs.CX_OSA_PATH_EXCLUDE, false)
-        let osaReportHtml = inputs.getString(inputs.CX_OSA_REPORT_HTML, false)
-        let osaReportPDF = inputs.getString(inputs.CX_OSA_REPORT_PDF, false)
-        let osaDepth = inputs.getInt(inputs.CX_OSA_DEPTH, false)
-        let executePackageDependency = inputs.getBoolean(inputs.CX_OSA_EXECUTE_PACKAGE_DEPENDENCY, false)
-        let osaJson = inputs.getString(inputs.CX_OSA_JSON, false)
-        let checkPolicy = inputs.getBoolean(inputs.CX_OSA_CHECK_POLICY, false)
-        let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
-        if (utils.isBoolean(cxGithubIssues)) {
-            core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
-            if (cxGithubIssues && cxGithubIssues != "false") {
-                if (!utils.isValidString(osaJson)) {
-                    osaJson = GITHUB_WORKSPACE + path.sep + "report.json"
-                    core.info(inputs.CX_OSA_JSON + ' will be the default: ' + osaJson)
-                } else {
-                    core.info(inputs.CX_OSA_JSON + ' : ' + osaJson)
-                }
-            }
+function getScaCmd(action, skipIfFail) {
+    if (utils.isValidAction(action)) {
+        let credentials = ""
+        let cxUsername = inputs.get(inputs.CX_SCA_USERNAME, false)
+        if (utils.isValidString(cxUsername)) {
+            core.info(inputs.CX_USERNAME + ' : ' + cxUsername)
+            let user = cxUsername.trim()
+            core.setOutput(inputs.CX_USERNAME, user)
+            credentials = " -ScaUsername " + user
         } else {
-            core.info(inputs.CX_GITHUB_ISSUES + ' was not provided')
+            return inputs.error(inputs.CX_USERNAME, cxUsername, skipIfFail)
         }
+
+        let cxPassword = inputs.get(inputs.CX_SCA_PASSWORD, false)
+        if (utils.isValidString(cxPassword)) {
+            let password = cxPassword.trim()
+            credentials += " -ScaPassword " + password
+        } else {
+            return inputs.error(inputs.CX_SCA_PASSWORD, "********", skipIfFail)
+        }
+
+        let cxScaAccount = inputs.get(inputs.CX_SCA_ACCOUNT, false)
+        if (utils.isValidString(cxScaAccount)) {
+            let scaAccount = cxScaAccount.trim()
+            credentials += " -ScaAccount " + scaAccount
+        } else {
+            return inputs.error(inputs.CX_SCA_ACCOUNT, cxScaAccount, skipIfFail)
+        }
+
+        let project
+
+        let cxProject = inputs.getString(inputs.CX_PROJECT, false, inputs.getDefaultProjectName())
+        core.setOutput(inputs.CX_PROJECT, cxProject)
+        if (!utils.isValidString(cxProject)) {
+            return cxProject
+        } else {
+            project = cxProject
+        }
+
+        let high = inputs.getInt(inputs.CX_SCA_HIGH, false)
+        let medium = inputs.getInt(inputs.CX_SCA_MEDIUM, false)
+        let low = inputs.getInt(inputs.CX_SCA_LOW, false)
+        let scaApiUrl = inputs.getString(inputs.CX_SCA_API_URL, false)
+        let scaAccessControlUrl = inputs.getString(inputs.CX_SCA_ACCESS_CONTROL_URL, false)
+        let scaWebAppUrl = inputs.getString(inputs.CX_SCA_WEB_APP_URL, false)
+        let scaLocationPath = inputs.getString(inputs.CX_SCA_LOCATION_PATH, false)
+        let scaFilesInclude = inputs.getString(inputs.CX_SCA_FILES_INCLUDE, false)
+
+        let scaFilesExclude = inputs.getString(inputs.CX_SCA_FILES_EXCLUDE, false)
+
+        let scaPathExclude = inputs.getString(inputs.CX_SCA_PATH_EXCLUDE, false, DEFAULT_FOLDER_EXCLUSIONS)
+        if (scaPathExclude != DEFAULT_FOLDER_EXCLUSIONS && scaPathExclude.length > 0) {
+            scaPathExclude = DEFAULT_FOLDER_EXCLUSIONS + "," + scaPathExclude.trim()
+        } else {
+            scaPathExclude = DEFAULT_FOLDER_EXCLUSIONS
+        }
+
+        let executePackageDependency = inputs.getBoolean(inputs.CX_EXECUTE_PACKAGE_DEPENDENCY, false)
+        let checkPolicy = inputs.getBoolean(inputs.CX_CHECK_POLICY, false)
 
         let command = action +
-            " -CxServer " + server +
             credentials +
             " -ProjectName \"" + project + "\"" +
             " -LocationType folder" +
-            " -LocationPath \"" + GITHUB_WORKSPACE + "\"" +
-            " -EnableOsa"
+            " -enableSca"
 
+        if (scaApiUrl) {
+            command += " -ScaApiUrl \"" + scaApiUrl + "\""
+        }
+        if (scaAccessControlUrl) {
+            command += " -ScaAccessControlUrl \"" + scaAccessControlUrl + "\""
+        }
+        if (scaWebAppUrl) {
+            command += " -ScaWebAppUrl \"" + scaWebAppUrl + "\""
+        }
         if (high >= 0) {
-            command += " -OSAHigh " + high
+            command += " -SCAHigh " + high
         }
         if (medium >= 0) {
-            command += " -OSAMedium " + medium
+            command += " -SCAMedium " + medium
         }
         if (low >= 0) {
-            command += " -OSALow " + low
-        }
-        if (osaDepth >= 0) {
-            command += " -OsaScanDepth " + osaDepth
+            command += " -SCALow " + low
         }
         if (executePackageDependency && executePackageDependency != "false") {
             command += " -executepackagedependency"
@@ -73,29 +97,19 @@ function getScaCmd(server, action, skipIfFail) {
         if (checkPolicy && checkPolicy != "false") {
             command += " -CheckPolicy"
         }
-        if (osaLocationPath) {
-            command += " -OsaLocationPath \"" + osaLocationPath + "\""
+        if (scaLocationPath) {
+            command += " -ScaLocationPath \"" + scaLocationPath + "\""
+        } else {
+            command += " -ScaLocationPath \"" + GITHUB_WORKSPACE + "\""
         }
-        if (osaArchiveToExtract) {
-            command += " -OsaArchiveToExtract \"" + osaArchiveToExtract + "\""
+        if (scaFilesInclude) {
+            command += " -ScaFilesInclude \"" + scaFilesInclude + "\""
         }
-        if (osaFilesInclude) {
-            command += " -OsaFilesInclude \"" + osaFilesInclude + "\""
+        if (scaFilesExclude) {
+            command += " -ScaFilesExclude \"" + scaFilesExclude + "\""
         }
-        if (osaFilesExclude) {
-            command += " -OsaFilesExclude \"" + osaFilesExclude + "\""
-        }
-        if (osaPathExclude) {
-            command += " -OsaPathExclude \"" + osaPathExclude + "\""
-        }
-        if (osaReportHtml) {
-            command += " -OsaReportHtml \"" + osaReportHtml + "\""
-        }
-        if (osaReportPDF) {
-            command += " -OsaReportPDF \"" + osaReportPDF + "\""
-        }
-        if (osaJson) {
-            command += " -OsaJson \"" + osaJson + "\""
+        if (scaPathExclude) {
+            command += " -ScaPathExclude \"" + scaPathExclude + "\""
         }
 
         return command

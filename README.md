@@ -56,7 +56,7 @@ jobs:
 ## Workflow - Sample SAST Scan with Token Authentication with Automatic Github Issues Creation
 (v1.0.2 or above)
 ```yml
-name: Checkmarx SAST Scan
+name: Checkmarx SAST Scan with Github Issues
 on: [push]
 jobs:
   build:
@@ -98,6 +98,27 @@ jobs:
         cxPassword: ${{ secrets.CX_PASSWORD }}
         cxTeam: \CxServer\SP\Company\TeamA
         cxOsaLocationPath: $GITHUB_WORKSPACE
+```
+
+## Workflow - Sample SCA Scan
+
+```yml
+name: Checkmarx SCA Scan
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: checkmarx-ts/checkmarx-github-action@<version>
+      with:
+        cxAction: ScaScan
+        cxScaAccount: myaccount
+        cxScaUsername: First.Last@company.com
+        cxScaPassword: ${{ secrets.CX_PASSWORD }}
+        cxExecutePackageDependency: true
 ```
 
 ## Workflow - Sample Revoke Token
@@ -149,7 +170,7 @@ For using this action, there is a set of options that can be used, such as:
 
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
-| cxAction | Scan | Checkmarx CLI Action - One of the following: Scan, AsyncScan, OsaScan, AsyncOsaScan, GenerateToken, RevokeToken | String | No | Scan |
+| cxAction | Scan | Checkmarx CLI Action - One of the following: Scan, AsyncScan, OsaScan, AsyncOsaScan, ScaScan, AsyncScaScan, GenerateToken, RevokeToken | String | No | Scan |
 
 #### Inputs for Actions: Scan, AsyncScan 
 | Variable  | Value (Example) | Description | Type | Is Required* | Default |
@@ -192,7 +213,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
 | cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
-| cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | |
+| cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | {{GITHUB_WORKSPACE}} |
 | cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
 | cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
 | cxOsaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the OSA scan.  | String | No | |
@@ -209,6 +230,29 @@ For using this action, there is a set of options that can be used, such as:
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
 | cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
+
+#### Inputs for Actions: ScaScan, AsyncScaScan
+| Variable  | Value (Example) | Description | Type | Is Required* | Default |
+| ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
+| cxScaAccount | myaccount | Checkmarx SCA Account | String | Yes* | |
+| cxScaUsername | admin@cx | Checkmarx Username | String | Yes* | |
+| cxScaPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* | |
+| cxScaApiUrl | https://api.checkmarx.com | Checkmarx SCA API URL | String | No | |
+| cxScaAcessControlUrl | https://platform.checkmarx.com | Checkmarx SCA Access Control URL | String | No | |
+| cxScaWebAppUrl | https://sca.scacheckmarx.com | Checkmarx SCA Web App URL | String | No | |
+| cxScaHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
+| cxScaMedium | 0 | Threshold for Medium Severity Vulnerabilities | Integer | No | -1 |
+| cxScaLow | 0 | Threshold for Low Severity Vulnerabilities | Integer | No | -1 |
+| cxScaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the SCA scan.  | String | No | |
+| cxScaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the SCA scan.  | String | No | |
+| cxScaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the SCA scan.   | String | No | |
+| cxScaLocationPath | folder | SCA Location Folder | String | Yes* | {{GITHUB_WORKSPACE}} |
+| cxExecutePackageDependency | true | Retrieve all supported package dependencies before performing SCA scan | Boolean | No | false |
+| cxCheckPolicy | true | This parameter will break the build if the CxSCA policy is violated. | Boolean | No | false |
+| cxLog | log.log | Log File CLI output | String | No | | 
+| cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
+| cxVersion | 8.9 | Checkmarx CLI version : 2020 (Please see CLI Versions section) | String | No | 2020 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
