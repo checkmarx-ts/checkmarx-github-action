@@ -97,17 +97,27 @@ async function createIssues(cxAction) {
                             newIssues++
                             let issueId = await createIssue(owner, repo, octokit, title, body, issueGithubLabels, githubAssignees, githubMilestone, i, state)
 
-                            for (let j = 0; j < issue.resultNodes.length; j++) {
+                            /*for (let j = 0; j < issue.resultNodes.length; j++) {
                                 let node = issue.resultNodes[j]
                                 let commentBody = "**#" + issueId + " - " + issue.resultSeverity + " - " + issue.queryName + " - " + j + " Node** - " + node.name
                                 await createCommitComment(owner, repo, octokit, commitSha, commentBody, node.relativefileName, node.line)
-                            }
+                            }*/
                             issueGithubLabels = []
                         }
                     }
 
                     let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
                     await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
+                    if (event == GITHUB_EVENT_PULL_REQUEST) {
+                        const pull_number = parseInt(envs.GITHUB_REF.replace("/merge", "").replace("refs/pull/", ""))
+                        core.info("\nUpdating Pull Request #" + pull_number + " for " + owner + "/" + repo)
+                        const pullRequestCommented = await octokit.issues.createComment({ owner: owner, repo: repo, body: summary, issue_number: pull_number})
+                        if (pullRequestCommented.status == HTTP_STATUS_CREATED) {
+                            core.info("\nUpdated Pull Request #" + pull_number+ " for " + owner + "/" + repo)
+                        } else {
+                            core.info("\nFailed to Update Pull Request #" + pull_number+ " for " + owner + "/" + repo)
+                        }
+                    }
                 }
             } else if (cxAction == utils.OSA_SCAN) {
                 //TODO
