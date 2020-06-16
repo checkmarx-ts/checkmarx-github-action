@@ -5,8 +5,10 @@ const OSA_SCAN = "OsaScan"
 const ASYNC_OSA_SCAN = "AsyncOsaScan"
 const GENERATE_TOKEN = "GenerateToken"
 const REVOKE_TOKEN = "RevokeToken"
+const SCA_SCAN = "ScaScan"
+const ASYNC_SCA_SCAN = "AsyncScaScan"
 const DEFAULT_ACTION = SCAN
-const VALID_ACTIONS = [SCAN, ASYNC_SCAN, OSA_SCAN, ASYNC_OSA_SCAN, GENERATE_TOKEN, REVOKE_TOKEN]
+const VALID_ACTIONS = [SCAN, ASYNC_SCAN, OSA_SCAN, ASYNC_OSA_SCAN, SCA_SCAN, ASYNC_SCA_SCAN, GENERATE_TOKEN, REVOKE_TOKEN]
 const HTTPS = "https://"
 const STABLE_VERSION = "8.9"
 
@@ -21,7 +23,7 @@ function getLastString(s) {
     }
 }
 
-function isString(s){
+function isString(s) {
     return typeof s === "string"
 }
 
@@ -66,23 +68,25 @@ function getDefaultAction() {
     return DEFAULT_ACTION
 }
 
-function getStableVersion(){
+function getStableVersion() {
     return STABLE_VERSION
 }
 
-function is9Version(version){
+function is9Version(version) {
     return version.startsWith("9.0") || version.startsWith("2020")
 }
-function is8Version(version){
+function is8Version(version) {
     return version.startsWith("8.")
 }
 
 module.exports = {
     SCAN: SCAN,
-    ASYNC_SCAN: ASYNC_SCAN, 
-    OSA_SCAN: OSA_SCAN, 
-    ASYNC_OSA_SCAN: ASYNC_OSA_SCAN, 
-    GENERATE_TOKEN: GENERATE_TOKEN, 
+    ASYNC_SCAN: ASYNC_SCAN,
+    OSA_SCAN: OSA_SCAN,
+    ASYNC_OSA_SCAN: ASYNC_OSA_SCAN,
+    SCA_SCAN: SCA_SCAN, 
+    ASYNC_SCA_SCAN: ASYNC_SCA_SCAN,
+    GENERATE_TOKEN: GENERATE_TOKEN,
     REVOKE_TOKEN: REVOKE_TOKEN,
     getLastString: getLastString,
     isValidUrl: isValidUrl,

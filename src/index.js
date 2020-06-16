@@ -6,6 +6,7 @@ const cxcli = require('./cli/cli')
 const cxtoken = require('./cli/token')
 const cxsast = require('./cli/sast')
 const cxosa = require('./cli/osa')
+const cxsca = require('./cli/sca')
 const cxgithub = require('./github/github')
 const inputs = require('./github/inputs')
 const outputs = require("./github/ouputs")
@@ -104,6 +105,12 @@ async function run() {
             case utils.ASYNC_OSA_SCAN:
                 auxCommand = cxosa.getOsaCmd(server, action, skipIfFail)
                 break
+            case utils.SCA_SCAN:
+                auxCommand = cxsca.getScaCmd(server, action, skipIfFail)
+                break
+            case utils.ASYNC_SCA_SCAN:
+                auxCommand = cxsca.getScaCmd(server, action, skipIfFail)
+                break
             case utils.REVOKE_TOKEN:
                 auxCommand = cxtoken.revokeTokenGetCmd(server, skipIfFail)
                 break
@@ -158,17 +165,15 @@ async function run() {
 
         core.info("[END] Read Inputs...\n")
 
-        if (!envs.TEST) {
-            try {
-                await cxcli.downloadCli(version, skipIfFail)
-            } catch (e) {
-                return inputs.coreError(e.message, skipIfFail)
-            }
-            try {
-                let output = await cxcli.executeCommand(command, skipIfFail)
-            } catch (e) {
-                return inputs.coreError(e.message, skipIfFail)
-            }
+        try {
+            await cxcli.downloadCli(version, skipIfFail)
+        } catch (e) {
+            return inputs.coreError(e.message, skipIfFail)
+        }
+        try {
+            let output = await cxcli.executeCommand(command, skipIfFail)
+        } catch (e) {
+            return inputs.coreError(e.message, skipIfFail)
         }
         if (cxAction == utils.SCAN || cxAction == utils.OSA_SCAN) {
             await cxgithub.createIssues(cxAction)
