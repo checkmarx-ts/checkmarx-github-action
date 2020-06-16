@@ -19,6 +19,7 @@ jobs:
         cxScaAccount: ${{ secrets.CX_SCA_ACCOUNT }}
         cxScaUsername: ${{ secrets.CX_SCA_USERNAME }}
         cxScaPassword: ${{ secrets.CX_SCA_PASSWORD }}
+        cxScaPathExclude: coverage,images
         cxExecutePackageDependency: true
         cxVersion: "2020.2.11"
         cxLog: log.log
