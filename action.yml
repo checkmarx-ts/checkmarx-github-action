@@ -160,6 +160,58 @@ inputs:
     description: 'Generate CxOSA JSON report.'
     required: false
     default: ''
+  cxScaUsername:
+    description: 'SCA Username'
+    required: false
+    default: ''
+  cxScaPassword:
+    description: 'SCA Password'
+    required: false
+    default: ''
+  cxScaAccount:
+    description: 'SCA Account Name'
+    required: false
+    default: ''
+  cxScaApiUrl:
+    description: 'SCA API URL'
+    required: false
+    default: ''
+  cxScaAcessControlUrl:
+    description: 'SCA Access Control URL'
+    required: false
+    default: ''
+  cxScaWebAppUrl:
+    description: 'SCA Web App URL'
+    required: false
+    default: ''
+  cxScaHigh:
+    description: 'SCA High Threshold'
+    required: false
+    default: -1
+  cxScaMedium:
+    description: 'SCA Medium Threshold'
+    required: false
+    default: -1
+  cxScaLow:
+    description: 'SCA Low Threshold'
+    required: false
+    default: -1
+  cxScaLocationPath:
+    description: 'SCA Location Path'
+    required: false
+    default: ''
+  cxScaFilesInclude:
+    description: 'SCA Files Include'
+    required: false
+    default: ''
+  cxScaFilesExclude:
+    description: 'SCA Files Exclude'
+    required: false
+    default: ''
+  cxScaPathExclude:
+    description: 'SCA Folders Exclude'
+    required: false
+    default: ''
   cxCheckPolicy:
     description: 'This parameter will break the build if the CxOSA policy is violated.'
     required: false
@@ -303,6 +355,32 @@ outputs:
     description: 'Retrieve all supported package dependencies before performing OSA scan (see Remarks section).'
   cxOsaJson:
     description: 'Generate CxOSA JSON report.'
+  cxScaUsername:
+    description: 'SCA Username'
+  cxScaPassword:
+    description: 'SCA Password'
+  cxScaAccount:
+    description: 'SCA Account Name'
+  cxScaApiUrl:
+    description: 'SCA API URL'
+  cxScaAcessControlUrl:
+    description: 'SCA Access Control URL'
+  cxScaWebAppUrl:
+    description: 'SCA Web App URL'
+  cxScaHigh:
+    description: 'SCA High Threshold'
+  cxScaMedium:
+    description: 'SCA Medium Threshold'
+  cxScaLow:
+    description: 'SCA Low Threshold'
+  cxScaLocationPath:
+    description: 'SCA Location Path'
+  cxScaFilesInclude:
+    description: 'SCA Files Include'
+  cxScaFilesExclude:
+    description: 'SCA Files Exclude'
+  cxScaPathExclude:
+    description: 'SCA Folders Exclude'
   cxCheckPolicy:
     description: 'This parameter will break the build if the CxOSA policy is violated.'
   cxSkipIfFail:
