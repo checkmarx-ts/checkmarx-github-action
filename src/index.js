@@ -169,7 +169,7 @@ async function run() {
             return inputs.coreError(e.message, skipIfFail)
         }
         if (cxAction == utils.SCAN || cxAction == utils.OSA_SCAN) {
-            await cxgithub.createIssues(envs.GITHUB_REPOSITORY, envs.GITHUB_SHA, envs.GITHUB_WORKSPACE, cxAction)
+            await cxgithub.createIssues(cxAction)
         } else{
             core.info("Github Issues is not supported for cxAction: " + cxAction)
         }
