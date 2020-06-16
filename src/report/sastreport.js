@@ -20,6 +20,7 @@ const NOT_EXPLOITABLE_LABEL = "Not Exploitable"
 const CONFIRMED_LABEL = "Confirmed"
 const URGENT_LABEL = "Urgent"
 const PROPOSED_NOT_EXPLOITABLE_LABEL = "Proposed Not Exploitable"
+const TITLE_PREFIX = "[Checkmarx]"
 
 function getXmlReportPath(workspace) {
     let reportXml = ''
@@ -28,8 +29,8 @@ function getXmlReportPath(workspace) {
         core.info(inputs.CX_REPORT_XML + ': ' + cxReportXML)
         reportXml = cxReportXML.trim()
     } else {
-        core.info("No '" + inputs.CX_REPORT_XML + "' input provided. It will be used the default one: " + workspace + path.sep + "report.xml")
         reportXml = workspace + path.sep + "report.xml"
+        core.info("No '" + inputs.CX_REPORT_XML + "' input provided. It will be used the default one: " + reportXml)
     }
     return reportXml
 }
@@ -661,7 +662,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
     summaryBody += "Visibility: " + firstIssue.visibility + "\n"
     summaryBody += "\n"
     summaryBody += "-----------------------------------\n"
-    summaryBody += "**Result Summary Details**\n"
+    summaryBody += "**Results Summary Details**\n"
     summaryBody += "\n"
     summaryBody += "**Results By Status**\n"
     summaryBody += "New | Recurrent | Resolved | Reopened | Total\n"
@@ -738,7 +739,7 @@ function getLabels(githubLabels, issue) {
 }
 
 function getTitle(issue) {
-    return "[Checkmarx] " + issue.queryGroup + " - " + issue.queryName + " : " + issue.similarityId
+    return TITLE_PREFIX + " " + issue.queryGroup + " - " + issue.queryName + " : " + issue.similarityId
 }
 
 
@@ -816,5 +817,6 @@ module.exports = {
     getLabels: getLabels,
     getTitle: getTitle,
     getBody: getBody,
-    NOT_EXPLOITABLE: NOT_EXPLOITABLE
+    NOT_EXPLOITABLE: NOT_EXPLOITABLE,
+    TITLE_PREFIX: TITLE_PREFIX
 }

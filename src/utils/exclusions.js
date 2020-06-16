@@ -154,6 +154,8 @@ function getScaFileExclusions(){
 module.exports = {
     getDefaultFolderExclusions: getDefaultFolderExclusions,
     getDefaultFileExclusions: getDefaultFileExclusions,
+    getOsaFolderExclusions: getOsaFolderExclusions,
+    getOsaFileExclusions: getOsaFileExclusions,
     getScaFolderExclusions: getScaFolderExclusions,
     getScaFileExclusions: getScaFileExclusions
 }
