@@ -101,6 +101,7 @@ jobs:
 ```
 
 ## Workflow - Sample SCA Scan
+(v1.0.2 or above)
 
 ```yml
 name: Checkmarx SCA Scan

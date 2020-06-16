@@ -1,4 +1,4 @@
-name: 2020.2.11 SAST Scan
+name: 2020.2.11 SCA Scan
 on:
   push:
     branches: 
