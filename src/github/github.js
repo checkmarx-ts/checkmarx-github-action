@@ -8,6 +8,9 @@ const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
 const GITHUB_STATE_OPEN = "open"
 const GITHUB_STATE_CLOSED = "closed"
+const GITHUB_EVENT_PUSH = "push"
+const GITHUB_EVENT_PULL_REQUEST = "pull_request"
+
 
 function getToken() {
     let token = ""
@@ -31,6 +34,7 @@ async function createIssues(cxAction) {
         let commitSha = envs.GITHUB_SHA
         let workspace = envs.GITHUB_WORKSPACE
         let event = envs.GITHUB_EVENT_NAME
+
         let githubLabels = inputs.getArray(inputs.CX_GITHUB_LABELS, false)
         githubLabels.push("checkmarx")
         let githubAssignees = inputs.getArray(inputs.CX_GITHUB_ASSIGNEES, false)
@@ -105,10 +109,10 @@ async function createIssues(cxAction) {
                     let summary = report.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
                     await createCommitComment(owner, repo, octokit, commitSha, summary, null, null)
                 }
-            } else if (cxAction == utils.OSA_SCAN){
+            } else if (cxAction == utils.OSA_SCAN) {
                 //TODO
                 core.info("Github Issues was not implemented for cxAction: " + cxAction)
-            } else{
+            } else {
                 core.info("Github Issues was not implemented for cxAction: " + cxAction)
             }
         } else {
@@ -223,7 +227,6 @@ async function createIssue(owner, repo, octokit, title, body, githubLabels, gith
             core.info("Update State of Issue #" + issueId + " from " + owner + "/" + repo)
             return issueId
         } else {
-
             core.info("Cannot update issue #" + issueId + " from " + owner + "/" + repo)
             return issueId
         }
