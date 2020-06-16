@@ -158,19 +158,21 @@ async function run() {
 
         core.info("[END] Read Inputs...\n")
 
-        try {
-            await cxcli.downloadCli(version, skipIfFail)
-        } catch (e) {
-            return inputs.coreError(e.message, skipIfFail)
-        }
-        try {
-            let output = await cxcli.executeCommand(command, skipIfFail)
-        } catch (e) {
-            return inputs.coreError(e.message, skipIfFail)
+        if (!envs.TEST) {
+            try {
+                await cxcli.downloadCli(version, skipIfFail)
+            } catch (e) {
+                return inputs.coreError(e.message, skipIfFail)
+            }
+            try {
+                let output = await cxcli.executeCommand(command, skipIfFail)
+            } catch (e) {
+                return inputs.coreError(e.message, skipIfFail)
+            }
         }
         if (cxAction == utils.SCAN || cxAction == utils.OSA_SCAN) {
             await cxgithub.createIssues(cxAction)
-        } else{
+        } else {
             core.info("Github Issues is not supported for cxAction: " + cxAction)
         }
 

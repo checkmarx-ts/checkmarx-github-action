@@ -2,8 +2,6 @@ const core = require('@actions/core')
 const utils = require('../utils/utils')
 const envs = process.env
 const GITHUB_REPOSITORY = utils.getLastString(envs.GITHUB_REPOSITORY)
-const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
-const DEFAULT_PROJECT_NAME = GITHUB_REPOSITORY + "-" + GITHUB_REF
 const CX_TOKEN = 'cxToken'
 const CX_USERNAME = 'cxUsername'
 const CX_PASSWORD = 'cxPassword'
@@ -23,6 +21,19 @@ function coreError(message, skipIfFail) {
     } else {
         core.setFailed(message)
         return false
+    }
+}
+
+function getDefaultProjectName() {
+    if (envs.GITHUB_REF.startsWith("refs/heads/")) {
+        const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
+        return GITHUB_REPOSITORY + "-" + GITHUB_REF
+    } else if (envs.GITHUB_REF.startsWith("refs/pull/")) {
+        const GITHUB_REF = envs.GITHUB_REF.replace("/merge", "").replace("refs/", "").replace("/", "_")
+        return GITHUB_REPOSITORY + "-" + envs.GITHUB_HEAD_REF + "-" + GITHUB_REF
+    } else {
+        const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
+        return GITHUB_REPOSITORY + "-" + GITHUB_REF
     }
 }
 
@@ -145,7 +156,7 @@ function getProject(skipIfFail) {
         core.setOutput(CX_TEAM, cxTeam)
         core.info(CX_TEAM + ' : ' + cxTeam)
         let team = cxTeam.trim()
-        let cxProject = getString(CX_PROJECT, false, DEFAULT_PROJECT_NAME)
+        let cxProject = getString(CX_PROJECT, false, getDefaultProjectName())
         core.setOutput(CX_PROJECT, cxProject)
         if (team.indexOf("/") != -1) {
             project = team + "/" + cxProject
