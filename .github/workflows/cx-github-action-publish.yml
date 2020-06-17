@@ -1,0 +1,18 @@
+name: Github Action Deploy
+
+on:
+  push:
+    branches: 
+      - master
+jobs:
+  cx-github-actions:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Publish Package
+      run: 
+        npm login --registry=https://npm.pkg.github.com
+        npm publish
+      
