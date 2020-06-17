@@ -12,7 +12,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - name: Publish Package
-      run: 
+      run: |
         npm login --registry=https://npm.pkg.github.com
         npm publish
       
