@@ -162,9 +162,9 @@ function getSummary(osaSummary, osaLibraries, osaIssues, newIssues, recurrentIss
     summaryBody += "**Result Summary Details**\n"
     summaryBody += "\n"
     summaryBody += "**Results By Status**\n"
-    summaryBody += "New | Recurrent | Resolved | Reopened | Total\n"
-    summaryBody += "------------ | ------------ | ------------ | ------------ | ------------\n"
-    summaryBody += newIssues + " | " + recurrentIssues + " | " + resolvedIssues + " | " + reopenedIssues + " | " + osaIssues.length + "\n"
+    summaryBody += "New | Recurrent | Resolved | Reopened \n"
+    summaryBody += "------------ | ------------ | ------------ | ------------ \n"
+    summaryBody += newIssues + " | " + recurrentIssues + " | " + resolvedIssues + " | " + reopenedIssues + "\n"
     summaryBody += "\n"
     for (let i = 0; i < SEVERITIES.length; i++) {
         let severity = SEVERITIES[i]
