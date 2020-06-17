@@ -408,7 +408,11 @@ To avoid maximum confidentiality of user and server details you should use the f
 
 - Network Rules, Firewalls or Proxies to access Checkmarx Server might block some requests from this Github action, due to not allowing outside connections based on IP, proxy authentication requirements, etc... Please make sure, your Github action agents can connect to your Checkmarx Server first, before using this action.
 
-- Consider to use Self-Hosted Runners for Actions or if using Github On-Premise Runners please check this page for IP Whitelist: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#ip-addresses-of-runners-on-github-hosted-machines
+- Consider to use Self-Hosted Runners for Actions for avoiding connectivity issues:
+  - https://help.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners
+
+- or if using Github On-Premise Runners please check this page for IP Whitelist: 
+  - https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#ip-addresses-of-runners-on-github-hosted-machines
 
 # License
 
