@@ -389,6 +389,8 @@ To avoid maximum confidentiality of user and server details you should use the f
 
 - If a build is failing due to "cxHigh", "cxMedium", "cxLow" or "cxOsaHigh", "cxOSAMedium", "cxOSALow" thresholds, it is recommended to use Checkmarx Portal to revise results and mark them properly using "Confirmed" or "Not Exploitable" states. These thresholds only will take into consideration results that are not marked as "Not Exploitable".
 
+- Make sure you Enable local and third party Actions for your repository: https://github.com/username/repo/settings/actions
+
 - Make sure, your Github action agents can connect to your Checkmarx Server first, before using this action.
 
 # Security:
@@ -405,6 +407,8 @@ To avoid maximum confidentiality of user and server details you should use the f
 - If Checkmarx Server is not open to Internet, this action will not be able to reach the server and it will fail.
 
 - Network Rules, Firewalls or Proxies to access Checkmarx Server might block some requests from this Github action, due to not allowing outside connections based on IP, proxy authentication requirements, etc... Please make sure, your Github action agents can connect to your Checkmarx Server first, before using this action.
+
+- Consider to use Self-Hosted Runners for Actions or if using Github On-Premise Runners please check this page for IP Whitelist: https://help.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#ip-addresses-of-runners-on-github-hosted-machines
 
 # License
 
