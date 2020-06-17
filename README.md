@@ -2,6 +2,10 @@
 
 [![Tests](https://github.com/checkmarx-ts/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/checkmarx-ts/checkmarx-github-action/actions)
 [![License: GPL-3.0](https://img.shields.io/badge/License-GPL3.0-yellow.svg)](https://www.gnu.org/licenses)
+[![Latest Release](https://img.shields.io/github/v/release/checkmarx-ts/checkmarx-github-action)](https://github.com/checkmarx-ts/checkmarx-github-action/releases)
+[![Open Issues](https://img.shields.io/github/issues-raw/checkmarx-ts/checkmarx-github-action)](https://github.com/checkmarx-ts/checkmarx-github-action/issues)
+
+
 
 Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration. 
 
