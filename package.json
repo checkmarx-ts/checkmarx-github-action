@@ -28,9 +28,12 @@
     "security"
   ],
   "author": "Miguel Freitas <miguel.freitas@checkmarx.com>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/checkmarx-ts/checkmarx-github-action/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "homepage": "https://github.com/checkmarx-ts/checkmarx-github-action#readme",
   "dependencies": {
