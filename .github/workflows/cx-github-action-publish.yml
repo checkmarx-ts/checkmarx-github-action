@@ -23,7 +23,7 @@ jobs:
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
       run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
-  v1.0.2:
+  v1_0_2:
     name: Deploy Docker Image - v1.0.2
     env:
       VERSION: "v1.0.2"
@@ -41,7 +41,7 @@ jobs:
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
       run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
-  v1.0.1:
+  v1_0_1:
     name: Deploy Docker Image - v1.0.1
     env:
       VERSION: "v1.0.1"
@@ -59,7 +59,7 @@ jobs:
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
       run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
-  v1.0.0:
+  v1_0_0:
     name: Deploy Docker Image - v1.0.0
     env:
       VERSION: "v1.0.0"
