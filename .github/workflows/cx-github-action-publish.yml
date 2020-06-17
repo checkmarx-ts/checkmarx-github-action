@@ -10,14 +10,70 @@ jobs:
   latest:
     name: Deploy Docker Image - Latest Version
     runs-on: ubuntu-latest
+    env:
+      VERSION: "latest"
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Build Docker Image
-      run: docker build -t $PKG_NAME:latest . --no-cache
+      run: docker build -t $PKG_NAME:$VERSION . --no-cache
     - name: Tag Docker Image
-      run: docker tag $PKG_NAME:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
+      run: docker tag $PKG_NAME:$VERSION $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
     - name: Docker Login
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+  v1.0.2:
+    name: Deploy Docker Image - v1.0.2
+    env:
+      VERSION: "v1.0.2"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: $VERSION
+    - name: Build Docker Image
+      run: docker build -t $PKG_NAME:$VERSION . --no-cache
+    - name: Tag Docker Image
+      run: docker tag $PKG_NAME:$VERSION $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+    - name: Docker Login
+      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - name: Docker Push
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+  v1.0.1:
+    name: Deploy Docker Image - v1.0.1
+    env:
+      VERSION: "v1.0.1"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: $VERSION
+    - name: Build Docker Image
+      run: docker build -t $PKG_NAME:$VERSION . --no-cache
+    - name: Tag Docker Image
+      run: docker tag $PKG_NAME:$VERSION $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+    - name: Docker Login
+      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - name: Docker Push
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+  v1.0.0:
+    name: Deploy Docker Image - v1.0.0
+    env:
+      VERSION: "v1.0.0"
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: $VERSION
+    - name: Build Docker Image
+      run: docker build -t $PKG_NAME:$VERSION . --no-cache
+    - name: Tag Docker Image
+      run: docker tag $PKG_NAME:$VERSION $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+    - name: Docker Login
+      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - name: Docker Push
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
