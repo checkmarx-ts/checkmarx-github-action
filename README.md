@@ -76,7 +76,35 @@ jobs:
         cxGithubAssignees: miguelfreitas93
 ```
 
-Note: This will created automatically Github Issues and Commit Comment with detailed information about Checkmarx Project, Scan and Results 
+Note: This will created automatically Github Issues and Commit Comment with detailed information about Checkmarx SAST Project, Scan and Results 
+
+
+## Workflow - Sample OSA Scan with Token Authentication with Automatic Github Issues Creation
+(v1.0.2 or above)
+```yml
+name: Checkmarx OSA Scan with Github Issues
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkmarx Action
+      uses: checkmarx-ts/checkmarx-github-action@<version>
+      with:
+        cxAction: OsaScan
+        cxServer: https://checkmarx.company.com
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxTeam: \CxServer\SP\Company\TeamA
+        cxExecutePackageDependency: true
+        cxGithubIssues: true
+        cxGithubToken: ${{ secrets.GITHUB_TOKEN }}
+        cxGithubLabels: bug,test
+        cxGithubAssignees: miguelfreitas93
+```
+
+Note: This will created automatically Github Issues and Commit Comment with detailed information about OSA Libraries and Results 
 
 ## Workflow - Sample OSA Scan
 
