@@ -1,5 +1,5 @@
-const core = require('@actions/core')
-const path = require('path')
+const core = require("@actions/core")
+const path = require("path")
 const utils = require("../utils/utils")
 const inputs = require("../github/inputs")
 const cxexclusions = require("../utils/exclusions")
@@ -40,17 +40,17 @@ function getOsaCmd(server, action, skipIfFail) {
         let checkPolicy = inputs.getBoolean(inputs.CX_CHECK_POLICY, false)
         let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
         if (utils.isBoolean(cxGithubIssues)) {
-            core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
+            core.info(inputs.CX_GITHUB_ISSUES + " : " + cxGithubIssues)
             if (cxGithubIssues && cxGithubIssues != "false") {
                 if (!utils.isValidString(osaJson)) {
                     osaJson = GITHUB_WORKSPACE + path.sep + "OsaReports"
-                    core.info(inputs.CX_OSA_JSON + ' will be the default: ' + osaJson)
+                    core.info(inputs.CX_OSA_JSON + " will be the default: " + osaJson)
                 } else {
-                    core.info(inputs.CX_OSA_JSON + ' : ' + osaJson)
+                    core.info(inputs.CX_OSA_JSON + " : " + osaJson)
                 }
             }
         } else {
-            core.info(inputs.CX_GITHUB_ISSUES + ' was not provided')
+            core.info(inputs.CX_GITHUB_ISSUES + " was not provided")
         }
 
         let command = action +

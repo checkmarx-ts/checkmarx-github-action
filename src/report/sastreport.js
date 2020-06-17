@@ -1,9 +1,9 @@
 const fs = require("fs")
-const path = require('path')
-const xmljs = require('xml-js')
-const inputs = require('../github/inputs.js')
-const utils = require('../utils/utils.js')
-const core = require('@actions/core')
+const path = require("path")
+const xmljs = require("xml-js")
+const inputs = require("../github/inputs.js")
+const utils = require("../utils/utils.js")
+const core = require("@actions/core")
 const HIGH = "High"
 const MEDIUM = "Medium"
 const LOW = "Low"
@@ -23,14 +23,14 @@ const PROPOSED_NOT_EXPLOITABLE_LABEL = "Proposed Not Exploitable"
 const TITLE_PREFIX = "[Checkmarx]"
 
 function getXmlReportPath(workspace) {
-    let reportXml = ''
+    let reportXml = ""
     let cxReportXML = inputs.get(inputs.CX_REPORT_XML, false)
     if (utils.isValidString(cxReportXML)) {
-        core.info(inputs.CX_REPORT_XML + ': ' + cxReportXML)
+        core.info(inputs.CX_REPORT_XML + ": " + cxReportXML)
         reportXml = cxReportXML.trim()
     } else {
         reportXml = workspace + path.sep + "report.xml"
-        core.info("No '" + inputs.CX_REPORT_XML + "' input provided. It will be used the default one: " + reportXml)
+        core.info("No " + inputs.CX_REPORT_XML + " input provided. It will be used the default one: " + reportXml)
     }
     return reportXml
 }
@@ -75,7 +75,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             sourceOrigin: attrs.SourceOrigin,
                             visibility: attrs.Visibility,
                             queryId: queryAttrs.id,
-                            queryCategories: queryAttrs.categories.length > 0 ? queryAttrs.categories.replace(/;/g, ',').split(",") : [],
+                            queryCategories: queryAttrs.categories.length > 0 ? queryAttrs.categories.replace(/;/g, ",").split(",") : [],
                             cweId: queryAttrs.cweId,
                             queryName: queryAttrs.name,
                             queryGroup: queryAttrs.group,
@@ -158,7 +158,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
         }
     } else {
         core.info("reportXml does not exists in the path: " + xmlPath)
-        core.info('No issues will be created')
+        core.info("No issues will be created")
     }
     return issues
 }

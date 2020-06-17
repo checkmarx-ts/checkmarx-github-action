@@ -1,8 +1,8 @@
-const core = require('@actions/core')
-const path = require('path')
-const utils = require('../utils/utils.js')
-const cxexclusions = require('../utils/exclusions.js')
-const inputs = require('../github/inputs.js')
+const core = require("@actions/core")
+const path = require("path")
+const utils = require("../utils/utils.js")
+const cxexclusions = require("../utils/exclusions.js")
+const inputs = require("../github/inputs.js")
 const envs = process.env
 const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
@@ -59,17 +59,17 @@ function getSastCmd(server, action, skipIfFail) {
 
         let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
         if (utils.isBoolean(cxGithubIssues)) {
-            core.info(inputs.CX_GITHUB_ISSUES + ' : ' + cxGithubIssues)
+            core.info(inputs.CX_GITHUB_ISSUES + " : " + cxGithubIssues)
             if (cxGithubIssues && cxGithubIssues != "false") {
                 if (!utils.isValidString(reportXml)) {
                     reportXml = GITHUB_WORKSPACE + path.sep + "report.xml"
-                    core.info(inputs.CX_REPORT_XML + ' will be the default: ' + reportXml)
+                    core.info(inputs.CX_REPORT_XML + " will be the default: " + reportXml)
                 } else {
-                    core.info(inputs.CX_REPORT_XML + ' : ' + reportXml)
+                    core.info(inputs.CX_REPORT_XML + " : " + reportXml)
                 }
             }
         } else {
-            core.info(inputs.CX_GITHUB_ISSUES + ' was not provided')
+            core.info(inputs.CX_GITHUB_ISSUES + " was not provided")
         }
 
         if (preset) {

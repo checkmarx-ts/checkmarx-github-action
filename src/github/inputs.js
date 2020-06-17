@@ -1,15 +1,15 @@
-const core = require('@actions/core')
-const utils = require('../utils/utils')
+const core = require("@actions/core")
+const utils = require("../utils/utils")
 const envs = process.env
 const GITHUB_REPOSITORY = utils.getLastString(envs.GITHUB_REPOSITORY)
-const CX_TOKEN = 'cxToken'
-const CX_USERNAME = 'cxUsername'
-const CX_PASSWORD = 'cxPassword'
-const CX_PROJECT = 'cxProject'
-const CX_TEAM = 'cxTeam'
+const CX_TOKEN = "cxToken"
+const CX_USERNAME = "cxUsername"
+const CX_PASSWORD = "cxPassword"
+const CX_PROJECT = "cxProject"
+const CX_TEAM = "cxTeam"
 
 function error(key, value, skipIfFail) {
-    let message = "Please provide '" + key + "' input (string) : " + value
+    let message = "Please provide " + key + " input (string) : " + value
     return coreError(message, skipIfFail)
 }
 
@@ -48,12 +48,12 @@ function get(key, isRequired) {
 function getInt(key, isRequired) {
     let tempValue = get(key, isRequired)
     if (utils.isValidInt(tempValue)) {
-        core.info(key + ' : ' + tempValue)
+        core.info(key + " : " + tempValue)
         const value = parseInt(tempValue)
         core.setOutput(key, value)
         return value
     } else {
-        core.info(key + ' was not provided')
+        core.info(key + " was not provided")
         const value = -1
         core.setOutput(key, value)
         return value
@@ -63,12 +63,12 @@ function getInt(key, isRequired) {
 function getBoolean(key, isRequired) {
     let tempValue = get(key, isRequired)
     if (utils.isBoolean(tempValue)) {
-        core.info(key + ' : ' + tempValue)
+        core.info(key + " : " + tempValue)
         const value = tempValue == "true"
         core.setOutput(key, value)
         return value
     } else {
-        core.info(key + ' was not provided')
+        core.info(key + " was not provided")
         const value = false
         core.setOutput(key, value)
         return value
@@ -79,13 +79,13 @@ function getString(key, isRequired, defaultValue, isPrivate) {
     const tempValue = get(key, isRequired)
     if (utils.isValidString(tempValue)) {
         if (!isPrivate) {
-            core.info(key + ' : ' + tempValue)
+            core.info(key + " : " + tempValue)
         }
         const value = tempValue.trim()
         core.setOutput(key, value)
         return value
     } else {
-        core.info(key + ' was not provided')
+        core.info(key + " was not provided")
         if (utils.isValidString(defaultValue)) {
             if (!isPrivate) {
                 core.info("Default value will be used for " + key + " : " + defaultValue)
@@ -94,7 +94,7 @@ function getString(key, isRequired, defaultValue, isPrivate) {
             core.setOutput(key, value)
             return value
         } else {
-            const value = ''
+            const value = ""
             core.setOutput(key, value)
             return value
         }
@@ -113,7 +113,7 @@ function getArray(key, isRequired) {
             array = [tempString]
         }
     } else {
-        core.setOutput(key, '')
+        core.setOutput(key, "")
         array = []
     }
     return array
@@ -123,14 +123,14 @@ function getCredentials(skipIfFail) {
     let credentials = ""
     let cxToken = get(CX_TOKEN, false)
     if (utils.isValidString(cxToken)) {
-        core.info(CX_TOKEN + ' was provided')
+        core.info(CX_TOKEN + " was provided")
         let token = cxToken.trim()
         credentials = " -CxToken " + token
     } else {
         let cxUsername = get(CX_USERNAME, false)
-        core.info(CX_TOKEN + ' was not provided')
+        core.info(CX_TOKEN + " was not provided")
         if (utils.isValidString(cxUsername)) {
-            core.info(CX_USERNAME + ' : ' + cxUsername)
+            core.info(CX_USERNAME + " : " + cxUsername)
             let user = cxUsername.trim()
             core.setOutput(CX_USERNAME, user)
             credentials = " -CxUser " + user
@@ -154,7 +154,7 @@ function getProject(skipIfFail) {
     let cxTeam = get(CX_TEAM, true)
     if (utils.isValidTeam(cxTeam)) {
         core.setOutput(CX_TEAM, cxTeam)
-        core.info(CX_TEAM + ' : ' + cxTeam)
+        core.info(CX_TEAM + " : " + cxTeam)
         let team = cxTeam.trim()
         let cxProject = getString(CX_PROJECT, false, getDefaultProjectName())
         core.setOutput(CX_PROJECT, cxProject)
@@ -185,30 +185,30 @@ module.exports = {
     CX_VERSION: "cxVersion",
     CX_SERVER: "cxServer",
     CX_ACTION: "cxAction",
-    CX_TRUSTED_CERTS: 'cxTrustedCertificates',
-    CX_LOG: 'cxLog',
-    CX_VERBOSE: 'cxVerbose',
+    CX_TRUSTED_CERTS: "cxTrustedCertificates",
+    CX_LOG: "cxLog",
+    CX_VERBOSE: "cxVerbose",
     CX_TOKEN: CX_TOKEN,
     CX_USERNAME: CX_USERNAME,
     CX_PASSWORD: CX_PASSWORD,
     CX_PROJECT: CX_PROJECT,
     CX_TEAM: CX_TEAM,
     //SAST
-    CX_PRESET: 'cxPreset',
-    CX_HIGH: 'cxHigh',
-    CX_MEDIUM: 'cxMedium',
-    CX_LOW: 'cxLow',
-    CX_COMMENT: 'cxComment',
-    CX_FORCE_SCAN: 'cxForceScan',
-    CX_INCREMENTAL: 'cxIncremental',
-    CX_EXCLUDE_FOLDERS: 'cxExcludeFolders',
-    CX_EXCLUDE_FILES: 'cxExcludeFiles',
-    CX_CONFIGURATION: 'cxConfiguration',
-    CX_PRIVATE: 'cxPrivate',
-    CX_REPORT_XML: 'cxReportXML',
-    CX_REPORT_PDF: 'cxReportPDF',
-    CX_REPORT_RTF: 'cxReportRTF',
-    CX_REPORT_CSV: 'cxReportCSV',
+    CX_PRESET: "cxPreset",
+    CX_HIGH: "cxHigh",
+    CX_MEDIUM: "cxMedium",
+    CX_LOW: "cxLow",
+    CX_COMMENT: "cxComment",
+    CX_FORCE_SCAN: "cxForceScan",
+    CX_INCREMENTAL: "cxIncremental",
+    CX_EXCLUDE_FOLDERS: "cxExcludeFolders",
+    CX_EXCLUDE_FILES: "cxExcludeFiles",
+    CX_CONFIGURATION: "cxConfiguration",
+    CX_PRIVATE: "cxPrivate",
+    CX_REPORT_XML: "cxReportXML",
+    CX_REPORT_PDF: "cxReportPDF",
+    CX_REPORT_RTF: "cxReportRTF",
+    CX_REPORT_CSV: "cxReportCSV",
     //OSA
     CX_OSA_HIGH: "cxOsaHigh",
     CX_OSA_MEDIUM: "cxOsaMedium",
@@ -240,9 +240,9 @@ module.exports = {
     CX_EXECUTE_PACKAGE_DEPENDENCY: "cxExecutePackageDependency",
     CX_CHECK_POLICY: "cxCheckPolicy",
     //GITHUB
-    CX_GITHUB_ISSUES: 'cxGithubIssues',
-    CX_GITHUB_TOKEN: 'cxGithubToken',
-    CX_GITHUB_LABELS: 'cxGithubLabels',
+    CX_GITHUB_ISSUES: "cxGithubIssues",
+    CX_GITHUB_TOKEN: "cxGithubToken",
+    CX_GITHUB_LABELS: "cxGithubLabels",
     CX_GITHUB_ASSIGNEES: "cxGithubAssignees",
     CX_GITHUB_MILESTONE: "cxGithubMilestone"
 }

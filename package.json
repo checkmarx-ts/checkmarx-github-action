@@ -1,6 +1,6 @@
 {
   "name": "checkmarx-github-action",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Checkmarx Github Action",
   "main": "src/index.js",
   "scripts": {
@@ -13,12 +13,13 @@
     "test:cxtoken": "mocha tests/cxtoken.spec.js",
     "test:cxsast": "mocha tests/cxsast.spec.js",
     "test:cxgithub": "mocha tests/cxgithub.spec.js",
+    "lint": "jslint src/**",
     "cov": "nyc -x tests -r html --report-dir=coverage npm test",
     "cov:check": "nyc check-coverage --functions 70 --lines 0 --per-file"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miguelfreitas93/checkmarx-github-action.git"
+    "url": "git+https://github.com/checkmarx-ts/checkmarx-github-action.git"
   },
   "keywords": [
     "github",
@@ -29,9 +30,9 @@
   "author": "Miguel Freitas <miguel.freitas@checkmarx.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miguelfreitas93/checkmarx-github-action/issues"
+    "url": "https://github.com/checkmarx-ts/checkmarx-github-action/issues"
   },
-  "homepage": "https://github.com/miguelfreitas93/checkmarx-github-action#readme",
+  "homepage": "https://github.com/checkmarx-ts/checkmarx-github-action#readme",
   "dependencies": {
     "@actions/core": "^1.2.4",
     "@actions/exec": "^1.0.4",
@@ -40,6 +41,7 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "jslint-node": "^1.2.8",
     "mocha": "^8.0.1",
     "nyc": "^15.1.0"
   }

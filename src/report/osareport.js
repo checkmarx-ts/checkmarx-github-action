@@ -1,8 +1,8 @@
 const fs = require("fs")
-const path = require('path')
-const inputs = require('../github/inputs.js')
-const utils = require('../utils/utils.js')
-const core = require('@actions/core')
+const path = require("path")
+const inputs = require("../github/inputs.js")
+const utils = require("../utils/utils.js")
+const core = require("@actions/core")
 const DEFAULT_OSA_FOLDER = "OsaReports"
 const DEFAULT_OSA_VULNERABILITIES_FILE_NAME = "CxOSAVulnerabilities"
 const DEFAULT_OSA_LIBRARIES_FILE_NAME = "CxOSALibraries"
@@ -24,14 +24,14 @@ const LOW = "Low"
 const SEVERITIES = [HIGH, MEDIUM, LOW]
 
 function getOsaReportsPath(workspace) {
-    let osaJsonPath = ''
+    let osaJsonPath = ""
     let cxOsaJson = inputs.get(inputs.CX_OSA_JSON, false)
     if (utils.isValidString(cxOsaJson)) {
-        core.info(inputs.CX_OSA_JSON + ': ' + cxOsaJson)
+        core.info(inputs.CX_OSA_JSON + ": " + cxOsaJson)
         osaJsonPath = cxOsaJson.trim()
     } else {
         osaJsonPath = workspace + path.sep + DEFAULT_OSA_FOLDER
-        core.info("No '" + inputs.CX_OSA_JSON + "' input provided. It will be used the default one: " + osaJsonPath)
+        core.info("No " + inputs.CX_OSA_JSON + " input provided. It will be used the default one: " + osaJsonPath)
     }
     return osaJsonPath
 }
@@ -44,7 +44,7 @@ function getOsaIssuesFromJson(osaReportsPath) {
         return issues
     } else {
         core.info(DEFAULT_OSA_VULNERABILITIES_FILE_NAME + " JSON does not exists in the path: " + issuesJsonPath)
-        core.info('No issues will be created')
+        core.info("No issues will be created")
     }
     return issues
 }

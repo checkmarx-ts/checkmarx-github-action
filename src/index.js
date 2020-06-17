@@ -1,14 +1,14 @@
-require('dotenv').config()
-const path = require('path')
-const core = require('@actions/core')
-const utils = require('./utils/utils')
-const cxcli = require('./cli/cli')
-const cxtoken = require('./cli/token')
-const cxsast = require('./cli/sast')
-const cxosa = require('./cli/osa')
-const cxsca = require('./cli/sca')
-const cxgithub = require('./github/github')
-const inputs = require('./github/inputs')
+require("dotenv").config()
+const path = require("path")
+const core = require("@actions/core")
+const utils = require("./utils/utils")
+const cxcli = require("./cli/cli")
+const cxtoken = require("./cli/token")
+const cxsast = require("./cli/sast")
+const cxosa = require("./cli/osa")
+const cxsca = require("./cli/sca")
+const cxgithub = require("./github/github")
+const inputs = require("./github/inputs")
 const outputs = require("./github/ouputs")
 const envs = process.env
 let action = utils.getDefaultAction()
@@ -20,17 +20,17 @@ let logFile
 async function run() {
     let skipIfFail = false
     try {
-        core.info('Action ID : ' + envs.GITHUB_ACTION)
-        core.info('Run ID : ' + envs.GITHUB_RUN_ID)
-        core.info('Workflow Name : ' + envs.GITHUB_WORKFLOW)
-        core.info('Event : ' + envs.GITHUB_EVENT_NAME)
-        core.info('Workflow User : ' + envs.GITHUB_ACTOR)
-        core.info('Repository : ' + envs.GITHUB_REPOSITORY)
-        core.info('Branch : ' + envs.GITHUB_REF)
-        core.info('Head Branch : ' + envs.GITHUB_HEAD_REF)
-        core.info('Base Branch : ' + envs.GITHUB_BASE_REF)
-        core.info('Workspace : ' + envs.GITHUB_WORKSPACE)
-        core.info('Commit SHA : ' + envs.GITHUB_SHA)
+        core.info("Action ID : " + envs.GITHUB_ACTION)
+        core.info("Run ID : " + envs.GITHUB_RUN_ID)
+        core.info("Workflow Name : " + envs.GITHUB_WORKFLOW)
+        core.info("Event : " + envs.GITHUB_EVENT_NAME)
+        core.info("Workflow User : " + envs.GITHUB_ACTOR)
+        core.info("Repository : " + envs.GITHUB_REPOSITORY)
+        core.info("Branch : " + envs.GITHUB_REF)
+        core.info("Head Branch : " + envs.GITHUB_HEAD_REF)
+        core.info("Base Branch : " + envs.GITHUB_BASE_REF)
+        core.info("Workspace : " + envs.GITHUB_WORKSPACE)
+        core.info("Commit SHA : " + envs.GITHUB_SHA)
 
         core.setOutput(outputs.CX_ACTION_ID, envs.GITHUB_ACTION)
         core.setOutput(outputs.CX_RUN_ID, envs.GITHUB_RUN_ID)
@@ -51,16 +51,16 @@ async function run() {
         let cxAction = inputs.get(inputs.CX_ACTION, false)
         if (utils.isValidAction(cxAction)) {
             action = cxAction
-            core.info(inputs.CX_ACTION + ': ' + action)
+            core.info(inputs.CX_ACTION + ": " + action)
         } else {
-            core.info(inputs.CX_ACTION + ' not provided')
-            core.info('Default Action will be used: ' + action)
+            core.info(inputs.CX_ACTION + " not provided")
+            core.info("Default Action will be used: " + action)
         }
 
         if (action != utils.SCA_SCAN && action != utils.ASYNC_SCA_SCAN) {
             let cxServer = inputs.get(inputs.CX_SERVER, true)
             if (utils.isValidUrl(cxServer)) {
-                core.info(inputs.CX_SERVER + ' : ' + cxServer)
+                core.info(inputs.CX_SERVER + " : " + cxServer)
                 server = cxServer.trim()
             } else {
                 return inputs.error(inputs.CX_SERVER, cxServer, skipIfFail)
@@ -69,7 +69,7 @@ async function run() {
         let cxVersion = inputs.get(inputs.CX_VERSION, false)
 
         if (cxcli.isValidVersion(cxVersion)) {
-            core.info(inputs.CX_VERSION + ' : ' + cxVersion)
+            core.info(inputs.CX_VERSION + " : " + cxVersion)
             version = cxVersion.trim()
         } else {
             core.info("No " + inputs.CX_VERSION + " valid input provided : " + version + " version will be used instead of " + cxVersion.toString())
@@ -140,7 +140,7 @@ async function run() {
         let cxLog = inputs.get(inputs.CX_LOG, false)
 
         if (utils.isValidFilename(cxLog)) {
-            core.info(inputs.CX_LOG + ' : ' + cxLog)
+            core.info(inputs.CX_LOG + " : " + cxLog)
             logFile = cxLog.trim()
         } else {
             core.info("No " + inputs.CX_LOG + " valid input provided")
@@ -154,10 +154,10 @@ async function run() {
         let cxVerbose = inputs.get(inputs.CX_VERBOSE, false)
 
         if (utils.isBoolean(cxVerbose)) {
-            core.info(inputs.CX_VERBOSE + ' : ' + cxVerbose)
+            core.info(inputs.CX_VERBOSE + " : " + cxVerbose)
             verbose = cxVerbose
         } else {
-            core.info(inputs.CX_VERBOSE + ' valid flag not provided')
+            core.info(inputs.CX_VERBOSE + " valid flag not provided")
             verbose = true
         }
 

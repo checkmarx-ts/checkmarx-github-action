@@ -1,6 +1,6 @@
-const core = require('@actions/core')
-const utils = require('../utils/utils.js')
-const inputs = require('../github/inputs.js')
+const core = require("@actions/core")
+const utils = require("../utils/utils.js")
+const inputs = require("../github/inputs.js")
 
 function revokeTokenGetCmd(server, skipIfFail) {
     if (utils.isValidUrl(server)) {
@@ -29,7 +29,7 @@ function generateTokenGetCmd(server, skipIfFail) {
 
         let cxUsername = inputs.get(inputs.CX_USERNAME, true)
         if (utils.isValidString(cxUsername)) {
-            core.info(inputs.CX_USERNAME + ' : ' + cxUsername)
+            core.info(inputs.CX_USERNAME + " : " + cxUsername)
             user = cxUsername.trim()
         } else {
             return inputs.error(inputs.CX_USERNAME, cxUsername, skipIfFail)

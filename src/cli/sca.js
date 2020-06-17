@@ -1,7 +1,7 @@
-const core = require('@actions/core')
-const utils = require('../utils/utils.js')
-const inputs = require('../github/inputs.js')
-const cxexclusions = require('../utils/exclusions.js')
+const core = require("@actions/core")
+const utils = require("../utils/utils.js")
+const inputs = require("../github/inputs.js")
+const cxexclusions = require("../utils/exclusions.js")
 const envs = process.env
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
 const DEFAULT_FOLDER_EXCLUSIONS = cxexclusions.getScaFolderExclusions()
@@ -12,7 +12,7 @@ function getScaCmd(action, skipIfFail) {
         let credentials = ""
         let cxUsername = inputs.get(inputs.CX_SCA_USERNAME, false)
         if (utils.isValidString(cxUsername)) {
-            core.info(inputs.CX_SCA_USERNAME + ' : ' + cxUsername)
+            core.info(inputs.CX_SCA_USERNAME + " : " + cxUsername)
             let user = cxUsername.trim()
             core.setOutput(inputs.CX_SCA_USERNAME, user)
             credentials = " -ScaUsername " + user

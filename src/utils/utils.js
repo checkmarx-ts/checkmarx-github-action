@@ -1,4 +1,4 @@
-const core = require('@actions/core')
+const core = require("@actions/core")
 const SCAN = "Scan"
 const ASYNC_SCAN = "AsyncScan"
 const OSA_SCAN = "OsaScan"
@@ -18,7 +18,7 @@ function getLastString(s) {
         let auxArray = s.split("/")
         return auxArray[auxArray.length - 1]
     } else {
-        core.warning("[" + method + "] variable '" + s + "' is not defined")
+        core.warning("[" + method + "] variable " + s + " is not defined")
         return s
     }
 }

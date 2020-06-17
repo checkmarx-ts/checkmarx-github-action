@@ -1,9 +1,9 @@
 const fs = require("fs")
-const path = require('path')
-const utils = require('../utils/utils.js')
-const core = require('@actions/core')
-const exec = require('@actions/exec')
-const inputs = require('../github/inputs')
+const path = require("path")
+const utils = require("../utils/utils.js")
+const core = require("@actions/core")
+const exec = require("@actions/exec")
+const inputs = require("../github/inputs")
 const outputs = require("../github/ouputs")
 const isWin = process.platform === "win32" || process.platform === "win64";
 const DOWNLOAD_DOMAIN = "https://download.checkmarx.com"
@@ -128,22 +128,22 @@ async function downloadCli(cxVersion, skipIfFail) {
                         if (fs.existsSync(zipFileName)) {
                             await exec.exec("unzip -q " + zipFileName)
                         } else {
-                            core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                            core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                         }
                     } else {
                         if (fs.existsSync(zipFileName)) {
                             await exec.exec("unzip -q " + zipFileName + " -d " + CLI_FOLDER_NAME)
                         } else {
-                            core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                            core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                         }
                     }
                     if (fs.existsSync(zipFileName)) {
                         await exec.exec("rm -rf " + zipFileName)
                     } else {
-                        core.info("Checkmarx CLI Zip File '" + zipFileName + "' does not exists")
+                        core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                     }
                 } else {
-                    core.info("No need to download Checkmarx CLI because it already exists in the path with name '" + CLI_FOLDER_NAME + "'\n")
+                    core.info("No need to download Checkmarx CLI because it already exists in the path with name " + CLI_FOLDER_NAME + "\n")
                 }
 
                 if (!cliExists) {
@@ -151,13 +151,13 @@ async function downloadCli(cxVersion, skipIfFail) {
                         if (fs.existsSync(versionFileName)) {
                             await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
                         } else {
-                            core.info("Checkmarx CLI Version Folder '" + versionFileName + "' does not exists")
+                            core.info("Checkmarx CLI Version Folder " + versionFileName + " does not exists")
                         }
                         const examplesFolder = "./" + CLI_FOLDER_NAME + "/Examples"
                         if (fs.existsSync(examplesFolder)) {
                             await exec.exec("rm -rf " + examplesFolder)
                         } else {
-                            core.info("Checkmarx CLI Examples Folder '" + examplesFolder + "' does not exists")
+                            core.info("Checkmarx CLI Examples Folder " + examplesFolder + " does not exists")
                         }
                     }
                 }

@@ -1,9 +1,9 @@
-const core = require('@actions/core')
-const github = require('@actions/github')
-const sastreport = require('../report/sastreport')
-const osareport = require('../report/osareport')
-const utils = require('../utils/utils')
-const inputs = require('./inputs')
+const core = require("@actions/core")
+const github = require("@actions/github")
+const sastreport = require("../report/sastreport")
+const osareport = require("../report/osareport")
+const utils = require("../utils/utils")
+const inputs = require("./inputs")
 const envs = process.env
 const HTTP_STATUS_OK = 200
 const HTTP_STATUS_CREATED = 201
@@ -20,7 +20,7 @@ function getToken() {
     if (createGithubIssues && createGithubIssues != "false") {
         token = inputs.getString(inputs.CX_GITHUB_TOKEN, false, "", true)
     } else {
-        core.info('Issues will not be created since cxGithubIssues was not provided or set to false')
+        core.info("Issues will not be created since cxGithubIssues was not provided or set to false")
     }
 
     return token
@@ -218,7 +218,7 @@ async function createIssues(cxAction) {
             core.info("Unable to authenticate to octokit. Please provide a proper GITHUB_TOKEN")
         }
     } else {
-        core.info('No issues will be created')
+        core.info("No issues will be created")
     }
 }
 
