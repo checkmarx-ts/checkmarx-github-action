@@ -10,64 +10,14 @@ jobs:
   latest:
     name: Deploy Docker Image - Latest Version
     runs-on: ubuntu-latest
-    env:
-      VERSION: "latest"
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Build Docker Image
-      run: docker build -t $PKG_NAME:$VERSION . --no-cache
+      run: docker build -t $PKG_NAME:latest . --no-cache
     - name: Tag Docker Image
-      run: docker tag $PKG_NAME:$VERSION $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
+      run: docker tag $PKG_NAME:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
     - name: Docker Login
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:$VERSION
-  v1_0_2:
-    name: Deploy Docker Image - v1.0.2
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: v1.0.2
-    - name: Build Docker Image
-      run: docker build -t $PKG_NAME:v1.0.2 . --no-cache
-    - name: Tag Docker Image
-      run: docker tag $PKG_NAME:v1.0.2 $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.2
-    - name: Docker Login
-      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
-    - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.2
-  v1_0_1:
-    name: Deploy Docker Image - v1.0.1
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: v1.0.1
-    - name: Build Docker Image
-      run: docker build -t $PKG_NAME:v1.0.1 . --no-cache
-    - name: Tag Docker Image
-      run: docker tag $PKG_NAME:v1.0.1 $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.1
-    - name: Docker Login
-      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
-    - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.1
-  v1_0_0:
-    name: Deploy Docker Image - v1.0.0
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: v1.0.0
-    - name: Build Docker Image
-      run: docker build -t $PKG_NAME:v1.0.0 . --no-cache
-    - name: Tag Docker Image
-      run: docker tag $PKG_NAME:v1.0.0 $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.0
-    - name: Docker Login
-      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
-    - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:v1.0.0
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
