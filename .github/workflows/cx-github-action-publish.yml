@@ -1,18 +1,23 @@
-name: Github Action Deploy
-
+name: Deploy Docker Images
+env:
+  DOCKER_GITHUB: "docker.pkg.github.com"
+  PKG_NAME: "checkmarx-github-action"
 on:
   push:
     branches: 
       - master
 jobs:
-  cx-github-actions:
-    name: Run Tests
+  latest:
+    name: Deploy Docker Image - Latest Version
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Publish Package
-      run: |
-        npm login --registry=https://npm.pkg.github.com
-        npm publish
-      
+    - name: Build Docker Image
+      run: docker build -t $PKG_NAME:latest . --no-cache
+    - name: Tag Docker Image
+      run: docker tag $PKG_NAME:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
+    - name: Docker Login
+      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+    - name: Docker Push
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
