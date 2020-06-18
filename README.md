@@ -344,6 +344,7 @@ Here the list of versions supported:
   - 2020.2.3
   - 2020.2.7
   - 2020.2.11
+  - 2020.2.18
 
 
 ## Secrets

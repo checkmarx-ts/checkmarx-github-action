@@ -1,4 +1,4 @@
-name: 2020.1.12 Generate Token Wrong Credentials
+name: 2020.2.18 Revoke Token 
 on:
   push:
     branches: 
@@ -13,11 +13,9 @@ jobs:
       uses: ./
       with:
         cxServer: ${{ secrets.CX_SERVER }}
-        cxAction: GenerateToken
-        cxUsername: ${{ secrets.CX_EMAIL }}
-        cxPassword: "123456"
-        cxSkipIfFail: true
-        cxVersion: "2020.2.11"
+        cxAction: RevokeToken
+        cxToken: ${{ secrets.CX_TOKEN }}
+        cxVersion: "2020.2.18"
         cxLog: log.log
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
