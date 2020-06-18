@@ -391,7 +391,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.high++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.high++
                         break
@@ -420,7 +420,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.medium++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.medium++
                         break
@@ -448,7 +448,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.low++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.low++
                         break
@@ -476,7 +476,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.info++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.info++
                         break
@@ -507,7 +507,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.toVerify++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.toVerify++
                         break
@@ -533,7 +533,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.notExploitable++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.notExploitable++
                         break
@@ -559,7 +559,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.confirmed++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.confirmed++
                         break
@@ -585,7 +585,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.urgent++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.urgent++
                         break
@@ -611,7 +611,7 @@ function getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopened
                 switch (issue.resultStatus) {
                     case NEW:
                         summary.new.proposedNotExploitable++
-                        break;
+                        break
                     case RECURRENT:
                         summary.recurrent.proposedNotExploitable++
                         break

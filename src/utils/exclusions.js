@@ -119,11 +119,44 @@ function getDefaultFileExclusions(){
 
 function getOsaFolderExclusions(){
     return [
-        "cxcli",
-        ".git",
-        "test",
-        "tests",
-        ".github"
+        "cxcli", //Folder created when downloading CLI
+        "test", // Tests
+        "tests", // Tests
+        "mock", // Tests
+        "mocks", // Tests
+        "spec", // Tests
+        "unit", // Tests
+        "debug", // Tests
+        "e2e", //Tests
+        "androidTest", // Tests (Android)
+        "example", // Dead Code
+        "examples", // Dead Code
+        "samples", // Dead Code
+        ".vs", // Non-relevant folders (Visual Studio)
+        ".vscode", // Non-relevant folders (VS Code)
+        ".idea", // Non-relevant folders (IntelliJ IDEA)
+        ".temp", // Non-relevant folders (Temporary)
+        ".tmp", // Non-relevant folders (Temporary)
+        ".grunt", // Non-relevant folders (Grunt)
+        ".cache", // Non-relevant folders (Cache)
+        ".dynamodb", // Non-relevant folders (Dinamo DB)
+        ".fusebox", // Non-relevant folders (Fusebox)
+        ".serverless", // Non-relevant folders (Serverless)
+        ".nyc_output", // Non-relevant folders (NYC)
+        ".git", // Non-relevant folders (Git)
+        ".github", // Non-relevant folders (Github)
+        ".dependabot", // Non-relevant folders (Dependabot)
+        ".semaphore", // Non-relevant folders (Semaphore CI)
+        ".circleci", // Non-relevant folders (Circle CI)
+        ".nuget", // Non-relevant folders (CSharp)
+        ".mvn", // Non-relevant folders (Maven)
+        ".m2", // Non-relevant folders (Maven)
+        ".DS_Store", // Non-relevant folders
+        ".sass-cache", // Non-relevant folders
+        ".gradle", // Non-relevant folders (Android)
+        "__pycache__", // Non-relevant folders (Python)
+        ".pytest_cache", // Non-relevant folders (Python)
+        ".settings", // Non-relevant folders (CSharp)
     ].join()
 }
 function getOsaFileExclusions(){

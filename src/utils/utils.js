@@ -41,7 +41,7 @@ function isValidInt(int) {
 
 function isBoolean(bool) {
     if (bool != null && bool != undefined) {
-        let b = bool.toString();
+        let b = bool.toString()
         return b == "true" || b == "false"
     } else {
         return false

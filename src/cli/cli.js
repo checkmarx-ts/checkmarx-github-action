@@ -5,31 +5,37 @@ const core = require("@actions/core")
 const exec = require("@actions/exec")
 const inputs = require("../github/inputs")
 const outputs = require("../github/ouputs")
-const isWin = process.platform === "win32" || process.platform === "win64";
-const DOWNLOAD_DOMAIN = "https://download.checkmarx.com"
-const DOWNLOAD_COMMON_PATH = "Plugins/CxConsolePlugin-"
-const CLI_DOWNLOAD_URLS = [
-    DOWNLOAD_DOMAIN + "/8.6.0/" + DOWNLOAD_COMMON_PATH + "8.60.3.zip",//0
-    DOWNLOAD_DOMAIN + "/8.7.0/" + DOWNLOAD_COMMON_PATH + "8.70.4.zip",//1
-    DOWNLOAD_DOMAIN + "/8.8.0/" + DOWNLOAD_COMMON_PATH + "8.80.2.zip",//2
-    DOWNLOAD_DOMAIN + "/8.9.0/" + DOWNLOAD_COMMON_PATH + "8.90.2.zip",//3
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "9.00.1.zip",//4
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "9.00.2.zip",//5
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.1.12.zip",//6
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.3.zip",//7
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.7.zip",//8
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.11.zip",//9
-    DOWNLOAD_DOMAIN + "/9.0.0/" + DOWNLOAD_COMMON_PATH + "2020.2.18.zip",//10
-]
+const isWin = process.platform === "win32" || process.platform === "win64"
 const CLI_FOLDER_NAME = "cxcli"
+const DOWNLOAD_DOMAIN = "https://download.checkmarx.com/"
+const DOWNLOAD_COMMON_PATH = "/Plugins/CxConsolePlugin-"
+const FILE_EXTENSION = ".zip"
+const DOWNLOAD_PATH_8_6 = DOWNLOAD_DOMAIN + "8.6.0" + DOWNLOAD_COMMON_PATH
+const DOWNLOAD_PATH_8_7 = DOWNLOAD_DOMAIN + "8.7.0" + DOWNLOAD_COMMON_PATH
+const DOWNLOAD_PATH_8_8 = DOWNLOAD_DOMAIN + "8.8.0" + DOWNLOAD_COMMON_PATH
+const DOWNLOAD_PATH_8_9 = DOWNLOAD_DOMAIN + "8.9.0" + DOWNLOAD_COMMON_PATH
+const DOWNLOAD_PATH_9 = DOWNLOAD_DOMAIN + "9.0.0" + DOWNLOAD_COMMON_PATH
+const CLI_DOWNLOAD_URLS = [
+    DOWNLOAD_PATH_8_6 + "8.60.3",//0
+    DOWNLOAD_PATH_8_7 + "8.70.4",//1
+    DOWNLOAD_PATH_8_8 + "8.80.2",//2
+    DOWNLOAD_PATH_8_9 + "8.90.2",//3
+    DOWNLOAD_PATH_9 + "9.00.1",//4
+    DOWNLOAD_PATH_9 + "9.00.2",//5
+    DOWNLOAD_PATH_9 + "2020.1.12",//6
+    DOWNLOAD_PATH_9 + "2020.2.3",//7
+    DOWNLOAD_PATH_9 + "2020.2.7",//8
+    DOWNLOAD_PATH_9 + "2020.2.11",//9
+    DOWNLOAD_PATH_9 + "2020.2.18",//10
+]
 
 function getCliDownloadUrl(cxVersion) {
     if (isValidVersion(cxVersion)) {
         switch (cxVersion) {
             case "2020":
-                return CLI_DOWNLOAD_URLS[10]
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
             case "2020.2":
-                return CLI_DOWNLOAD_URLS[10]
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
             case "2020.2.18":
                 return CLI_DOWNLOAD_URLS[10]
             case "2020.2.11":
@@ -68,9 +74,9 @@ function getCliDownloadUrl(cxVersion) {
                 return CLI_DOWNLOAD_URLS[0]
             default:
                 if (cxVersion.startsWith("2020")) {
-                    return CLI_DOWNLOAD_URLS[9]
+                    return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
                 } else if (cxVersion.startsWith("9.0")) {
-                    return CLI_DOWNLOAD_URLS[9]
+                    return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
                 } else if (cxVersion.startsWith("8.9")) {
                     return CLI_DOWNLOAD_URLS[3]
                 } else if (cxVersion.startsWith("8.8")) {
@@ -85,9 +91,9 @@ function getCliDownloadUrl(cxVersion) {
         }
     } else {
         if (cxVersion.startsWith("2020")) {
-            return CLI_DOWNLOAD_URLS[10]
+            return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
         } else if (cxVersion.startsWith("9.0")) {
-            return CLI_DOWNLOAD_URLS[10]
+            return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
         } else if (cxVersion.startsWith("8.9")) {
             return CLI_DOWNLOAD_URLS[3]
         } else if (cxVersion.startsWith("8.8")) {
@@ -117,16 +123,16 @@ async function downloadCli(cxVersion, skipIfFail) {
     if (utils.isValidString(cxVersion)) {
         let cliDownloadUrl = getCliDownloadUrl(cxVersion)
         if (cliDownloadUrl) {
-            core.setOutput(outputs.CX_CLI_DOWNLOAD_URL, cliDownloadUrl)
-            let versionFileName = utils.getLastString(cliDownloadUrl).replace(".zip", "")
+            core.setOutput(outputs.CX_CLI_DOWNLOAD_URL, cliDownloadUrl + FILE_EXTENSION)
+            let versionFileName = utils.getLastString(cliDownloadUrl)
             if (versionFileName) {
                 core.setOutput("cxCliVersionFileName", versionFileName)
                 core.info("[START] Download Checkmarx CLI from " + cliDownloadUrl + "...")
-                const zipFileName = CLI_FOLDER_NAME + ".zip";
+                const zipFileName = CLI_FOLDER_NAME + FILE_EXTENSION
                 const cliExists = fs.existsSync(CLI_FOLDER_NAME)
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
-                    await exec.exec("curl -s " + cliDownloadUrl + " -L -o " + zipFileName)
+                    await exec.exec("curl -s " + cliDownloadUrl + FILE_EXTENSION + " -L -o " + zipFileName)
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(zipFileName)) {
                             await exec.exec("unzip -q " + zipFileName)
@@ -215,7 +221,7 @@ async function executeCommand(command, skipIfFail) {
             await exec.exec(command)
             return true
         } catch (e) {
-            return inputs.coreError( "Failed to execute command : " + e.message, skipIfFail)
+            return inputs.coreError("Failed to execute command : " + e.message, skipIfFail)
         }
     } else {
         core.info("Invalid command string : " + command)

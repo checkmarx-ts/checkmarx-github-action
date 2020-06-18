@@ -35,10 +35,10 @@ function getSastCmd(server, action, skipIfFail) {
 
         let excludeFiles = inputs.getString(inputs.CX_EXCLUDE_FILES, false, DEFAULT_FILE_EXCLUSIONS)
         if (excludeFiles != DEFAULT_FILE_EXCLUSIONS) {
-            //DO NOTHING; BUG ON FILE EXCLUSIONS
+            //DO NOTHING, BUG ON FILE EXCLUSIONS
         } else {
             excludeFiles = ""
-            //DO NOTHING; BUG ON FILE EXCLUSIONS
+            //DO NOTHING, BUG ON FILE EXCLUSIONS
         }
 
         let scanComment = inputs.getString(inputs.CX_COMMENT, false, DEFAULT_COMMENT)
