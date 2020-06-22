@@ -27,7 +27,7 @@ jobs:
         cxGithubLabels: bug,test
         cxGithubAssignees: miguelfreitas93
     - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2.0.1
       with:
         name: log.log
         path: log.log
