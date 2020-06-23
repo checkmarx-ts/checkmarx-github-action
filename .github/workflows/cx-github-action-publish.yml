@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2.3.1
     - name: Build Docker Image
       run: docker build -t $PKG_NAME:latest . --no-cache
     - name: Tag Docker Image

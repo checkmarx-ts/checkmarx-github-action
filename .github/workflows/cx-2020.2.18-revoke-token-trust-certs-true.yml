@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2.3.1
     - name: Checkmarx Action
       uses: ./
       with:
@@ -19,7 +19,7 @@ jobs:
         cxVersion: "2020.2.18"
         cxLog: log.log
     - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2.0.1
       with:
         name: log.log
         path: log.log
