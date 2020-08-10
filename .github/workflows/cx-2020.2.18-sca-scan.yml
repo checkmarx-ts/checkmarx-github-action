@@ -24,7 +24,7 @@ jobs:
         cxVersion: "2020.2.18"
         cxLog: log.log
     - name: Upload artifact
-      uses: actions/upload-artifact@v2.0.1
+      uses: actions/upload-artifact@v2.1.3
       with:
         name: log.log
         path: log.log
