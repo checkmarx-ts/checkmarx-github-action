@@ -174,7 +174,11 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(versionFileName)) {
-                            await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                            if(isWin) {
+                                await exec.exec("powershell.exe Move-Item -Path " + versionFileName + " -Destination " + CLI_FOLDER_NAME)
+                            } else {
+                                await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                            }
                         } else {
                             core.info("Checkmarx CLI Version Folder " + versionFileName + " does not exists")
                         }
