@@ -160,7 +160,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                     }
                     if (fs.existsSync(zipFileName)) {
                         if(isWin) {
-                            await exec.exec("def -f " + zipFileName)
+                            await exec.exec("del -f " + zipFileName)
                         } else {
                             await exec.exec("rm -rf " + zipFileName)
                         }
