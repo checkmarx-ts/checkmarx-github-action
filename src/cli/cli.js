@@ -160,7 +160,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                     }
                     if (fs.existsSync(zipFileName)) {
                         if(isWin) {
-                            await exec.exec("del -f " + zipFileName)
+                            await exec.exec("powershell.exe Remove-Item " + zipFileName + " -Force")
                         } else {
                             await exec.exec("rm -rf " + zipFileName)
                         }
@@ -181,7 +181,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                         const examplesFolder = "./" + CLI_FOLDER_NAME + "/Examples"
                         if (fs.existsSync(examplesFolder)) {
                             if(isWin) {
-                                await exec.exec("del -f " + examplesFolder)
+                                await exec.exec("powershell.exe Remove-Item " + examplesFolder + " -Recurse -Force")
                             } else {
                                 await exec.exec("rm -rf " + examplesFolder)
                             }
@@ -203,7 +203,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                 }
 
                 if(isWin) {
-                    await exec.exec("dir")
+                    await exec.exec("powershell.exe Get-ChildItem")
                 } else {
                     await exec.exec("ls -la")
                 }
