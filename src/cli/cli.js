@@ -194,12 +194,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                         }
                     }
                 }
-                if (isWin) {
-                    const runWindows = "." + path.sep + CLI_FOLDER_NAME + path.sep + "runCxConsole.cmd"
-                    if (fs.existsSync(runWindows)) {
-                        await exec.exec("chmod +x " + runWindows)
-                    }
-                } else {
+                if (!isWin) {
                     const runLinux = "." + path.sep + CLI_FOLDER_NAME + path.sep + "runCxConsole.sh"
                     if (fs.existsSync(runLinux)) {
                         await exec.exec("chmod +x " + runLinux)
