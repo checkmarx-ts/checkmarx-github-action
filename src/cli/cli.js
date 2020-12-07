@@ -140,7 +140,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(zipFileName)) {
                             if(isWin) {
-                                await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName)
+                                await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName + " -DestinationPath .")
                             } else {
                                 await exec.exec("unzip -q " + zipFileName)
                             }
