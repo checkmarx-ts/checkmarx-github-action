@@ -6,11 +6,13 @@ on:
 jobs:
   latest:
     name: Deploy Docker Image - Latest Version
-    runs-on: ${{ matrix.os }}
     env:
       DOCKER_GITHUB: docker.pkg.github.com
       PKG_NAME: checkmarx-github-action
+    continue-on-error: true
     strategy:
+      max-parallel: 2
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         include:
@@ -18,6 +20,7 @@ jobs:
             system: linux
           - os: windows-latest
             system: windows
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
