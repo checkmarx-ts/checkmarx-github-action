@@ -1,6 +1,6 @@
 {
   "name": "checkmarx-github-action",
-  "version": "1.0.2",
+  "version": "v1.0.4",
   "description": "Checkmarx Github Action",
   "main": "src/index.js",
   "scripts": {
@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/checkmarx-ts/checkmarx-github-action#readme",
   "dependencies": {
-    "@actions/core": "^1.2.4",
+    "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.4",
     "@actions/github": "^3.0.0",
     "dotenv": "^8.2.0",
@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "jslint-node": "^1.2.8",
-    "mocha": "^8.0.1",
+    "mocha": "^8.2.1",
     "nyc": "^15.1.0"
   }
 }

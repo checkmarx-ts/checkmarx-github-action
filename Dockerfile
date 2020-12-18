@@ -1,7 +1,5 @@
 FROM node:latest
 
-LABEL Miguel Freitas <miguel.freitas@checkmarx.com>
-
 WORKDIR /opt/checkmarx-github-action
 
 COPY package.json ./package.json
