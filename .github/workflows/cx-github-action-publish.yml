@@ -1,7 +1,4 @@
 name: Deploy Docker Images
-env:
-  DOCKER_GITHUB: "docker.pkg.github.com"
-  PKG_NAME: "checkmarx-github-action"
 on:
   push:
     branches: 
@@ -10,6 +7,9 @@ jobs:
   latest:
     name: Deploy Docker Image - Latest Version
     runs-on: ${{ matrix.os }}
+    env:
+      DOCKER_GITHUB: docker.pkg.github.com
+      PKG_NAME: checkmarx-github-action
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -21,6 +21,10 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
+    - name: Print Environments
+      run: |
+        echo $DOCKER_GITHUB
+        echo $PKG_NAME
     - name: Build Docker Image
       run: docker-compose build $PKG_NAME-${{ matrix.system }}
     - name: Tag Docker Image
