@@ -12,7 +12,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        system: [linux]
         os: [ubuntu-latest, windows-latest]
         include:
           - os: ubuntu-latest
