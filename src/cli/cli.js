@@ -132,22 +132,38 @@ async function downloadCli(cxVersion, skipIfFail) {
                 const cliExists = fs.existsSync(CLI_FOLDER_NAME)
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
-                    await exec.exec("curl -s " + cliDownloadUrl + FILE_EXTENSION + " -L -o " + zipFileName)
+                    if(isWin) {
+                        await exec.exec("powershell.exe Invoke-WebRequest -Uri " + cliDownloadUrl + FILE_EXTENSION + " -OutFile " + zipFileName)
+                    } else {
+                        await exec.exec("curl -s " + cliDownloadUrl + FILE_EXTENSION + " -L -o " + zipFileName)
+                    }
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(zipFileName)) {
-                            await exec.exec("unzip -q " + zipFileName)
+                            if(isWin) {
+                                await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName + " -DestinationPath .")
+                            } else {
+                                await exec.exec("unzip -q " + zipFileName)
+                            }
                         } else {
                             core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                         }
                     } else {
                         if (fs.existsSync(zipFileName)) {
-                            await exec.exec("unzip -q " + zipFileName + " -d " + CLI_FOLDER_NAME)
+                            if(isWin) {
+                                await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName + " -DestinationPath " + CLI_FOLDER_NAME)
+                            } else {
+                                await exec.exec("unzip -q " + zipFileName + " -d " + CLI_FOLDER_NAME)
+                            }
                         } else {
                             core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                         }
                     }
                     if (fs.existsSync(zipFileName)) {
-                        await exec.exec("rm -rf " + zipFileName)
+                        if(isWin) {
+                            await exec.exec("powershell.exe Remove-Item " + zipFileName + " -Force")
+                        } else {
+                            await exec.exec("rm -rf " + zipFileName)
+                        }
                     } else {
                         core.info("Checkmarx CLI Zip File " + zipFileName + " does not exists")
                     }
@@ -158,31 +174,38 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(versionFileName)) {
-                            await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                            if(isWin) {
+                                await exec.exec("powershell.exe Move-Item -Path " + versionFileName + " -Destination " + CLI_FOLDER_NAME)
+                            } else {
+                                await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
+                            }
                         } else {
                             core.info("Checkmarx CLI Version Folder " + versionFileName + " does not exists")
                         }
                         const examplesFolder = "./" + CLI_FOLDER_NAME + "/Examples"
                         if (fs.existsSync(examplesFolder)) {
-                            await exec.exec("rm -rf " + examplesFolder)
+                            if(isWin) {
+                                await exec.exec("powershell.exe Remove-Item " + examplesFolder + " -Recurse -Force")
+                            } else {
+                                await exec.exec("rm -rf " + examplesFolder)
+                            }
                         } else {
                             core.info("Checkmarx CLI Examples Folder " + examplesFolder + " does not exists")
                         }
                     }
                 }
-                if (isWin) {
-                    const runWindows = "." + path.sep + CLI_FOLDER_NAME + path.sep + "runCxConsole.cmd"
-                    if (fs.existsSync(runWindows)) {
-                        await exec.exec("chmod +x " + runWindows)
-                    }
-                } else {
+                if (!isWin) {
                     const runLinux = "." + path.sep + CLI_FOLDER_NAME + path.sep + "runCxConsole.sh"
                     if (fs.existsSync(runLinux)) {
                         await exec.exec("chmod +x " + runLinux)
                     }
                 }
 
-                await exec.exec("ls -la")
+                if(isWin) {
+                    await exec.exec("powershell.exe Get-ChildItem")
+                } else {
+                    await exec.exec("ls -la")
+                }
 
                 core.info("[END] Download Checkmarx CLI...\n")
                 return true
