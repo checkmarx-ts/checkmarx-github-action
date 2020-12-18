@@ -27,6 +27,9 @@ const CLI_DOWNLOAD_URLS = [
     DOWNLOAD_PATH_9 + "2020.2.7",//8
     DOWNLOAD_PATH_9 + "2020.2.11",//9
     DOWNLOAD_PATH_9 + "2020.2.18",//10
+    DOWNLOAD_PATH_9 + "2020.3.1",//11
+    DOWNLOAD_PATH_9 + "2020.4.4",//12
+    DOWNLOAD_PATH_9 + "2020.4.12",//13
 ]
 
 function getCliDownloadUrl(cxVersion) {
@@ -36,6 +39,12 @@ function getCliDownloadUrl(cxVersion) {
                 return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
             case "2020.2":
                 return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+            case "2020.4.12":
+                return CLI_DOWNLOAD_URLS[13]
+            case "2020.4.4":
+                return CLI_DOWNLOAD_URLS[12]
+            case "2020.3.1":
+                return CLI_DOWNLOAD_URLS[11]
             case "2020.2.18":
                 return CLI_DOWNLOAD_URLS[10]
             case "2020.2.11":

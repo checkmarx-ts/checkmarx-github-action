@@ -6,7 +6,6 @@
 [![Open Issues](https://img.shields.io/github/issues-raw/checkmarx-ts/checkmarx-github-action)](https://github.com/checkmarx-ts/checkmarx-github-action/issues)
 
 
-
 Find security vulnerabilities in your Github Repository with Checkmarx using Github Action Integration. 
 
 This is a CLI Wrapper to trigger Checkmarx SAST or OSA Scans.
@@ -285,7 +284,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxSCA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020 (Please see CLI Versions section) | String | No | 2020 |
+| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
@@ -345,6 +344,9 @@ Here the list of versions supported:
   - 2020.2.7
   - 2020.2.11
   - 2020.2.18
+  - 2020.3.1
+  - 2020.4.4
+  - 2020.4.12
 
 
 ## Secrets

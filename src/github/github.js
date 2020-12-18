@@ -37,7 +37,9 @@ async function createIssues(cxAction) {
         let event = envs.GITHUB_EVENT_NAME
 
         let githubLabels = inputs.getArray(inputs.CX_GITHUB_LABELS, false)
-        githubLabels.push("checkmarx")
+        if(githubLabels){
+            githubLabels.push("checkmarx")
+        }
         let githubAssignees = inputs.getArray(inputs.CX_GITHUB_ASSIGNEES, false)
         let githubMilestone = inputs.getInt(inputs.CX_GITHUB_MILESTONE, false)
         if (githubMilestone == -1) {
@@ -109,23 +111,27 @@ async function createIssues(cxAction) {
                         }
                     }
 
-                    for (let i = 0; i < repositoryIssues.length; i++) {
-                        let repositoryIssue = repositoryIssues[i]
-                        const titleRepositoryIssue = repositoryIssue.title
-                        if (titleRepositoryIssue.startsWith(sastreport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
-                            await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
-                            resolvedIssues++
+                    if(repositoryIssues){
+                        for (let i = 0; i < repositoryIssues.length; i++) {
+                            let repositoryIssue = repositoryIssues[i]
+                            const titleRepositoryIssue = repositoryIssue.title
+                            if (titleRepositoryIssue.startsWith(sastreport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
+                                await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                                resolvedIssues++
+                            }
                         }
                     }
 
                     let summary = sastreport.getSummary(issues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
                     await createCommitAndPullRequestComment(owner, repo, octokit, commitSha, summary, event)
                 } else {
-                    for (let i = 0; i < repositoryIssues.length; i++) {
-                        let repositoryIssue = repositoryIssues[i]
-                        const titleRepositoryIssue = repositoryIssue.title
-                        if (titleRepositoryIssue.startsWith(sastreport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
-                            await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                    if(repositoryIssues){
+                        for (let i = 0; i < repositoryIssues.length; i++) {
+                            let repositoryIssue = repositoryIssues[i]
+                            const titleRepositoryIssue = repositoryIssue.title
+                            if (titleRepositoryIssue.startsWith(sastreport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
+                                await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                            }
                         }
                     }
                 }
@@ -156,25 +162,27 @@ async function createIssues(cxAction) {
                         }
 
                         let issueExists = false
-                        for (let j = 0; j < repositoryIssues.length; j++) {
-                            let repositoryIssue = repositoryIssues[j]
-                            const titleRepositoryIssue = repositoryIssue.title
-                            if (titleRepositoryIssue == title) {
-                                issuesChangedIds.push(repositoryIssue.number)
-                                issueExists = true
-                                if (state != repositoryIssue.state) {
-                                    if (state == GITHUB_STATE_OPEN && repositoryIssue.state == GITHUB_STATE_CLOSED) {
-                                        reopenedIssues++
-                                    } else if (state == GITHUB_STATE_CLOSED && repositoryIssue.state == GITHUB_STATE_OPEN) {
-                                        resolvedIssues++
+                        if(repositoryIssues){
+                            for (let j = 0; j < repositoryIssues.length; j++) {
+                                let repositoryIssue = repositoryIssues[j]
+                                const titleRepositoryIssue = repositoryIssue.title
+                                if (titleRepositoryIssue == title) {
+                                    issuesChangedIds.push(repositoryIssue.number)
+                                    issueExists = true
+                                    if (state != repositoryIssue.state) {
+                                        if (state == GITHUB_STATE_OPEN && repositoryIssue.state == GITHUB_STATE_CLOSED) {
+                                            reopenedIssues++
+                                        } else if (state == GITHUB_STATE_CLOSED && repositoryIssue.state == GITHUB_STATE_OPEN) {
+                                            resolvedIssues++
+                                        } else {
+                                            recurrentIssues++
+                                        }
                                     } else {
                                         recurrentIssues++
                                     }
-                                } else {
-                                    recurrentIssues++
+                                    await updateIssue(owner, repo, octokit, body, issueGithubLabels, githubAssignees, githubMilestone, repositoryIssue, state)
+                                    break
                                 }
-                                await updateIssue(owner, repo, octokit, body, issueGithubLabels, githubAssignees, githubMilestone, repositoryIssue, state)
-                                break
                             }
                         }
                         if (!issueExists) {
@@ -191,23 +199,27 @@ async function createIssues(cxAction) {
                         }
                     }
 
-                    for (let i = 0; i < repositoryIssues.length; i++) {
-                        let repositoryIssue = repositoryIssues[i]
-                        const titleRepositoryIssue = repositoryIssue.title
-                        if (titleRepositoryIssue.startsWith(osareport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
-                            await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
-                            resolvedIssues++
+                    if(repositoryIssues){
+                        for (let i = 0; i < repositoryIssues.length; i++) {
+                            let repositoryIssue = repositoryIssues[i]
+                            const titleRepositoryIssue = repositoryIssue.title
+                            if (titleRepositoryIssue.startsWith(osareport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
+                                await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                                resolvedIssues++
+                            }
                         }
                     }
 
                     let summary = osareport.getSummary(osaSummary, osaLibraries, osaIssues, newIssues, recurrentIssues, resolvedIssues, reopenedIssues)
                     await createCommitAndPullRequestComment(owner, repo, octokit, commitSha, summary, event)
                 } else {
-                    for (let i = 0; i < repositoryIssues.length; i++) {
-                        let repositoryIssue = repositoryIssues[i]
-                        const titleRepositoryIssue = repositoryIssue.title
-                        if (titleRepositoryIssue.startsWith(osareport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
-                            await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                    if(repositoryIssues){
+                        for (let i = 0; i < repositoryIssues.length; i++) {
+                            let repositoryIssue = repositoryIssues[i]
+                            const titleRepositoryIssue = repositoryIssue.title
+                            if (titleRepositoryIssue.startsWith(osareport.TITLE_PREFIX) && repositoryIssue.state == GITHUB_STATE_OPEN && !issuesChangedIds.includes(repositoryIssue.number)) {
+                                await updateIssue(owner, repo, octokit, VULNERABILITY_DISAPPEAR_MESSAGE, [], githubAssignees, githubMilestone, repositoryIssue, GITHUB_STATE_CLOSED)
+                            }
                         }
                     }
                 }
