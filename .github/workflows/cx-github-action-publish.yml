@@ -9,15 +9,24 @@ on:
 jobs:
   latest:
     name: Deploy Docker Image - Latest Version
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        system: [linux]
+        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            system: linux
+          - os: windows-latest
+            system: windows
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Build Docker Image
-      run: docker build -t $PKG_NAME:latest . --no-cache
+      run: docker-compose build $PKG_NAME-${{ matrix.system }}
     - name: Tag Docker Image
-      run: docker tag $PKG_NAME:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
+      run: docker tag $PKG_NAME-${{ matrix.system }}:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-${{ matrix.system }}:latest
     - name: Docker Login
       run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME:latest
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-${{ matrix.system }}:latest

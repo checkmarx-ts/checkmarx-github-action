@@ -1,0 +1,23 @@
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
+
+RUN powershell Set-ExecutionPolicy Bypass -Scope Process -Force
+RUN powershell [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+RUN powershell [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+RUN powershell iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
+RUN choco install -y --force nodejs
+
+RUN node --version && \
+    npm --version
+
+WORKDIR /opt/checkmarx-github-action
+
+COPY package.json ./package.json
+COPY src ./src
+COPY action.yml ./action.yml
+COPY README.md ./README.md
+COPY LICENSE ./LICENSE
+
+RUN npm install
+
+CMD [ "node", "src/index.js" ]

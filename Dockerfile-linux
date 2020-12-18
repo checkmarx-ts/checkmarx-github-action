@@ -1,5 +1,8 @@
 FROM node:latest
 
+RUN node --version && \
+    npm --version
+
 WORKDIR /opt/checkmarx-github-action
 
 COPY package.json ./package.json
