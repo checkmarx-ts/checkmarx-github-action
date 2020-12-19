@@ -28,6 +28,10 @@ jobs:
       run: |
         echo $DOCKER_GITHUB
         echo $PKG_NAME
+        echo docker-compose build $PKG_NAME-${{ matrix.system }}
+        echo docker tag $PKG_NAME-${{ matrix.system }}:latest $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-${{ matrix.system }}:latest
+        echo docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+        echo docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-${{ matrix.system }}:latest
     - name: Build Docker Image
       run: docker-compose build $PKG_NAME-${{ matrix.system }}
     - name: Tag Docker Image
