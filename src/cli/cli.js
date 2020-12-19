@@ -113,10 +113,10 @@ function getCliDownloadUrl(cxVersion) {
             } else if (cxVersion.startsWith("8.6")) {
                 return CLI_DOWNLOAD_URLS[0]
             } else {
-                return CLI_DOWNLOAD_URLS[3]
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
             }
         } else {
-            return CLI_DOWNLOAD_URLS[3]
+            return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
         }
     }
 }

@@ -232,7 +232,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA |
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: OsaScan, AsyncOsaScan 
@@ -247,9 +247,9 @@ For using this action, there is a set of options that can be used, such as:
 | cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
 | cxOsaLocationPath | folder | OSA Location Folder | String | Yes* | {{GITHUB_WORKSPACE}} |
 | cxOsaArchiveToExtract |  \*.zip | Comma separated list of file extensions to be extracted in the OSA scan. | String | No | |
-| cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan.  | String | No | |
-| cxOsaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the OSA scan.  | String | No | |
-| cxOsaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the OSA scan.   | String | No | |
+| cxOsaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the OSA scan. | String | No | |
+| cxOsaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the OSA scan. | String | No | |
+| cxOsaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the OSA scan. | String | No | |
 | cxOsaDepth | 2 | Extraction depth of files to include in the OSA scan. | Integer | No | -1 |
 | cxOsaHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
 | cxOsaMedium | 0 | Threshold for Medium Severity Vulnerabilities| Integer | No | -1 |
@@ -261,7 +261,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxOSA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: ScaScan, AsyncScaScan
@@ -276,15 +276,15 @@ For using this action, there is a set of options that can be used, such as:
 | cxScaHigh | 0 | Threshold for High Severity Vulnerabilities | Integer | No | -1 |
 | cxScaMedium | 0 | Threshold for Medium Severity Vulnerabilities | Integer | No | -1 |
 | cxScaLow | 0 | Threshold for Low Severity Vulnerabilities | Integer | No | -1 |
-| cxScaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the SCA scan.  | String | No | |
-| cxScaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the SCA scan.  | String | No | |
-| cxScaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the SCA scan.   | String | No | |
+| cxScaFilesInclude | \*.dll,\*.jar | Comma separated list of file name patterns to include from the SCA scan. | String | No | |
+| cxScaFilesExclude | \*.dll,\*.jar | Comma separated list of file name patterns to exclude from the SCA scan. | String | No | |
+| cxScaPathExclude | \*/tests/\*  | Comma separated list of folder path patterns to exclude from the SCA scan. | String | No | |
 | cxScaLocationPath | folder | SCA Location Folder | String | Yes* | {{GITHUB_WORKSPACE}} |
 | cxExecutePackageDependency | true | Retrieve all supported package dependencies before performing SCA scan | Boolean | No | false |
 | cxCheckPolicy | true | This parameter will break the build if the CxSCA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
@@ -296,7 +296,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: RevokeToken
@@ -307,7 +307,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 8.9 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 8.9 |
+| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: Gihub Issues
@@ -328,25 +328,25 @@ There are a few Checkmarx CLI versions this action support. A version can be spe
 Please consider to use always the latest for your version.
 
 Here the list of versions supported:
-- For 8.6 version:
-  - 8.60.3
-- For 8.7 version:
-  - 8.70.4
-- For 8.8 version:
-  - 8.80.2
+- For 9.0 version:
+  - 2020.4.12
+  - 2020.4.4
+  - 2020.3.1
+  - 2020.2.18
+  - 2020.2.11
+  - 2020.2.7
+  - 2020.2.3
+  - 2020.1.12
+  - 9.00.2
+  - 9.00.1
 - For 8.9 version:
   - 8.90.2
-- For 9.0 version:
-  - 9.00.1
-  - 9.00.2
-  - 2020.1.12
-  - 2020.2.3
-  - 2020.2.7
-  - 2020.2.11
-  - 2020.2.18
-  - 2020.3.1
-  - 2020.4.4
-  - 2020.4.12
+- For 8.8 version:
+  - 8.80.2
+- For 8.7 version:
+  - 8.70.4
+- For 8.6 version:
+  - 8.60.3
 
 
 ## Secrets
