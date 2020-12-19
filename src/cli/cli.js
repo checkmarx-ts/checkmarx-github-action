@@ -99,18 +99,22 @@ function getCliDownloadUrl(cxVersion) {
                 }
         }
     } else {
-        if (cxVersion.startsWith("2020")) {
-            return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
-        } else if (cxVersion.startsWith("9.0")) {
-            return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
-        } else if (cxVersion.startsWith("8.9")) {
-            return CLI_DOWNLOAD_URLS[3]
-        } else if (cxVersion.startsWith("8.8")) {
-            return CLI_DOWNLOAD_URLS[2]
-        } else if (cxVersion.startsWith("8.7")) {
-            return CLI_DOWNLOAD_URLS[1]
-        } else if (cxVersion.startsWith("8.6")) {
-            return CLI_DOWNLOAD_URLS[0]
+        if (utils.isValidString(cxVersion)) {
+            if (cxVersion.startsWith("2020")) {
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+            } else if (cxVersion.startsWith("9.0")) {
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+            } else if (cxVersion.startsWith("8.9")) {
+                return CLI_DOWNLOAD_URLS[3]
+            } else if (cxVersion.startsWith("8.8")) {
+                return CLI_DOWNLOAD_URLS[2]
+            } else if (cxVersion.startsWith("8.7")) {
+                return CLI_DOWNLOAD_URLS[1]
+            } else if (cxVersion.startsWith("8.6")) {
+                return CLI_DOWNLOAD_URLS[0]
+            } else {
+                return CLI_DOWNLOAD_URLS[3]
+            }
         } else {
             return CLI_DOWNLOAD_URLS[3]
         }
@@ -141,14 +145,14 @@ async function downloadCli(cxVersion, skipIfFail) {
                 const cliExists = fs.existsSync(CLI_FOLDER_NAME)
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
-                    if(isWin) {
+                    if (isWin) {
                         await exec.exec("powershell.exe Invoke-WebRequest -Uri " + cliDownloadUrl + FILE_EXTENSION + " -OutFile " + zipFileName)
                     } else {
                         await exec.exec("curl -s " + cliDownloadUrl + FILE_EXTENSION + " -L -o " + zipFileName)
                     }
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(zipFileName)) {
-                            if(isWin) {
+                            if (isWin) {
                                 await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName + " -DestinationPath .")
                             } else {
                                 await exec.exec("unzip -q " + zipFileName)
@@ -158,7 +162,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                         }
                     } else {
                         if (fs.existsSync(zipFileName)) {
-                            if(isWin) {
+                            if (isWin) {
                                 await exec.exec("powershell.exe Expand-Archive -LiteralPath " + zipFileName + " -DestinationPath " + CLI_FOLDER_NAME)
                             } else {
                                 await exec.exec("unzip -q " + zipFileName + " -d " + CLI_FOLDER_NAME)
@@ -168,7 +172,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                         }
                     }
                     if (fs.existsSync(zipFileName)) {
-                        if(isWin) {
+                        if (isWin) {
                             await exec.exec("powershell.exe Remove-Item " + zipFileName + " -Force")
                         } else {
                             await exec.exec("rm -rf " + zipFileName)
@@ -183,7 +187,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     if (utils.is8Version(cxVersion)) {
                         if (fs.existsSync(versionFileName)) {
-                            if(isWin) {
+                            if (isWin) {
                                 await exec.exec("powershell.exe Move-Item -Path " + versionFileName + " -Destination " + CLI_FOLDER_NAME)
                             } else {
                                 await exec.exec("mv " + versionFileName + " " + CLI_FOLDER_NAME)
@@ -193,7 +197,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                         }
                         const examplesFolder = "./" + CLI_FOLDER_NAME + "/Examples"
                         if (fs.existsSync(examplesFolder)) {
-                            if(isWin) {
+                            if (isWin) {
                                 await exec.exec("powershell.exe Remove-Item " + examplesFolder + " -Recurse -Force")
                             } else {
                                 await exec.exec("rm -rf " + examplesFolder)
@@ -210,7 +214,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                     }
                 }
 
-                if(isWin) {
+                if (isWin) {
                     await exec.exec("powershell.exe Get-ChildItem")
                 } else {
                     await exec.exec("ls -la")

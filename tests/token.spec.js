@@ -1,5 +1,5 @@
 const assert = require('assert')
-const cxtoken = require('./../src/cxtoken.js')
+const cxtoken = require('../src/cli/token')
 const server = "https://test.company.com"
 const token = "12345"
 const user = "test@company.com"

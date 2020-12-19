@@ -37,6 +37,6 @@ jobs:
     - name: Tag Docker Image
       run: docker tag ${env:PKG_NAME}-${env:OS}:${env:TAG} ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
     - name: Docker Login
-      run: docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${env:secrets.GITHUB_TOKEN}
+      run: docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
       run: docker push ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}

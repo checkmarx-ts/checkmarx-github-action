@@ -1,5 +1,5 @@
 const assert = require('assert')
-const cxosa = require('./../src/cxosa.js')
+const cxosa = require('../src/cli/osa')
 const server = "https://test.company.com"
 
 describe('cxosa', function () {

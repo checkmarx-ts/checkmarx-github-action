@@ -1,5 +1,5 @@
 const assert = require('assert')
-const cxcli = require('./../src/cxcli.js')
+const cxcli = require('./../src/cli/cli')
 
 describe('cxcli', function () {
     describe('#getCliDownloadUrl()', function () {

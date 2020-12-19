@@ -1,5 +1,5 @@
 const assert = require('assert')
-const index = require('./../src/index.js')
+const index = require('./../src/index')
 const server = "https://test.company.com"
 const VALID_ACTIONS = ["Scan", "AsyncScan", "OsaScan", "AsyncOsaScan", "GenerateToken", "RevokeToken"]
 

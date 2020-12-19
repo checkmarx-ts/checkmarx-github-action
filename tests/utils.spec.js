@@ -1,5 +1,5 @@
 const assert = require('assert')
-const utils = require('./../src/utils.js')
+const utils = require('./../src/utils/utils')
 
 describe('utils', function () {
   describe('#getLastString()', function () {
@@ -205,44 +205,6 @@ describe('utils', function () {
     })
     it('String - Success', function () {
       assert(utils.isValidFilename("test"))
-    })
-  })
-  describe('#isValidVersion()', function () {
-    it('Null - Fail', function () {
-      assert(!utils.isValidVersion())
-    })
-    it('Empty - Fail', function () {
-      assert(!utils.isValidVersion(""))
-    })
-    it('Integer - Fail', function () {
-      assert(!utils.isValidVersion(1))
-    })
-    it('Boolean - Fail', function () {
-      assert(!utils.isValidVersion(true))
-    })
-    it('Array - Fail', function () {
-      assert(!utils.isValidVersion([]))
-    })
-    it('Object - Fail', function () {
-      assert(!utils.isValidVersion({}))
-    })
-    it('String - Fail', function () {
-      assert(!utils.isValidVersion("test"))
-    })
-    it('String 8.9.0 - Success', function () {
-      assert(utils.isValidVersion("8.9.0"))
-    })
-    it('String 8.9 - Success', function () {
-      assert(utils.isValidVersion("8.9"))
-    })
-    it('String 8.8 - Success', function () {
-      assert(utils.isValidVersion("8.8"))
-    })
-    it('String 8.7 - Success', function () {
-      assert(utils.isValidVersion("8.7"))
-    })
-    it('String 8.6 - Success', function () {
-      assert(utils.isValidVersion("8.6"))
     })
   })
   describe('#isValidAction()', function () {
