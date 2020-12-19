@@ -9,7 +9,7 @@ on:
       - master
 jobs:
   linux-latest:
-    name: Deploy $OS Docker Image - $TAG Version
+    name: Deploy Linux Docker Image - Latest
     runs-on: ubuntu-latest
     env:
       OS: linux
@@ -33,7 +33,7 @@ jobs:
     - name: Docker Push
       run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
   windows-latest:
-    name: Deploy %OS% Docker Image - %TAG% Version
+    name: Deploy Windows Docker Image - Latest
     runs-on: windows-latest
     env:
       OS: windows
@@ -42,17 +42,17 @@ jobs:
       uses: actions/checkout@v2.3.4
     - name: Print Environments
       run: |
-        echo %DOCKER_GITHUB%
-        echo %PKG_NAME%
-        echo docker-compose build %PKG_NAME%-%OS%
-        echo docker tag %PKG_NAME%-%OS%:%TAG% %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
-        echo docker login %DOCKER_GITHUB% -u %GITHUB_ACTOR% -p ${{secrets.GITHUB_TOKEN}}
-        echo docker push %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+        echo ${env:DOCKER_GITHUB}
+        echo ${env:PKG_NAME}
+        echo docker-compose build ${env:PKG_NAME}-${env:OS}
+        echo docker tag ${env:PKG_NAME}-${env:OS}:${env:TAG} ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
+        echo docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}}
+        echo docker push ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
     - name: Build Docker Image
-      run: docker-compose build %PKG_NAME%-%OS%
+      run: docker-compose build ${env:PKG_NAME}-${env:OS}
     - name: Tag Docker Image
-      run: docker tag %PKG_NAME%-%OS%:%TAG% %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+      run: docker tag ${env:PKG_NAME}-${env:OS}:${env:TAG} ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
     - name: Docker Login
-      run: docker login %DOCKER_GITHUB% -u %GITHUB_ACTOR% -p ${{secrets.GITHUB_TOKEN}}
+      run: docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
-      run: docker push %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+      run: docker push ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
