@@ -17,13 +17,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Build Docker Image
-      run: docker-compose build $PKG_NAME-$OS
-    - name: Tag Docker Image
-      run: docker tag $PKG_NAME-$OS:$TAG $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
-    - name: Docker Login
-      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
-    - name: Docker Push
-      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
+      run: |
+        docker-compose build $PKG_NAME-$OS
+        docker tag $PKG_NAME-$OS:$TAG $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
+        docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+        docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
   # windows-latest:
   #   name: Deploy Windows Docker Image - Latest
   #   runs-on: windows-latest
@@ -33,10 +31,8 @@ jobs:
   #   - name: Checkout
   #     uses: actions/checkout@v2.3.4
   #   - name: Build Docker Image
-  #     run: docker-compose build ${env:PKG_NAME}-${env:OS}
-  #   - name: Tag Docker Image
-  #     run: docker tag ${env:PKG_NAME}-${env:OS}:${env:TAG} ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
-  #   - name: Docker Login
-  #     run: docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}}
-  #   - name: Docker Push
-  #     run: docker push ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
+  #     run: |
+  #       docker-compose build ${env:PKG_NAME}-${env:OS}
+  #       docker tag ${env:PKG_NAME}-${env:OS}:${env:TAG} ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
+  #       docker login ${env:DOCKER_GITHUB} -u ${env:GITHUB_ACTOR} -p ${{secrets.GITHUB_TOKEN}}
+  #       docker push ${env:DOCKER_GITHUB}/${env:GITHUB_REPOSITORY}/${env:PKG_NAME}-${env:OS}:${env:TAG}
