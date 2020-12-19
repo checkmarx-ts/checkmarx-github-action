@@ -9,7 +9,7 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-linux
-    env_file: .env
+    env_file: .env-sample
   checkmarx-github-action-windows:
     platform: windows
     image: ${PKG_NAME}-windows:latest
@@ -18,4 +18,4 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile-windows
-    env_file: .env
+    env_file: .env-sample
