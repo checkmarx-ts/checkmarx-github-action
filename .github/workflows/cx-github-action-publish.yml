@@ -1,43 +1,58 @@
 name: Deploy Docker Images
+env:
+  DOCKER_GITHUB: docker.pkg.github.com
+  PKG_NAME: checkmarx-github-action
+  TAG: latest
 on:
   push:
     branches: 
       - master
 jobs:
-  latest:
-    name: Deploy Docker Image - Latest Version
+  linux-latest:
+    name: Deploy $OS Docker Image - $TAG Version
+    runs-on: ubuntu-latest
     env:
-      DOCKER_GITHUB: docker.pkg.github.com
-      PKG_NAME: checkmarx-github-action
-      TAG: latest
-    continue-on-error: true
-    strategy:
-      max-parallel: 2
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        include:
-          - os: ubuntu-latest
-            system: linux
-          - os: windows-latest
-            system: windows
-    runs-on: ${{ matrix.os }}
+      OS: linux
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
     - name: Print Environments
       run: |
-        echo ${{DOCKER_GITHUB}}
-        echo ${{PKG_NAME}}
-        echo docker-compose build ${{PKG_NAME}}-${{matrix.system}}
-        echo docker tag ${{PKG_NAME}}-${{matrix.system}}:${{TAG}} ${{DOCKER_GITHUB}}/${{GITHUB_REPOSITORY}}/${{PKG_NAME}}-${{matrix.system}}:${{TAG}}
-        echo docker login ${{DOCKER_GITHUB}} -u ${{GITHUB_ACTOR}} -p ${{secrets.GITHUB_TOKEN}}
-        echo docker push ${{DOCKER_GITHUB}}/${{GITHUB_REPOSITORY}}/${{PKG_NAME}}-${{matrix.system}}:${{TAG}}
+        echo $DOCKER_GITHUB
+        echo $PKG_NAME
+        echo docker-compose build $PKG_NAME-$OS
+        echo docker tag $PKG_NAME-$OS:$TAG $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
+        echo docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
+        echo docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
     - name: Build Docker Image
-      run: docker-compose build ${{PKG_NAME}}-${{matrix.system}}
+      run: docker-compose build $PKG_NAME-$OS
     - name: Tag Docker Image
-      run: docker tag ${{PKG_NAME}}-${{matrix.system}}:${{TAG}} ${{DOCKER_GITHUB}}/${{GITHUB_REPOSITORY}}/${{PKG_NAME}}-${{matrix.system}}:${{TAG}}
+      run: docker tag $PKG_NAME-$OS:$TAG $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
     - name: Docker Login
-      run: docker login ${{DOCKER_GITHUB}} -u ${{GITHUB_ACTOR}} -p ${{secrets.GITHUB_TOKEN}}
+      run: docker login $DOCKER_GITHUB -u $GITHUB_ACTOR -p ${{secrets.GITHUB_TOKEN}}
     - name: Docker Push
-      run: docker push ${{DOCKER_GITHUB}}/${{GITHUB_REPOSITORY}}/${{PKG_NAME}}-${{matrix.system}}:${{TAG}}
+      run: docker push $DOCKER_GITHUB/$GITHUB_REPOSITORY/$PKG_NAME-$OS:$TAG
+  windows-latest:
+    name: Deploy %OS% Docker Image - %TAG% Version
+    runs-on: windows-latest
+    env:
+      OS: windows
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+    - name: Print Environments
+      run: |
+        echo %DOCKER_GITHUB%
+        echo %PKG_NAME%
+        echo docker-compose build %PKG_NAME%-%OS%
+        echo docker tag %PKG_NAME%-%OS%:%TAG% %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+        echo docker login %DOCKER_GITHUB% -u %GITHUB_ACTOR% -p ${{secrets.GITHUB_TOKEN}}
+        echo docker push %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+    - name: Build Docker Image
+      run: docker-compose build %PKG_NAME%-%OS%
+    - name: Tag Docker Image
+      run: docker tag %PKG_NAME%-%OS%:%TAG% %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
+    - name: Docker Login
+      run: docker login %DOCKER_GITHUB% -u %GITHUB_ACTOR% -p ${{secrets.GITHUB_TOKEN}}
+    - name: Docker Push
+      run: docker push %DOCKER_GITHUB%/%GITHUB_REPOSITORY%/%PKG_NAME%-%OS%:%TAG%
