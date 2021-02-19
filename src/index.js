@@ -44,7 +44,7 @@ async function run() {
         core.setOutput(outputs.CX_WORKSPACE, envs.GITHUB_WORKSPACE)
         core.setOutput(outputs.CX_COMMIT_SHA, envs.GITHUB_SHA)
 
-        core.info("\n[START] Read Inputs...")
+        core.info("\n[START] Reading Inputs...")
 
         skipIfFail = inputs.getBoolean(inputs.CX_SKIP_IF_FAIL, false)
 
