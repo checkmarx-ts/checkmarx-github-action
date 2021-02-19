@@ -210,7 +210,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) |
-| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.X only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)|
 | cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* |
@@ -241,7 +241,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* | |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* (if no token) | |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* (if no token) | |
-| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.X only)| Boolean | No | false |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* (if no credentials)| |
 | cxTeam | \CxServer\SP\Company\TeamA | Checkmarx Team | String | Yes* | | 
 | cxProject | TestProject | Checkmarx Project Name | String | No | {{GITHUB_REPO_NAME}}-{{GITHUB_REPO_BRANCH}} |
@@ -261,7 +261,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxOSA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2021, 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: ScaScan, AsyncScaScan
@@ -284,7 +284,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxSCA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2021, 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
@@ -293,10 +293,10 @@ For using this action, there is a set of options that can be used, such as:
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxUsername | admin@cx | Checkmarx Username | String | Yes* |
 | cxPassword | ${{ secrets.CX_PASSWORD }} | Checkmarx Password | Secure String | Yes* |
-| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
+| cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.X only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2021, 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: RevokeToken
@@ -304,10 +304,10 @@ For using this action, there is a set of options that can be used, such as:
 | ------------- | ------------- | ------------- |------------- | ------------- | ------------- |
 | cxServer | https://checkmarx.company.com | Checkmarx Server URL | String | Yes* |
 | cxToken | ${{ secrets.CX_TOKEN }} | Checkmarx Token | Secure String | Yes* |
-| cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
+| cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.X only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2021, 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: Gihub Issues
@@ -328,7 +328,7 @@ There are a few Checkmarx CLI versions this action support. A version can be spe
 Please consider to use always the latest for your version.
 
 Here the list of versions supported:
-- For 9.0 version:
+- For 9.X version:
   - 2021.1.1
   - 2020.4.12
   - 2020.4.4
