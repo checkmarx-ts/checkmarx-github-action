@@ -10,7 +10,7 @@ const ASYNC_SCA_SCAN = "AsyncScaScan"
 const DEFAULT_ACTION = SCAN
 const VALID_ACTIONS = [SCAN, ASYNC_SCAN, OSA_SCAN, ASYNC_OSA_SCAN, SCA_SCAN, ASYNC_SCA_SCAN, GENERATE_TOKEN, REVOKE_TOKEN]
 const HTTPS = "https://"
-const STABLE_VERSION = "2020.4.12"
+const STABLE_VERSION = "2021.1.1"
 
 function getLastString(s) {
     const method = arguments.callee.name
@@ -73,7 +73,7 @@ function getStableVersion() {
 }
 
 function is9Version(version) {
-    return version.startsWith("9.0") || version.startsWith("2020")
+    return version.startsWith("9.0") || version.startsWith("2020") || version.startsWith("2021")
 }
 function is8Version(version) {
     return version.startsWith("8.")

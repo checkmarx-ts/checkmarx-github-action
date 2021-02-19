@@ -232,7 +232,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxComment | Test Scan Comment | Scan Comment | String | No | git branch@commitSHA |
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2021, 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: OsaScan, AsyncOsaScan 
@@ -261,7 +261,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxOSA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: ScaScan, AsyncScaScan
@@ -284,7 +284,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxCheckPolicy | true | This parameter will break the build if the CxSCA policy is violated. | Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: GenerateToken
@@ -296,7 +296,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | false | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: RevokeToken
@@ -307,7 +307,7 @@ For using this action, there is a set of options that can be used, such as:
 | cxTrustedCertificates | true | Trust Checkmarx Server URL Certificates (9.0 only)| Boolean | No | false |
 | cxLog | log.log | Log File CLI output | String | No | | 
 | cxVerbose | true | Checkmarx CLI log verbose level | Boolean | No | true |
-| cxVersion | 2020.4.12 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2020.4.12 |
+| cxVersion | 2021.1.1 | Checkmarx CLI version : 2020, 9.0, 8.9, 8.8, 8.7, 8.6 (Please see CLI Versions section) | String | No | 2021.1.1 |
 | cxSkipIfFail | true | Don't fail step if something goes wrong | Boolean | No | false |
 
 #### Inputs for Actions: Gihub Issues
@@ -329,6 +329,7 @@ Please consider to use always the latest for your version.
 
 Here the list of versions supported:
 - For 9.0 version:
+  - 2021.1.1
   - 2020.4.12
   - 2020.4.4
   - 2020.3.1

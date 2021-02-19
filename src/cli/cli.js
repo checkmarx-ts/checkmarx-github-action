@@ -30,15 +30,22 @@ const CLI_DOWNLOAD_URLS = [
     DOWNLOAD_PATH_9 + "2020.3.1",//11
     DOWNLOAD_PATH_9 + "2020.4.4",//12
     DOWNLOAD_PATH_9 + "2020.4.12",//13
+    DOWNLOAD_PATH_9 + "2021.1.1",//14
 ]
 
 function getCliDownloadUrl(cxVersion) {
     if (isValidVersion(cxVersion)) {
         switch (cxVersion) {
+            case "2021":
+                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+            case "2021.1":
+                return CLI_DOWNLOAD_URLS[14]
+            case "2021.1.1":
+                return CLI_DOWNLOAD_URLS[14]
             case "2020":
-                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
-            case "2020.2":
-                return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+                return CLI_DOWNLOAD_URLS[13]
+            case "2020.4":
+                return CLI_DOWNLOAD_URLS[13]
             case "2020.4.12":
                 return CLI_DOWNLOAD_URLS[13]
             case "2020.4.4":
@@ -82,10 +89,12 @@ function getCliDownloadUrl(cxVersion) {
             case "8.6.0":
                 return CLI_DOWNLOAD_URLS[0]
             default:
-                if (cxVersion.startsWith("2020")) {
+                if (cxVersion.startsWith("2021")) {
                     return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
                 } else if (cxVersion.startsWith("9.0")) {
                     return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+                } else if (cxVersion.startsWith("2020")) {
+                    return CLI_DOWNLOAD_URLS[13]
                 } else if (cxVersion.startsWith("8.9")) {
                     return CLI_DOWNLOAD_URLS[3]
                 } else if (cxVersion.startsWith("8.8")) {
@@ -100,10 +109,12 @@ function getCliDownloadUrl(cxVersion) {
         }
     } else {
         if (utils.isValidString(cxVersion)) {
-            if (cxVersion.startsWith("2020")) {
+            if (cxVersion.startsWith("2021")) {
                 return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
             } else if (cxVersion.startsWith("9.0")) {
                 return CLI_DOWNLOAD_URLS[CLI_DOWNLOAD_URLS.length - 1]
+            } else if (cxVersion.startsWith("2020")) {
+                return CLI_DOWNLOAD_URLS[13]
             } else if (cxVersion.startsWith("8.9")) {
                 return CLI_DOWNLOAD_URLS[3]
             } else if (cxVersion.startsWith("8.8")) {
@@ -123,6 +134,7 @@ function getCliDownloadUrl(cxVersion) {
 
 function isValidVersion(version) {
     return utils.isValidString(version) && (
+        version.startsWith("2021") ||
         version.startsWith("2020") ||
         version.startsWith("9.0") ||
         version.startsWith("8.9") ||
