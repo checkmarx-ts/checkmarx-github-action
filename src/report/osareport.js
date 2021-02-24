@@ -22,6 +22,7 @@ const HIGH = "High"
 const MEDIUM = "Medium"
 const LOW = "Low"
 const SEVERITIES = [HIGH, MEDIUM, LOW]
+const JSON_EXT = ".json"
 
 function getOsaReportsPath(workspace) {
     let osaJsonPath = ""
@@ -43,8 +44,14 @@ function getOsaIssuesFromJson(osaReportsPath) {
         issues = JSON.parse(fs.readFileSync(issuesJsonPath))
         return issues
     } else {
-        core.info(DEFAULT_OSA_VULNERABILITIES_FILE_NAME + " JSON does not exists in the path: " + issuesJsonPath)
-        core.info("No issues will be created")
+        issuesJsonPath += JSON_EXT
+        if (fs.existsSync(issuesJsonPath)) {
+            issues = JSON.parse(fs.readFileSync(issuesJsonPath))
+            return issues
+        } else {
+            core.info(DEFAULT_OSA_VULNERABILITIES_FILE_NAME + " JSON does not exists in the path: " + issuesJsonPath)
+            core.info("No issues will be created")
+        }
     }
     return issues
 }
@@ -56,7 +63,13 @@ function getOsaLibrariesFromJson(osaReportsPath) {
         libraries = JSON.parse(fs.readFileSync(librariesJsonPath))
         return libraries
     } else {
-        core.info(DEFAULT_OSA_LIBRARIES_FILE_NAME + " JSON does not exists in the path: " + librariesJsonPath)
+        librariesJsonPath += JSON_EXT
+        if (fs.existsSync(librariesJsonPath)) {
+            libraries = JSON.parse(fs.readFileSync(librariesJsonPath))
+            return libraries
+        } else {
+            core.info(DEFAULT_OSA_LIBRARIES_FILE_NAME + " JSON does not exists in the path: " + librariesJsonPath)
+        }
     }
     return libraries
 }
@@ -68,7 +81,13 @@ function getOsaSummaryFromJson(osaReportsPath) {
         let summary = JSON.parse(fs.readFileSync(osaSummaryPath))
         return summary
     } else {
-        core.info(DEFAULT_OSA_SUMMARY_FILE_NAME + " JSON does not exists in the path: " + osaSummaryPath)
+        osaSummaryPath += JSON_EXT
+        if (fs.existsSync(osaSummaryPath)) {
+            let summary = JSON.parse(fs.readFileSync(osaSummaryPath))
+            return summary
+        } else {
+            core.info(DEFAULT_OSA_SUMMARY_FILE_NAME + " JSON does not exists in the path: " + osaSummaryPath)
+        }
     }
     return summary
 }
