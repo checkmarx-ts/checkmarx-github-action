@@ -125,7 +125,7 @@ function getCredentials(skipIfFail) {
     if (utils.isValidString(cxToken)) {
         core.info(CX_TOKEN + " was provided")
         let token = cxToken.trim()
-        credentials = " -CxToken " + token
+        credentials = " -CxToken \"" + token + "\""
     } else {
         let cxUsername = get(CX_USERNAME, false)
         core.info(CX_TOKEN + " was not provided")
@@ -133,7 +133,7 @@ function getCredentials(skipIfFail) {
             core.info(CX_USERNAME + " : " + cxUsername)
             let user = cxUsername.trim()
             core.setOutput(CX_USERNAME, user)
-            credentials = " -CxUser " + user
+            credentials = " -CxUser \"" + user + "\""
         } else {
             return error(CX_USERNAME, cxUsername, skipIfFail)
         }
@@ -141,7 +141,8 @@ function getCredentials(skipIfFail) {
         let cxPassword = get(CX_PASSWORD, false)
         if (utils.isValidString(cxPassword)) {
             let password = cxPassword.trim()
-            credentials += " -CxPassword " + password
+            password = password.replace(/"/g, '\\"')
+            credentials += " -CxPassword \"" + password + "\""
         } else {
             return error(CX_PASSWORD, "********", skipIfFail)
         }
