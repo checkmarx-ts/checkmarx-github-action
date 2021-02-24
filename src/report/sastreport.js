@@ -75,7 +75,7 @@ function getIssuesFromXml(xmlPath, repository, commitSha) {
                             sourceOrigin: attrs.SourceOrigin,
                             visibility: attrs.Visibility,
                             queryId: queryAttrs.id,
-                            queryCategories: queryAttrs.categories.length > 0 ? queryAttrs.categories.replace(/;/g, ",").split(",") : [],
+                            queryCategories: queryAttrs.categories && queryAttrs.categories.length > 0 ? queryAttrs.categories.replace(/;/g, ",").split(",") : [],
                             cweId: queryAttrs.cweId,
                             queryName: queryAttrs.name,
                             queryGroup: queryAttrs.group,
