@@ -9,7 +9,7 @@ inputs:
   cxVersion:
     description: 'Checkmarx Version'
     required: false
-    default: '8.9'
+    default: '2021.1.1'
   cxServer:
     description: 'IP address or resolvable name of CxSAST web server.'
     required: true
