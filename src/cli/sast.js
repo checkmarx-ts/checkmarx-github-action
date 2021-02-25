@@ -51,6 +51,7 @@ function getSastCmd(server, action, skipIfFail) {
         let reportRtf = inputs.getString(inputs.CX_REPORT_RTF, false)
         let reportCsv = inputs.getString(inputs.CX_REPORT_CSV, false)
 
+        let checkPolicy = inputs.getBoolean(inputs.CX_CHECK_POLICY, false)
 
         let cxGithubIssues = inputs.get(inputs.CX_GITHUB_ISSUES, false)
         if (utils.isBoolean(cxGithubIssues)) {
@@ -103,6 +104,10 @@ function getSastCmd(server, action, skipIfFail) {
 
         if (low >= 0) {
             command += " -SASTLow " + low
+        }
+        
+        if (checkPolicy && checkPolicy != "false") {
+            command += " -CheckPolicy"
         }
 
         if (forceScan && forceScan != "false") {

@@ -25,15 +25,19 @@ function coreError(message, skipIfFail) {
 }
 
 function getDefaultProjectName() {
-    if (envs.GITHUB_REF.startsWith("refs/heads/")) {
-        const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
-        return GITHUB_REPOSITORY + "-" + GITHUB_REF
-    } else if (envs.GITHUB_REF.startsWith("refs/pull/")) {
-        const GITHUB_REF = envs.GITHUB_REF.replace("/merge", "").replace("refs/", "").replace("/", "_")
-        return GITHUB_REPOSITORY + "-" + envs.GITHUB_HEAD_REF + "-" + GITHUB_REF
+    if(envs.GITHUB_REF){
+        if (envs.GITHUB_REF.startsWith("refs/heads/")) {
+            const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
+            return GITHUB_REPOSITORY + "-" + GITHUB_REF
+        } else if (envs.GITHUB_REF.startsWith("refs/pull/")) {
+            const GITHUB_REF = envs.GITHUB_REF.replace("/merge", "").replace("refs/", "").replace("/", "_")
+            return GITHUB_REPOSITORY + "-" + envs.GITHUB_HEAD_REF + "-" + GITHUB_REF
+        } else {
+            const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
+            return GITHUB_REPOSITORY + "-" + GITHUB_REF
+        }
     } else {
-        const GITHUB_REF = utils.getLastString(envs.GITHUB_REF)
-        return GITHUB_REPOSITORY + "-" + GITHUB_REF
+        return GITHUB_REPOSITORY
     }
 }
 
