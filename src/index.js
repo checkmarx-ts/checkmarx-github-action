@@ -20,6 +20,10 @@ let logFile
 async function run() {
     let skipIfFail = false
     try {
+        core.warning("Deprecation Notice:")
+        core.warning("This action will be deprecated soon.")
+        core.warning("Please consider to migrate ASAP to Checkmarx CxFlow Action available in here:")
+        core.warning("https://github.com/checkmarx-ts/checkmarx-cxflow-github-action")
         core.info("Action ID : " + envs.GITHUB_ACTION)
         core.info("Run ID : " + envs.GITHUB_RUN_ID)
         core.info("Workflow Name : " + envs.GITHUB_WORKFLOW)
