@@ -1,3 +1,10 @@
+```diff
+- Deprecation Notice: 
+- This action will be deprecated soon. 
+- Please consider to migrate ASAP to Checkmarx CxFlow Action available in here: 
+- https://github.com/checkmarx-ts/checkmarx-cxflow-github-action
+```
+
 # Checkmarx Github Action ![Checkmarx](images/checkmarx.png) <img src="images/github.png" alt="Github" width="40" height="40">
 
 [![Tests](https://github.com/checkmarx-ts/checkmarx-github-action/workflows/Checkmarx%20Github%20Action/badge.svg)](https://github.com/checkmarx-ts/checkmarx-github-action/actions)
