@@ -158,7 +158,7 @@ async function downloadCli(cxVersion, skipIfFail) {
                 if (!cliExists) {
                     core.info("Checkmarx CLI does not exist in the path. Trying to download...\n")
                     if (isWin) {
-                        await exec.exec("powershell.exe Invoke-WebRequest -Uri " + cliDownloadUrl + FILE_EXTENSION + " -OutFile " + zipFileName)
+                        await exec.exec("powershell.exe [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri " + cliDownloadUrl + FILE_EXTENSION + " -OutFile " + zipFileName)
                     } else {
                         await exec.exec("curl -s " + cliDownloadUrl + FILE_EXTENSION + " -L -o " + zipFileName)
                     }
