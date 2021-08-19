@@ -9,7 +9,6 @@ const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
 const GITHUB_SHA = envs.GITHUB_SHA ? envs.GITHUB_SHA : "Unknown Commit SHA"
 const DEFAULT_COMMENT = "git " + GITHUB_REF + "@" + GITHUB_SHA
 const DEFAULT_FOLDER_EXCLUSIONS = cxexclusions.getDefaultFolderExclusions()
-const DEFAULT_FILE_EXCLUSIONS = cxexclusions.getDefaultFileExclusions()
 const DEFAULT_CONFIGURATION = "Default Configuration"
 const DEFAULT_PRESET = "Checkmarx Default"
 
@@ -27,11 +26,7 @@ function getSastCmd(server, action, skipIfFail) {
         let preset = inputs.getString(inputs.CX_PRESET, false, DEFAULT_PRESET)
         let config = inputs.getString(inputs.CX_CONFIGURATION, false, DEFAULT_CONFIGURATION)
         let excludeFolders = inputs.getString(inputs.CX_EXCLUDE_FOLDERS, false, DEFAULT_FOLDER_EXCLUSIONS)
-        if (excludeFolders != DEFAULT_FOLDER_EXCLUSIONS) {
-            excludeFolders = DEFAULT_FOLDER_EXCLUSIONS + "," + excludeFolders.trim()
-        } else {
-            excludeFolders = DEFAULT_FOLDER_EXCLUSIONS
-        }
+        excludeFolders = excludeFolders.trim()
 
         let excludeFiles = inputs.getString(inputs.CX_EXCLUDE_FILES, false, false)
         excludeFiles = excludeFiles.trim()
@@ -105,7 +100,7 @@ function getSastCmd(server, action, skipIfFail) {
         if (low >= 0) {
             command += " -SASTLow " + low
         }
-        
+
         if (checkPolicy && checkPolicy != "false") {
             command += " -CheckPolicy"
         }

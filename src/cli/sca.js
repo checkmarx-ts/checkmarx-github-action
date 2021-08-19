@@ -5,7 +5,6 @@ const cxexclusions = require("../utils/exclusions.js")
 const envs = process.env
 const GITHUB_WORKSPACE = envs.GITHUB_WORKSPACE
 const DEFAULT_FOLDER_EXCLUSIONS = cxexclusions.getScaFolderExclusions()
-const DEFAULT_FILE_EXCLUSIONS = cxexclusions.getScaFileExclusions()
 
 function getScaCmd(action, skipIfFail) {
     if (utils.isValidAction(action)) {
@@ -57,12 +56,8 @@ function getScaCmd(action, skipIfFail) {
 
         let scaFilesExclude = inputs.getString(inputs.CX_SCA_FILES_EXCLUDE, false)
 
-        let scaPathExclude = inputs.getString(inputs.CX_SCA_PATH_EXCLUDE, false, DEFAULT_FOLDER_EXCLUSIONS)
-        if (scaPathExclude != DEFAULT_FOLDER_EXCLUSIONS && scaPathExclude.length > 0) {
-            scaPathExclude = DEFAULT_FOLDER_EXCLUSIONS + "," + scaPathExclude.trim()
-        } else {
-            scaPathExclude = DEFAULT_FOLDER_EXCLUSIONS
-        }
+        let scaPathExclude = inputs.getString(inputs.CX_SCA_PATH_EXCLUDE, DEFAULT_FOLDER_EXCLUSIONS)
+        scaPathExclude = scaPathExclude.trim()
 
         let executePackageDependency = inputs.getBoolean(inputs.CX_EXECUTE_PACKAGE_DEPENDENCY, false)
         let checkPolicy = inputs.getBoolean(inputs.CX_CHECK_POLICY, false)

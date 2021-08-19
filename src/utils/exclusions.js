@@ -87,36 +87,6 @@ function getDefaultFolderExclusions(){
     ].join()
 }
 
-function getDefaultFileExclusions(){
-    return [
-        "!**/*.min.js", //3rd Party Libraries (JS)
-        "!**/*.spec", // Tests (JS/Typescript/Node JS)
-        "!**/*.spec.*", // Tests (JS/Typescript/Node JS)
-        "!**/*Test.*", // Tests
-        "!**/Test*", // Tests
-        "!**/test*", // Tests
-        "!**/*Mock*", // Tests
-        "!**/Mock*", // Tests
-        "!**/package-lock.json", // 3rd party libraries
-        "!**/LICENSE", // Non-relevant files
-        "!**/*.md", // Non-relevant files
-        "!**/.gitignore", // Non-relevant files
-        "!**/.npmignore", // Non-relevant files
-        "!**/.editorconfig", // Non-relevant files
-        "!**/*.pdf", // Non-relevant files
-        "!**/*.markdown", // Non-relevant files
-        "!**/*.db", // Non-relevant files
-        "!**/*.apk", // Non-relevant files (Android)
-        "!**/*.ipa", // Non-relevant files (IOS)
-        "!**/*.ico", // Non-relevant files (Icons)
-        "!**/*.sh", // Non-relevant files (Bash)
-        "!**/*.bat", // Non-relevant files (Batch)
-        "!**/*.ps1", // Non-relevant files (Powershell)
-        "!**/*.svg", // Non-relevant files (SVG Images)
-        "!**/*.zip", // Non-relevant files (Zip)
-    ].join()
-}
-
 function getOsaFolderExclusions(){
     return [
         "cxcli", //Folder created when downloading CLI
@@ -159,36 +129,13 @@ function getOsaFolderExclusions(){
         ".settings", // Non-relevant folders (CSharp)
     ].join()
 }
-function getOsaFileExclusions(){
-    return [
-        "!*.spec.js",
-        "!Test*",
-        "!Mock*",
-        "!.gitignore",
-        "!.npmignore",
-        "!*.pdf",
-        "!*.svg",
-        "!*.ico",
-        "!*.ipa",
-        "!*.bat",
-        "!*.sh",
-        "!*.apk",
-        "!*.doc",
-        "!.env"
-    ].join()
-}
 
 function getScaFolderExclusions(){
     return getOsaFolderExclusions()
 }
-function getScaFileExclusions(){
-    return getOsaFileExclusions()
-}
+
 module.exports = {
     getDefaultFolderExclusions: getDefaultFolderExclusions,
-    getDefaultFileExclusions: getDefaultFileExclusions,
     getOsaFolderExclusions: getOsaFolderExclusions,
-    getOsaFileExclusions: getOsaFileExclusions,
     getScaFolderExclusions: getScaFolderExclusions,
-    getScaFileExclusions: getScaFileExclusions
 }

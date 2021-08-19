@@ -26,12 +26,8 @@ function getOsaCmd(server, action, skipIfFail) {
         let osaArchiveToExtract = inputs.getString(inputs.CX_OSA_ARCHIVE_TO_EXTRACT, false)
         let osaFilesInclude = inputs.getString(inputs.CX_OSA_FILES_INCLUDE, false)
         let osaFilesExclude = inputs.getString(inputs.CX_OSA_FILES_EXCLUDE, false)
-        let osaPathExclude = inputs.getString(inputs.CX_OSA_PATH_EXCLUDE, false)
-        if (osaPathExclude != DEFAULT_FOLDER_EXCLUSIONS && osaPathExclude.length > 0) {
-            osaPathExclude = DEFAULT_FOLDER_EXCLUSIONS + "," + osaPathExclude.trim()
-        } else {
-            osaPathExclude = DEFAULT_FOLDER_EXCLUSIONS
-        }
+        let osaPathExclude = inputs.getString(inputs.CX_OSA_PATH_EXCLUDE, false, DEFAULT_FOLDER_EXCLUSIONS)
+        osaPathExclude = osaPathExclude.trim()
         let osaReportHtml = inputs.getString(inputs.CX_OSA_REPORT_HTML, false)
         let osaReportPDF = inputs.getString(inputs.CX_OSA_REPORT_PDF, false)
         let osaDepth = inputs.getInt(inputs.CX_OSA_DEPTH, false)
