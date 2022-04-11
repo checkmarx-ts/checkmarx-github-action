@@ -15,7 +15,7 @@ jobs:
       OS: linux
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.4.0
+      uses: actions/checkout@v3.0.0
     - name: Build Docker Image
       run: |
         docker-compose build $PKG_NAME-$OS
@@ -29,7 +29,7 @@ jobs:
   #     OS: windows
   #   steps:
   #   - name: Checkout
-  #     uses: actions/checkout@v2.4.0
+  #     uses: actions/checkout@v3.0.0
   #   - name: Build Docker Image
   #     run: |
   #       docker-compose build ${env:PKG_NAME}-${env:OS}
