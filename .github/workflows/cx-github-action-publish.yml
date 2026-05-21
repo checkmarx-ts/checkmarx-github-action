@@ -10,12 +10,12 @@ on:
 jobs:
   linux-latest:
     name: Deploy Linux Docker Image - Latest
-    runs-on: ubuntu-latest
+    runs-on: cx-public-ubuntu-x64
     env:
       OS: linux
     steps:
     - name: Checkout
-      uses: actions/checkout@v2.4.0
+      uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
     - name: Build Docker Image
       run: |
         docker-compose build $PKG_NAME-$OS
@@ -29,7 +29,7 @@ jobs:
   #     OS: windows
   #   steps:
   #   - name: Checkout
-  #     uses: actions/checkout@v2.4.0
+  #     uses: actions/checkout@ec3a7ce113134d7a93b817d10a8272cb61118579 # v2.4.0
   #   - name: Build Docker Image
   #     run: |
   #       docker-compose build ${env:PKG_NAME}-${env:OS}
