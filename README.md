@@ -21,7 +21,7 @@ This is a CLI Wrapper to trigger Checkmarx SAST or OSA Scans.
 
 Checkmarx SAST (CxSAST) is an enterprise-grade flexible and accurate static analysis solution used to identify hundreds of security vulnerabilities in custom code. It is used by development, DevOps, and security teams to scan source code early in the SDLC, identify vulnerabilities and provide actionable insights to remediate them. Supporting over 22 coding and scripting languages and their frameworks with zero configuration to scan any language.
 
-Please find more info in the official website: <a href="www.checkmarx.com">Checkmarx.com</a>
+Please find more info in the official website: <a href="https://www.checkmarx.com">Checkmarx.com</a>
 
 
 ## Workflow - Sample SAST Scan with Username and Password Authentication
