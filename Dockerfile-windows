@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/windows/servercore:ltsc2019
+FROM mcr.microsoft.com/windows/servercore:ltsc2019@sha256:59d374d44d844cef8de438d60fac13c22e1841f06e28c665d734822b878f5d55
 
 RUN powershell Set-ExecutionPolicy Bypass -Scope Process -Force
 RUN powershell [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
